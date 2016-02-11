@@ -7,6 +7,10 @@ LuaCheck is a Quickcheck clone for Lua.
 
 ## TODO:
 - rest of README
-- generators
+- property helper function
+- generators (numbers, strings, tables, ...)
+- easy to use DSL?
+- pretty printing of results
+- pre- and postconditions
 - ...
 
