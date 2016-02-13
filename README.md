@@ -15,6 +15,8 @@ In short:
 "Don't write tests... generate them!" - John Hughes
 
 
+NOTE: this is currently still in very early stages and a work in progress.
+
 ## Contributing
 
 For more information on how to contribute to Lua-QuickCheck, take a look at 
