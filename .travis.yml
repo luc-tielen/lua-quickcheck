@@ -20,7 +20,7 @@ before_install:
 
 install:
   - sudo apt-get update -qq
-  - sudo luarocks install luacov-coveralls --server=https://luarocks.org/dev
+  - sudo luarocks install luacov-coveralls
   - sudo luarocks install busted
 
 script:

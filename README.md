@@ -1,6 +1,9 @@
 
 # Lua-QuickCheck
 
+[![Build Status](https://travis-ci.org/Primordus/lua-quickcheck.svg?branch=master)](https://travis-ci.org/Primordus/lua-quickcheck)
+
+
 Lua-QuickCheck is a Quickcheck clone for Lua.
 
 QuickCheck is a way to do property based testing using randomly generated 
