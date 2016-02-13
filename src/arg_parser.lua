@@ -5,58 +5,58 @@ local lib = {}
 
 -- Helper function to check if table t contains a value v
 local function contains(t, v)
-    for _, val in ipairs(t) do
-        if v == val then return true end
-    end
-    return false
+  for _, val in ipairs(t) do
+    if v == val then return true end
+  end
+  return false
 end
 
 local function parse_switches(args, switches)
-    if not switches then return {} end
+  if not switches then return {} end
 
-    local result = {}
-    for switch_name, variants in pairs(switches) do
-        for _, arg_val in ipairs(args) do
-            if contains(variants, arg_val) then
-                result[switch_name] = true
-                break
-            end
-        end
+  local result = {}
+  for switch_name, variants in pairs(switches) do
+    for _, arg_val in ipairs(args) do
+      if contains(variants, arg_val) then
+        result[switch_name] = true
+        break
+      end
     end
-    return result
+  end
+  return result
 end
 
 local function parse_options(args, options)
-    if not options then return {} end
-    local result = {}
-    for opt_name, variants in pairs(options) do
-        for idx, arg1 in ipairs(args) do
-            local arg2 = args[idx + 1]
-            if not arg2 then break end  -- end of arg list
-            -- check if arg2 isn't an option or switch
-            if string.find(arg2, "-") ~= 1 
-                and contains(variants, arg1)  then
-                result[opt_name] = arg2
-                break
-            end
-        end
+  if not options then return {} end
+  local result = {}
+  for opt_name, variants in pairs(options) do
+    for idx, arg1 in ipairs(args) do
+      local arg2 = args[idx + 1]
+      if not arg2 then break end  -- end of arg list
+      -- check if arg2 isn't an option or switch
+      if string.find(arg2, "-") ~= 1 
+        and contains(variants, arg1)  then
+        result[opt_name] = arg2
+        break
+      end
     end
-    return result
+  end
+  return result
 end
 
 local function merge_tables(t1, t2)
-    for k, v in pairs(t1) do
-        t2[k] = v
-    end
-    return t2
+  for k, v in pairs(t1) do
+    t2[k] = v
+  end
+  return t2
 end
 
 -- INPUT = ARRAY (TABLE) = ARGV, CONFIG SUPPLIED BY USER
 -- OUTPUT = TABLE WITH KEY, VALUE PAIRS
 function lib.parse_args(args, opts)
-    local result1 = parse_switches(args, opts.switches)
-    local result2 = parse_options(args, opts.options)
-    return merge_tables(result1, result2)
+  local result1 = parse_switches(args, opts.switches)
+  local result2 = parse_options(args, opts.options)
+  return merge_tables(result1, result2)
 end
 
 return lib
