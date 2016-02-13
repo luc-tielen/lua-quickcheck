@@ -1,5 +1,7 @@
 language: c
 
+sudo: required
+
 env:
   global:
     - LUAROCKS=2.3.0
@@ -18,8 +20,8 @@ before_install:
 
 install:
   - apt-get update -qq
-  - luarocks install luacov-coveralls --server=https://luarocks.org/dev
-  - luarocks install busted
+  - sudo luarocks install luacov-coveralls --server=https://luarocks.org/dev
+  - sudo luarocks install busted
 
 script:
   - busted -v -c
