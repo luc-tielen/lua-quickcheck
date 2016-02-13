@@ -11,12 +11,12 @@ local function contains(t, v)
     return false
 end
 
-local function parse_switches(switches)
+local function parse_switches(args, switches)
     if not switches then return {} end
 
     local result = {}
     for switch_name, variants in pairs(switches) do
-        for _, arg_val in ipairs(arg) do
+        for _, arg_val in ipairs(args) do
             if contains(variants, arg_val) then
                 result[switch_name] = true
                 break
@@ -26,12 +26,12 @@ local function parse_switches(switches)
     return result
 end
 
-local function parse_options(options)
+local function parse_options(args, options)
     if not options then return {} end
     local result = {}
     for opt_name, variants in pairs(options) do
-        for idx, arg1 in ipairs(arg) do
-            local arg2 = arg[idx + 1]
+        for idx, arg1 in ipairs(args) do
+            local arg2 = args[idx + 1]
             if not arg2 then break end  -- end of arg list
             -- check if arg2 isn't an option or switch
             if string.find(arg2, "-") ~= 1 
@@ -53,9 +53,9 @@ end
 
 -- INPUT = ARRAY (TABLE) = ARGV, CONFIG SUPPLIED BY USER
 -- OUTPUT = TABLE WITH KEY, VALUE PAIRS
-function lib.parse_args(opts)
-    local result1 = parse_switches(opts.switches)
-    local result2 = parse_options(opts.options)
+function lib.parse_args(args, opts)
+    local result1 = parse_switches(args, opts.switches)
+    local result2 = parse_options(args, opts.options)
     return merge_tables(result1, result2)
 end
 
