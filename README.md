@@ -2,7 +2,7 @@
 # Lua-QuickCheck
 
 [![Build Status](https://travis-ci.org/Primordus/lua-quickcheck.svg?branch=master)](https://travis-ci.org/Primordus/lua-quickcheck)
-
+[![Coverage Status](https://coveralls.io/repos/github/Primordus/lua-quickcheck/badge.svg?branch=master)](https://coveralls.io/github/Primordus/lua-quickcheck?branch=master)
 
 Lua-QuickCheck is a Quickcheck clone for Lua.
 
