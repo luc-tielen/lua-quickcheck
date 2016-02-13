@@ -31,16 +31,16 @@ completed.
 
 Tests can be run with the following commands in the root directory:
 
-'''bash
+```bash
 make tests
-'''
+```
 
 or
 
-'''bash
+```bash
 busted -c                  # -c requires LuaCov, can be run without
 luacov-coveralls --dryrun  # optional, for coverage information
-'''
+```
 
 
 ## Why another QuickCheck clone?
