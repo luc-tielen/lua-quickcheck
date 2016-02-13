@@ -20,7 +20,7 @@ NOTE: this is currently still in very early stages and a work in progress.
 ## Contributing
 
 For more information on how to contribute to Lua-QuickCheck, take a look at 
-[CONTRIBUTING.md](https://www.github.com/Primordus/lua-quickcheck/CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/Primordus/lua-quickcheck/blob/master/CONTRIBUTING.md).
 
 
 ## Tests

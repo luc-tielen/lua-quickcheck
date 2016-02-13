@@ -1,0 +1,36 @@
+language: c
+
+sudo: false
+
+env:
+  global:
+    - LUAROCKS=2.3.0
+  matrix:
+    - LUA='Lua 5.1'
+    - LUA='Lua 5.2'
+    - LUA='Lua 5.3'
+    - LUA='LuaJIT 2.0'
+
+branches:
+  only:
+    - master
+
+before_install:
+  - bash .travis_setup.sh
+
+install:
+  - apt-get update -qq
+  - luarocks install luacov-coveralls --server=https://luarocks.org/dev
+  - luarocks install busted
+
+script:
+  - busted -v -c
+
+after_success:
+  - coveralls -b .. -r .. -i ./src --dump c.report.json
+  - luacov-coveralls -j c.report.json -v
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
