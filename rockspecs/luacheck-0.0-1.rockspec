@@ -1,7 +1,7 @@
-package = 'LuaCheck'
+package = 'lua-quickcheck'
 version = '0.0-1'
 source = {
-    url = 'https://github.com/Primordus/LuaCheck.git'
+    url = 'https://github.com/Primordus/lua-quickcheck.git'
 }
 description = {
     summary = 'QuickCheck for Lua',
@@ -11,7 +11,7 @@ description = {
        
        'Dont't write tests.. generate them!' - John Hughes
     ]],
-    homepage = 'https://github.com/Primordus/LuaCheck.git',
+    homepage = 'https://github.com/Primordus/lua-quickcheck.git',
     license = 'MIT'
 }
 dependencies = {
@@ -21,6 +21,7 @@ build = {
     type = 'builtin',
     modules = {
         random = 'src/random.lua'
+        arg_parser = 'src/arg_parser.lua'
         -- TODO add other modules!
     }
 }
