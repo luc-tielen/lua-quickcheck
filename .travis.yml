@@ -19,7 +19,7 @@ before_install:
   - bash .travis_setup.sh
 
 install:
-  - apt-get update -qq
+  - sudo apt-get update -qq
   - sudo luarocks install luacov-coveralls --server=https://luarocks.org/dev
   - sudo luarocks install busted
 
