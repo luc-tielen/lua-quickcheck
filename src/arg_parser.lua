@@ -34,8 +34,7 @@ local function parse_options(args, options)
       local arg2 = args[idx + 1]
       if not arg2 then break end  -- end of arg list
       -- check if arg2 isn't an option or switch
-      if string.find(arg2, "-") ~= 1 
-        and contains(variants, arg1)  then
+      if string.find(arg2, '-') ~= 1 and contains(variants, arg1)  then
         result[opt_name] = arg2
         break
       end
