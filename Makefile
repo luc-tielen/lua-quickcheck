@@ -1,6 +1,6 @@
 
 all:
-	luarocks make rockspecs/luacheck-0.0-1.rockspec
+	luarocks make rockspecs/lua-quickcheck-0.0-1.rockspec
 
 tests:
 	busted -c 
