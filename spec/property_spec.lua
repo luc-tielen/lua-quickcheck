@@ -1,4 +1,5 @@
-p = require "src.property"
+local lqc = require 'src.quickcheck'
+local p = require "src.property"
 
 
 describe("property helper function", function()
@@ -8,14 +9,14 @@ describe("property helper function", function()
     p.property(descr1, function() 
       return 9001
     end)
-    assert.is.equal(1, #p.all)
+    assert.is.equal(1, #lqc.properties)
 
     p.property(descr2, function() 
       return 1337
     end)
-    assert.is.equal(2, #p.all)
-    assert.same(p.all[1](), 9001)
-    assert.same(p.all[2](), 1337)
+    assert.is.equal(2, #lqc.properties)
+    assert.same(lqc.properties[1](), 9001)
+    assert.same(lqc.properties[2](), 1337)
   end)
 end)
 

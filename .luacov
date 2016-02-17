@@ -55,10 +55,5 @@ return {
     'socket*$',
     -- Exclude specs themselves:
     '^spec*'
-  },
-  --modules = {
-  --  ["arg_parser"] = "src/arg_parser.lua",
-    -- TODO add random.lua
-
-  --}
+  }
 }
