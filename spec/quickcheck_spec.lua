@@ -7,7 +7,7 @@ describe('quickcheck', function()
   describe('check function', function()
     it('should check every property', function()
       local x, amount = 0, 5
-      for i = 1, amount do
+      for _ = 1, amount do
         property 'test property' {
           generators = {},
           check = function()
