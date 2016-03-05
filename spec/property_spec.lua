@@ -7,8 +7,8 @@ local function clear_properties()
 end
 
 local gen = {}
-function gen:new()
-  return 'test generator placeholder' --TODO
+function gen.new()
+  return 1
 end
 
 describe('property helper function', function()
@@ -26,8 +26,8 @@ describe('property helper function', function()
     assert.is.equal(1, #lqc.properties)
     
     property 'test_property1' {
-      generators = { gen:new(), gen:new() },
-      check = function()
+      generators = { gen.new(), gen.new() },
+      check = function(x, y)
         return x + y == y + x
       end
     }
