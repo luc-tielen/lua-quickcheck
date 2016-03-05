@@ -1,22 +1,22 @@
 
-local gen = {}
-local gen_mt = { __index = gen }
+local Gen = {}
+local Gen_mt = { __index = Gen }
 
-function gen.new(pick_func, shrink_func)
-  local generator = {
+function Gen.new(pick_func, shrink_func)
+  local Generator = {
     pick_func = pick_func,
     shrink_func = shrink_func
   }
-  return setmetatable(generator, gen_mt)
+  return setmetatable(Generator, Gen_mt)
 end
 
-function gen:pick()
+function Gen:pick()
   return self.pick_func()
 end
 
-function gen:shrink(prev)
+function Gen:shrink(prev)
   return self.shrink_func(prev)
 end
 
-return gen
+return Gen
 

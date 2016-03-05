@@ -1,4 +1,4 @@
-gen = require 'src.generator'
+local gen = require 'src.generator'
 
 
 describe('generator module', function()
