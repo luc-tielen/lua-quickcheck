@@ -1,5 +1,6 @@
 local lqc = require 'src.quickcheck'
 local p = require 'src.property'
+local property = p.property
 
 
 describe('quickcheck', function()
@@ -7,9 +8,13 @@ describe('quickcheck', function()
     it('should check every property', function()
       local x, amount = 0, 5
       for i = 1, amount do
-        p.property('test property', function()
-          x = x + 1
-        end)
+        property 'test property' {
+          generators = {},
+          check = function()
+            x = x + 1
+            return true
+          end
+        }
       end
 
       lqc.check()
