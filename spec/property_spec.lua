@@ -50,6 +50,28 @@ describe('property', function()
     assert.equal(results.SUCCESS, prop())
   end)
 
+  it('should raise an error if no generators are specified', function()
+    local function make_bad_prop()
+      property 'test property' {
+        check = function()
+          return true
+        end
+      }
+    end
+    local result = pcall(make_bad_prop)
+    assert.equal(false, result)
+  end)
+
+  it('should raise an error if no check function is specified', function()
+    local function make_bad_prop()
+      property 'test property' {
+        generators = {}
+      }
+    end
+    local result = pcall(make_bad_prop)
+    assert.equal(false, result)
+  end)
+
   describe('check', function() 
     it('should return SUCCESS when property is truthy', function()
       property 'a bad property' {
@@ -61,6 +83,7 @@ describe('property', function()
       assert.equal(results.SUCCESS, lqc.properties[1]())
       
     end)
+
     it('should return FAILURE when property is falsy', function()
       property 'a bad property' {
         generators = {},
@@ -126,6 +149,7 @@ describe('property', function()
       assert.equal(results.FAILURE, lqc.properties[1]())
       assert.equal(1, x)
     end)
+
     it('should not execute the when_fail otherwise', function()
       local x = 0
       property 'a bad property' {
