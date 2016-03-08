@@ -1,7 +1,8 @@
 local lqc = require 'src.quickcheck'
+local results = require 'src.property_result'
 local p = require 'src.property'
 local property = p.property
-local results = p.results
+
 local function clear_properties()
   lqc.properties = {}  
 end

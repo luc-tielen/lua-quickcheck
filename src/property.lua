@@ -1,4 +1,5 @@
 local lqc = require 'src.quickcheck'
+local results = require 'src.property_result'
 
 -- NOTE: property is limited to 1 implies, for_all, when_fail
 -- more complex scenarios should be handled with state machine.
@@ -6,22 +7,14 @@ local lqc = require 'src.quickcheck'
 local lib = {}
 
 
--- List of possible results after executing property
-lib.results = {
-  SUCCESS = 1,  -- property succeeded
-  FAILURE = 2,   -- property failed
-  SKIPPED = 3   -- property skipped (implies predicate not met)
-}
-
-
 -- Adds a small wrapper around the check function indicating success or failure
 local function add_check_wrapper(prop_table)
   local check_func = prop_table.check
   prop_table.check = function(...)
     if check_func(...) then
-      return lib.results.SUCCESS
+      return results.SUCCESS
     else
-      return lib.results.FAILURE
+      return results.FAILURE
     end
   end
 end
@@ -32,7 +25,7 @@ local function add_implies(prop_table)
   local check_func = prop_table.check
   prop_table.check = function(...)
     if prop_table.implies(...) == false then
-      return lib.results.SKIPPED
+      return results.SKIPPED
     end
 
     return check_func(...)
@@ -46,7 +39,7 @@ local function add_when_fail(prop_table)
   prop_table.check = function(...)
     local result = check_func(...)
     
-    if result == lib.results.FAILURE then
+    if result == results.FAILURE then
       prop_table.when_fail(...)
     end
 
