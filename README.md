@@ -29,10 +29,11 @@ For more information on how to contribute to Lua-QuickCheck, take a look at
 ## Tests
 
 Right now lua-quickcheck uses busted for testing. The intention is to replace
-busted with lua-quick itself once an initial working version has been
+busted with lua-quickcheck itself once an initial working version has been
 completed.
 
-Tests can be run with the following commands in the root directory:
+Tests can be run with the following commands in the root directory of this
+project:
 
 ```bash
 make tests
@@ -41,7 +42,8 @@ make tests
 or
 
 ```bash
-busted -c                  # -c requires LuaCov, can be run without
+luacheck --std=max+busted src spec
+busted -c -v               # -c requires LuaCov, can be run without
 luacov-coveralls --dryrun  # optional, for coverage information
 ```
 
