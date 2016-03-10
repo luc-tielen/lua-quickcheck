@@ -1,9 +1,13 @@
 local lqc = require 'src.quickcheck'
+local r = require 'src.report'
 local p = require 'src.property'
 local property = p.property
 
 local function clear_properties()
   lqc.properties = {}
+  r.report_success = function() end
+  r.report_skipped = function() end
+  r.report_failed = function() end
 end
 
 

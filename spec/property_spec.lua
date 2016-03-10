@@ -74,14 +74,13 @@ describe('property', function()
 
   describe('check', function() 
     it('should return SUCCESS when property is truthy', function()
-      property 'a bad property' {
+      property 'a good property' {
         generators = {},
         check = function()
           return true
         end
       }
       assert.equal(results.SUCCESS, lqc.properties[1]())
-      
     end)
 
     it('should return FAILURE when property is falsy', function()
@@ -136,33 +135,29 @@ describe('property', function()
 
   describe('when_fail', function()
     it('should execute the when_fail if property failed', function()
-      local x = 0
+      local on_fail = spy.new(function() end)
       property 'a bad property' {
         generators = {},
         check = function()
           return false
         end,
-        when_fail = function()
-          x = x + 1
-        end
+        when_fail = on_fail
       } 
       assert.equal(results.FAILURE, lqc.properties[1]())
-      assert.equal(1, x)
+      assert.spy(on_fail).was.called(1)
     end)
 
     it('should not execute the when_fail otherwise', function()
-      local x = 0
+      local on_fail = spy.new(function() end)
       property 'a bad property' {
         generators = {},
         check = function()
           return true
         end,
-        when_fail = function()
-          x = x + 1
-        end
+        when_fail = on_fail
       } 
       assert.equal(results.SUCCESS, lqc.properties[1]())
-      assert.equal(0, x)
+      assert.spy(on_fail).was.not_called()
     end)
   end)
 end)

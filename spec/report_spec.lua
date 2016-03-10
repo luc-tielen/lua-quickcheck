@@ -6,18 +6,17 @@ local property = p.property
 local function setup_property_engine()
   lqc.iteration_amount = 1
   lqc.properties = {}
+  r.report_success = function() end
+  r.report_skipped = function() end
+  r.report_failed = function() end
 end
 
 describe('reporting of results', function()
   before_each(setup_property_engine)
 
-  -- TODO figure out how to capture stdout for more thorough testing..
-
   it('should report success for each successful test in a property', function()
-    local x = 0
-    r.report_success = function()
-      x = x + 1
-    end
+    local report_spy = spy.new(r.report_success)
+    r.report_success = report_spy
     
     property 'test property' {
       generators = {},
@@ -34,15 +33,13 @@ describe('reporting of results', function()
     }
 
     lqc.check()
-    assert.equal(2, x)
+    assert.spy(report_spy).was.called(2 * lqc.iteration_amount)
   end)
 
   it('should report skipped for a generated set of inputs that dit not meat the constraints', function()
-    local x = 0
-    r.report_skipped = function()
-      x = x + 1
-    end
-    
+    local report_spy = spy.new(r.report_skipped)
+    r.report_skipped = report_spy
+
     property 'test property' {
       generators = {},
       check = function()
@@ -64,14 +61,12 @@ describe('reporting of results', function()
     }
 
     lqc.check()
-    assert.equal(2, x)
+    assert.spy(report_spy).was.called(2 * lqc.iteration_amount)
   end)
 
   it('should report failure when a a property fails', function()
-    local x = 0
-    r.report_failed = function()
-      x = x + 1
-    end
+    local report_spy = spy.new(r.report_failed)
+    r.report_failed = report_spy
     
     property 'test property' {
       generators = {},
@@ -88,7 +83,7 @@ describe('reporting of results', function()
     }
 
     lqc.check()
-    assert.equal(2, x)
+    assert.spy(report_spy).was.called(2)
   end)
 end)
 

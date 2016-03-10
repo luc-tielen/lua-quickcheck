@@ -72,17 +72,20 @@ function lib.property(descr)
       error('Need to supply generators in property!')
     end
  
-    if type(prop_table.check) ~= 'function' then
+    local check_type = type(prop_table.check)
+    if check_type ~= 'function' and check_type ~= 'table' then
       error('Need to provide a check function to property!')
     end
 
     add_check_wrapper(prop_table)
 
-    if type(prop_table.implies) == 'function' then
+    local implies_type = type(prop_table.implies)
+    if implies_type == 'function' or implies_type == 'table' then
       add_implies(prop_table)
     end
 
-    if type(prop_table.when_fail) == 'function' then
+    local when_fail_type = type(prop_table.when_fail)
+    if when_fail_type == 'function' or when_fail_type == 'table' then
       add_when_fail(prop_table)
     end
 
