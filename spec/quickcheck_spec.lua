@@ -25,36 +25,33 @@ describe('quickcheck', function()
 
   describe('check function', function()
     it('should check every successful property X amount of times', function()
-      local x, prop_amount = 0, 5
+      local prop_amount = 5
+      local spy_check = spy.new(function() return true end)
       for _ = 1, prop_amount do
         property 'test property' {
           generators = {},
-          check = function()
-            x = x + 1
-            return true
-          end
+          check = spy_check
         }
       end
 
       lqc.check()
-      local expected = prop_amount * 100
-      assert.equal(expected, x)
+      local expected = prop_amount * lqc.iteration_amount
+      assert.spy(spy_check).was.called(expected)
     end)
 
     it('should continue to check if a constraint of property is not met', function()
-      local x = 0
+      local spy_check = spy.new(function() return true end)
+      local spy_implies = spy.new(function() return false end)
       property 'test property' {
         generators = {},
-        check = function() return true end,
-        implies = function()
-          x = x + 1
-          return false
-        end
+        check = spy_check,
+        implies = spy_implies
       }
 
       lqc.check()
       local expected = lqc.iteration_amount
-      assert.equal(expected, x)
+      assert.spy(spy_check).was.not_called()
+      assert.spy(spy_implies).was.called(expected)
     end)
 
     it('should stop checking a property after a failure', function()
@@ -122,8 +119,8 @@ describe('quickcheck', function()
           return x > y
         end
       }
+      
       lqc.check()
-      -- TODO improve this test..
       assert.same({ -10, -10 }, generated_values)
       assert.equal(shrunk_values[1], shrunk_values[2])
     end)

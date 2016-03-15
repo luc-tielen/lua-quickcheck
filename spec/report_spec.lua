@@ -6,9 +6,7 @@ local property = p.property
 local function setup_property_engine()
   lqc.iteration_amount = 1
   lqc.properties = {}
-  r.report_success = function() end
-  r.report_skipped = function() end
-  r.report_failed = function() end
+  r.report = function(_) end
 end
 
 describe('reporting of results', function()

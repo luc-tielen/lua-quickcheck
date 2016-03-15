@@ -3,13 +3,12 @@ local lib = {}
 
 local function format_table(t)
   local result = '{ '
-  for _, v in ipairs(t) do
-    result = result .. v .. ' '
-  end
+  for _, v in ipairs(t) do result = result .. v .. ' ' end
   return result .. '}'
 end
 
 function lib.report(s) io.write(s) end
+
 function lib.report_success() lib.report '.' end
 function lib.report_skipped() lib.report 'x' end
 function lib.report_failed(prop, generated_values, shrunk_values)
