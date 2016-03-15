@@ -17,7 +17,7 @@ function lib.rand()
 end
 
 -- Get random number between 0 and max
-function lib.rand_upto(max)
+function lib.upto(max)
   return math.random(max + 1) - 1
 end
 

@@ -1,11 +1,23 @@
 
 local lib = {}
 
-local function do_report(str) io.write(str) end
+local function format_table(t)
+  local result = '{ '
+  for _, v in ipairs(t) do
+    result = result .. v .. ' '
+  end
+  return result .. '}'
+end
 
-function lib.report_success() do_report '.' end
-function lib.report_skipped() do_report 'x' end
-function lib.report_failed()  do_report 'F' end -- TODO print prop info
+function lib.report(s) io.write(s) end
+function lib.report_success() lib.report '.' end
+function lib.report_skipped() lib.report 'x' end
+function lib.report_failed(prop, generated_values, shrunk_values)
+  lib.report 'F\n\n'
+  lib.report('Property "' .. prop.description .. '" failed!\n')
+  lib.report('Generated values = ' .. format_table(generated_values) .. '\n')
+  lib.report('Shrank to = ' .. format_table(shrunk_values) .. '\n')
+end -- TODO print prop info
 
 return lib
 

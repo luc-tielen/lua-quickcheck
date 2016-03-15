@@ -1,6 +1,7 @@
 local lqc = require 'src.quickcheck'
 local results = require 'src.property_result'
 
+
 -- NOTE: property is limited to 1 implies, for_all, when_fail
 -- more complex scenarios should be handled with state machine.
 
@@ -56,10 +57,27 @@ local function new(descr, func, gens)
     generators = gens
   }
 
+  function prop:pick()
+    local generated_values = {}
+    for i = 1, #self.generators do
+      generated_values[i] = self.generators[i]:pick()
+    end
+    return generated_values
+  end
+
+  -- Shrink 1 value randomly out of the given list of values.
+  function prop:shrink(...)
+    local values = { ... }
+    local which = math.random(#values)
+    local shrunk_value = self.generators[which].shrink(values[which])
+    values[which] = shrunk_value
+    return values
+  end
+
   -- TODO setfenv on prop_func
   return setmetatable(prop, { 
-    __call = function(self)
-      return self.prop_func(self.generators)
+    __call = function(self, ...)
+      return self.prop_func(...)
     end 
   })
 end
