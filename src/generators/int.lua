@@ -1,7 +1,7 @@
 local Gen = require 'src.generator'
 local random = require "src.random"
 
-local limit = 2 ^ 64  -- TODO check limit is correct..
+local limit = 2 ^ 32
 
 local function pick(min, max)
   local function do_pick()
@@ -17,12 +17,23 @@ local function shrink(previous)
   return math.ceil(previous / 2)
 end
 
-
-local function new(max, min)
-  -- TODO check defaults
-  if not max then max = limit end
-  if not min then min = 0 end
+local function integer_between(min, max)
   return Gen.new(pick(min, max), shrink)
+end
+
+local function positive_integer(max)
+  return Gen.new(pick(0, max), shrink)
+end
+
+local function integer()
+  local value = limit / 2
+  return Gen.new(pick(value - limit, value), shrink)
+end
+
+local function new(nr1, nr2) --(max, min)
+  if nr1 and nr2 then return integer_between(nr1, nr2) end
+  if nr1 then return positive_integer(nr1) end
+  return integer()
 end
 
 return new

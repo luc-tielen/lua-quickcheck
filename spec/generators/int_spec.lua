@@ -17,6 +17,26 @@ describe('int generator module', function()
         assert.is_true(is_integer(x))
       end
     end)
+
+    it('should pick an integer between 0 and X if only max is specified', function()
+      local max = 10
+      local number = int(max)
+      for _ = 1, 100 do
+        local x = number:pick()
+        assert.is_true(x >= 0)
+        assert.is_true(x <= max)
+      end
+    end)
+
+    it('should pick an integer between X and Y if max and min are specified', function()
+      local min, max = -5, 10
+      local number = int(min, max)
+      for _ = 1, 100 do
+        local x = number:pick()
+        assert.is_true(x >= min)
+        assert.is_true(x <= max)
+      end
+    end)
   end)
 
   describe('shrink function', function()
