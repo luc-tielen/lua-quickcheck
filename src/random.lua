@@ -11,18 +11,8 @@ function lib.seed(seed)
   math.randomseed(seed)
 end
 
--- Get random number between 0 and 1
-function lib.rand()
-  return math.random()
-end
-
--- Get random number between 0 and max
-function lib.upto(max)
-  return math.random(max + 1) - 1
-end
-
 -- Get random number between min and max
-function lib.rand_between(min, max)
+function lib.between(min, max)
   return math.random(min, max)
 end
 
