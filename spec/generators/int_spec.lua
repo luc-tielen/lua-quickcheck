@@ -59,20 +59,20 @@ describe('int generator module', function()
 
   describe('shrink function', function()
     it('should converge to 0', function()
-      local number = int()
-
-      for _ = 1, 10, 1 do
-        local x1 = number:pick()
-        for _ = 1, 100, 1 do
-          if x1 == 0 then break end
-          local x2 = number:shrink(x1)
-          if x1 > 0 then
-            assert.is_true(x2 < x1 or x2 == 0)
-          else
-            assert.is_true(x2 > x1 or x2 == 0)
-          end
-          x1 = x2
+      for _ = 1, 100 do
+        local shrunk_values = nil
+        r.report_failed = function(_, _, shrunk_vals)
+          shrunk_values = shrunk_vals[1]
         end
+        property 'int() should converge to 0' {
+          generators = { int() },
+          check = function(x)
+            return not is_integer(x)  -- always fails!
+          end
+        }
+        lqc.check()
+        assert.equal(0, shrunk_values)
+        lqc.properties = {}
       end
     end)
   end)

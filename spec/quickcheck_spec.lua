@@ -122,7 +122,11 @@ describe('quickcheck', function()
       
       lqc.check()
       assert.same({ -10, -10 }, generated_values)
-      assert.equal(shrunk_values[1], shrunk_values[2])
+      for i = 1, #generated_values do
+        assert.is_true(generated_values[i] <= shrunk_values[i])
+      end
+
+      assert.is_true(shrunk_values[1] >= shrunk_values[2])
     end)
   end)
 end)
