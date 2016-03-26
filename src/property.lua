@@ -69,7 +69,7 @@ local function new(descr, func, gens)
   function prop:shrink(...)
     local values = { ... }
     local which = math.random(#values)
-    local shrunk_value = self.generators[which].shrink(values[which])
+    local shrunk_value = self.generators[which]:shrink(values[which])
     values[which] = shrunk_value
     return values
   end

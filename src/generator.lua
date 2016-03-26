@@ -7,6 +7,7 @@ function Gen.new(pick_func, shrink_func)
     pick_func = pick_func,
     shrink_func = shrink_func
   }
+
   return setmetatable(Generator, Gen_mt)
 end
 

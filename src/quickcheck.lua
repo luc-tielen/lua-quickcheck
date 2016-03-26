@@ -6,16 +6,22 @@ local shuffle = pairs
 local lib = {}
 lib.properties = {}  -- list of all properties
 lib.iteration_amount = 100  -- TODO make configurable
+lib.shrink_amount = 100     -- TODO make configurable
 
-
-function lib.shrink(property, generated_values)
+function lib.shrink(property, generated_values, tries)
+  if not tries then tries = 0 end
   local shrunk_values = property:shrink(unpack(generated_values))
   local result = property(unpack(shrunk_values))
   
+  if tries == lib.shrink_amount then
+    -- Maximum amount of shrink attempts exceeded. 
+    return generated_values
+  end
+
   -- TODO think about correct behavior for when skipped..
   if result == results.FAILURE or result == results.SKIPPED then
     -- further try to shrink down
-    return lib.shrink(property, shrunk_values)
+    return lib.shrink(property, shrunk_values, tries + 1)
   end
 
   -- return generated values since they were last values for which property failed!
