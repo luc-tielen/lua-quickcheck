@@ -36,5 +36,22 @@ function lib.choose(min, max)
   return Gen.new(choose_pick(min, max), choose_shrink(min, max))
 end
 
+-- Select a generator from a list of generators
+function lib.oneof(generators)
+  local which_gen = {}  -- shared state between pick and shrink needed to shrink correctly
+
+  local function oneof_pick()
+    local which = random.between(1, #generators)
+    which_gen.value = which
+    return generators[which]:pick()
+  end
+  local function oneof_shrink(prev)
+    local which = which_gen.value
+    return generators[which]:shrink(prev)
+  end
+
+  return Gen.new(oneof_pick, oneof_shrink)
+end
+
 return lib
 
