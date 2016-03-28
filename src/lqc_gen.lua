@@ -1,5 +1,6 @@
 local Gen = require 'src.generator'
 local random = require 'src.random'
+local reduce = require 'src.functional.reduce'
 
 local lib = {}
 
@@ -36,6 +37,7 @@ function lib.choose(min, max)
   return Gen.new(choose_pick(min, max), choose_shrink(min, max))
 end
 
+
 -- Select a generator from a list of generators
 function lib.oneof(generators)
   local which_gen = {}  -- shared state between pick and shrink needed to shrink correctly
@@ -51,6 +53,36 @@ function lib.oneof(generators)
   end
 
   return Gen.new(oneof_pick, oneof_shrink)
+end
+
+-- Select a generator from a list of weighted generators ({{weight1, gen1}, ... })
+function lib.frequency(generators)
+  local which_gen = {}
+  local function frequency_pick()
+    local sum = reduce(generators, 0, function(generator, acc) 
+      return generator[1] + acc 
+    end)
+    
+    local val = random.between(1, sum)
+    which_gen.value = reduce(generators, { 0, 1 }, function(generator, acc)
+      local current_sum = acc[1] + generator[1]
+      if current_sum >= val then
+        return acc
+      else
+        return { current_sum, acc[2] + 1 }
+      end
+    end)[2]
+    
+    --print('value = ' .. type(which_gen.value))
+    --print('#generators = ' .. #generators)
+    --print('generators[which] = ' .. generators[which_gen.value][1])
+    return generators[which_gen.value][2]:pick()
+  end
+  local function frequency_shrink(prev)
+    return generators[which_gen.value][2]:shrink(prev)
+  end
+
+  return Gen.new(frequency_pick, frequency_shrink)
 end
 
 return lib

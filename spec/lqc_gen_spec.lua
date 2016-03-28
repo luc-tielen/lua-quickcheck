@@ -12,6 +12,7 @@ local function do_setup()
 end
 
 
+
 describe('choose', function()
   before_each(do_setup)
 
@@ -162,3 +163,109 @@ describe('oneof', function()
     assert.spy(spy_shrink2).was.called()
   end)
 end)
+
+describe('frequency', function()
+  before_each(do_setup)
+
+  it('chooses a generator from a list of weighted generators', function()
+    local x, y, weight1, weight2 = 0, 0, 2, 8
+    local gen1, gen2 = lqc_gen.choose(1, 10), lqc_gen.choose(11, 20)
+    local gen1_pick, gen2_pick = gen1.pick_func, gen2.pick_func
+    gen1.pick_func = function() 
+      x = x + 1
+      return gen1_pick()
+    end
+    gen2.pick_func = function()
+      y = y + 1
+      return gen2_pick()
+    end
+    property 'frequency chooses a generator from a list of weighted generators' {
+      generators = { 
+        lqc_gen.frequency { 
+          { weight1, gen1 }, 
+          { weight2, gen2 } 
+        } 
+      },
+      check = function(_)
+        return true
+      end
+    }
+
+    lqc.check()
+    assert.not_equal(0, x)
+    assert.not_equal(0, y)
+    local function expected_calls(weight)
+      return lqc.iteration_amount / (weight1 + weight2) * weight
+    end
+
+    local function almost_equal(a, b, margin)
+      return a <= b + margin and a >= b - margin
+    end
+    assert.is_true(almost_equal(x, expected_calls(weight1), 10))
+    assert.is_true(almost_equal(y, expected_calls(weight2), 10))
+  end)
+
+  it('chooses the same generator each time if only 1 is supplied.', function() 
+    local gen1 = lqc_gen.choose(1, 100)
+    local spy_pick = spy.new(gen1.pick_func)
+    gen1.pick_func = spy_pick
+    property 'frequency chooses a generator from a list of weighted generators' {
+      generators = {
+        lqc_gen.frequency {
+          { 10 , gen1 }
+        }
+      },
+      check = function(_)
+        return true
+      end
+    }
+
+    lqc.check()
+    assert.spy(spy_pick).was.called(lqc.iteration_amount)
+  end)
+
+  it('shrinks one of the generated values from the supplied list of weighted generators', function()
+    local which_gen, shrunk_value = nil, nil
+    local spy_shrink1 = spy.new(function() return 1 end)
+    local spy_shrink2 = spy.new(function() return 2 end)
+
+    local function gen_1()
+      local gen = {}
+      function gen.pick(_) which_gen = 1; return 1 end
+      gen.shrink = spy_shrink1
+      return gen
+    end
+    local function gen_2()
+      local gen = {}
+      function gen.pick(_) which_gen = 2; return 2 end
+      gen.shrink = spy_shrink2
+      return gen
+    end
+    r.report_failed = function(_, _, shrunk_vals)
+      shrunk_value = shrunk_vals[1]
+    end
+    
+    property 'frequency shrinks generated value with correct generator' {
+      generators = {
+        lqc_gen.frequency {
+          { 1, gen_1() },
+          { 4, gen_2() }
+        }
+      },
+      check = function(_)
+        return false
+      end
+    }
+
+    for _ = 1, 10 do
+      lqc.check()
+      assert.not_equal(nil, which_gen)
+      assert.not_equal(nil, shrunk_value)
+      assert.equal(which_gen, shrunk_value)
+    end
+
+    assert.spy(spy_shrink1).was.called()
+    assert.spy(spy_shrink2).was.called()
+  end)
+end)
+
