@@ -1,5 +1,5 @@
 local Gen = require 'src.generator'
-local random = require "src.random"
+local random = require 'src.random'
 
 local limit = 2 ^ 32  -- TODO figure out upper limit of integers
 

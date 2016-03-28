@@ -80,6 +80,7 @@ function lib.frequency(generators)
   return Gen.new(frequency_pick, frequency_shrink)
 end
 
+-- Create a generator that selects an element based on the input list.
 function lib.elements(array)
   local last_idx
   local function elements_pick()
