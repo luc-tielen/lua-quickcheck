@@ -40,15 +40,13 @@ end
 
 -- Select a generator from a list of generators
 function lib.oneof(generators)
-  local which_gen = {}  -- shared state between pick and shrink needed to shrink correctly
+  local which  -- shared state between pick and shrink needed to shrink correctly
 
   local function oneof_pick()
-    local which = random.between(1, #generators)
-    which_gen.value = which
+    which = random.between(1, #generators)
     return generators[which]:pick()
   end
   local function oneof_shrink(prev)
-    local which = which_gen.value
     return generators[which]:shrink(prev)
   end
 
@@ -57,14 +55,14 @@ end
 
 -- Select a generator from a list of weighted generators ({{weight1, gen1}, ... })
 function lib.frequency(generators)
-  local which_gen = {}
+  local which
   local function frequency_pick()
     local sum = reduce(generators, 0, function(generator, acc) 
       return generator[1] + acc 
     end)
     
     local val = random.between(1, sum)
-    which_gen.value = reduce(generators, { 0, 1 }, function(generator, acc)
+    which = reduce(generators, { 0, 1 }, function(generator, acc)
       local current_sum = acc[1] + generator[1]
       if current_sum >= val then
         return acc
@@ -73,28 +71,28 @@ function lib.frequency(generators)
       end
     end)[2]
     
-    return generators[which_gen.value][2]:pick()
+    return generators[which][2]:pick()
   end
   local function frequency_shrink(prev)
-    return generators[which_gen.value][2]:shrink(prev)
+    return generators[which][2]:shrink(prev)
   end
 
   return Gen.new(frequency_pick, frequency_shrink)
 end
 
 function lib.elements(array)
-  local last_idx = {}
+  local last_idx
   local function elements_pick()
     local idx = random.between(1, #array)
-    last_idx.value = idx
+    last_idx = idx
     return array[idx]
   end
 
   local function elements_shrink(_)
-    if last_idx.value > 1 then
-      last_idx.value = last_idx.value - 1
+    if last_idx > 1 then
+      last_idx = last_idx - 1
     end
-    return array[last_idx.value]
+    return array[last_idx]
   end
 
   return Gen.new(elements_pick, elements_shrink)
