@@ -73,9 +73,6 @@ function lib.frequency(generators)
       end
     end)[2]
     
-    --print('value = ' .. type(which_gen.value))
-    --print('#generators = ' .. #generators)
-    --print('generators[which] = ' .. generators[which_gen.value][1])
     return generators[which_gen.value][2]:pick()
   end
   local function frequency_shrink(prev)
@@ -83,6 +80,24 @@ function lib.frequency(generators)
   end
 
   return Gen.new(frequency_pick, frequency_shrink)
+end
+
+function lib.elements(array)
+  local last_idx = {}
+  local function elements_pick()
+    local idx = random.between(1, #array)
+    last_idx.value = idx
+    return array[idx]
+  end
+
+  local function elements_shrink(_)
+    if last_idx.value > 1 then
+      last_idx.value = last_idx.value - 1
+    end
+    return array[last_idx.value]
+  end
+
+  return Gen.new(elements_pick, elements_shrink)
 end
 
 return lib

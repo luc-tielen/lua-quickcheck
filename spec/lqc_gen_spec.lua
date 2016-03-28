@@ -269,3 +269,53 @@ describe('frequency', function()
   end)
 end)
 
+describe('elements', function()
+  before_each(do_setup)
+
+  -- TODO remove: input = lijst (tabel), pick = 1 element hieruit..  
+  
+  it('generates an element out of a list', function()
+    local input = { 1, 'a', false, {}, -1.5 }
+    local spy_check = spy.new(function(_)
+      return true -- always succeeds
+    end)
+    property 'elements generates an element out of a list' {
+      generators = { lqc_gen.elements(input) },
+      check = spy_check
+    }
+    
+    lqc.check()
+    for i = 1, #input do
+      assert.spy(spy_check).was.called_with(input[i])
+    end
+  end)
+
+  it('shrinks towards the beginning of the list', function()
+    local input = { false, {}, 1, 'a',  -1.5, function() end }
+    local shrunk_value
+    r.report_failed = function(_, _, shrunk_vals)
+      shrunk_value = shrunk_vals[1]
+    end
+    property 'elements shrinks to beginning of the list, pt1' {
+      generators = { lqc_gen.elements(input) },
+      check = function(_)
+        return false  -- always fails
+      end
+    }
+
+    lqc.check()
+    assert.equal(input[1], shrunk_value)
+
+    lqc.properties = {}
+    property 'elements shrinks to beginning of the list, pt2' {
+      generators = { lqc_gen.elements(input) },
+      check = function(x)
+        return type(x) == 'boolean'
+      end
+    }
+    lqc.check()
+    assert.equal('table', type(shrunk_value))
+  end)
+
+end)
+
