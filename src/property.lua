@@ -5,8 +5,6 @@ local results = require 'src.property_result'
 -- NOTE: property is limited to 1 implies, for_all, when_fail
 -- more complex scenarios should be handled with state machine.
 
-local lib = {}
-
 
 -- Helper function, checks if x is an integer.
 local function is_integer(x)
@@ -91,7 +89,7 @@ end
 
 
 -- Inserts the property into the list of existing properties.
-function lib.property(descr)
+local function property(descr)
   local function prop_func(prop_table)
     if not prop_table.generators then
       error('Need to supply generators in property!')
@@ -124,5 +122,5 @@ function lib.property(descr)
 end
 
 
-return lib
+return property
 

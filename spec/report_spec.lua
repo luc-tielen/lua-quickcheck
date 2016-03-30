@@ -1,7 +1,6 @@
 local lqc = require 'src.quickcheck'
 local r = require 'src.report'
-local p = require 'src.property'
-local property = p.property
+local property = require 'src.property'
 
 local function setup_property_engine()
   lqc.iteration_amount = 1

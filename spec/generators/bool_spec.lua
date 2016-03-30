@@ -1,8 +1,7 @@
 local random = require 'src.random'
 local bool = require 'src.generators.bool'
 local r = require 'src.report'
-local p = require 'src.property'
-local property = p.property
+local property = require 'src.property'
 local lqc = require 'src.quickcheck'
 
 local function is_bool(x)

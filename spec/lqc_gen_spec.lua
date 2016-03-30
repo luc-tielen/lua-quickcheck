@@ -1,7 +1,6 @@
 local random = require 'src.random'
 local r = require 'src.report'
-local p = require 'src.property'
-local property = p.property
+local property = require 'src.property'
 local lqc_gen = require 'src.lqc_gen'
 local lqc = require 'src.quickcheck'
 
