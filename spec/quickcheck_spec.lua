@@ -9,10 +9,11 @@ end
 
 local function failing_gen()
   local gen = {}
-  function gen.pick(_)
-    return -10
+  function gen.pick(_) 
+    return -2
   end
-  function gen.shrink(_, prev)
+  function gen.shrink(_, prev) 
+    if prev == 0 then return 0 end
     return prev + 1
   end
   return gen
@@ -101,14 +102,13 @@ describe('quickcheck', function()
         end
       }
       lqc.check()
-      assert.same({ -10 }, generated_values)
+      assert.same({ -2 }, generated_values)
       assert.same({ -1 }, shrunk_values)
     end)
 
     it('should try to reduce failing properties to a simpler form (2 params)', function()
       local generated_values
       local shrunk_values
-      lqc.shrink_amount = 300
       r.report_failed = function(_, generated_vals, shrunk_vals)
         generated_values = generated_vals
         shrunk_values = shrunk_vals
@@ -121,7 +121,7 @@ describe('quickcheck', function()
       }
       
       lqc.check()
-      assert.same({ -10, -10 }, generated_values)
+      assert.same({ -2, -2 }, generated_values)
       for i = 1, #generated_values do
         assert.is_true(generated_values[i] <= shrunk_values[i])
       end

@@ -248,7 +248,7 @@ describe('frequency', function()
       generators = {
         lqc_gen.frequency {
           { 1, gen_1() },
-          { 4, gen_2() }
+          { 1, gen_2() }
         }
       },
       check = function(_)
@@ -256,11 +256,12 @@ describe('frequency', function()
       end
     }
 
-    for _ = 1, 10 do
+    for _ = 1, 30 do
       lqc.check()
       assert.not_equal(nil, which_gen)
       assert.not_equal(nil, shrunk_value)
       assert.equal(which_gen, shrunk_value)
+      which_gen, shrunk_value = nil, nil
     end
 
     assert.spy(spy_shrink1).was.called()
