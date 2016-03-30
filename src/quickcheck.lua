@@ -43,7 +43,7 @@ end
 --  3.4 (later) save seed to a file somewhere, for re-running stuff..
 function lib.check()
   for _, prop in shuffle(lib.properties) do
-    for _ = 1, lib.iteration_amount do
+    for _ = 1, prop.iteration_amount do
       local generated_values = prop:pick()
       local result = prop(unpack(generated_values))
 

@@ -8,6 +8,12 @@ local results = require 'src.property_result'
 local lib = {}
 
 
+-- Helper function, checks if x is an integer.
+local function is_integer(x)
+ return type(x) == 'number' and x % 1 == 0
+end
+
+
 -- Adds a small wrapper around the check function indicating success or failure
 local function add_check_wrapper(prop_table)
   local check_func = prop_table.check
@@ -50,11 +56,12 @@ end
 
 
 -- Creates a new property. 
-local function new(descr, func, gens)
+local function new(descr, func, gens, numtests)
   local prop = {
     description = descr,
     prop_func = func,
-    generators = gens
+    generators = gens,
+    iteration_amount = numtests
   }
 
   function prop:pick()
@@ -107,7 +114,9 @@ function lib.property(descr)
       add_when_fail(prop_table)
     end
 
-    local new_prop = new(descr, prop_table.check, prop_table.generators)
+    local it_amount = prop_table.numtests
+    local numtests = is_integer(it_amount) and it_amount or lqc.iteration_amount
+    local new_prop = new(descr, prop_table.check, prop_table.generators, numtests)
     table.insert(lqc.properties, new_prop)
   end
 

@@ -1,14 +1,18 @@
+local random = require 'src.random'
 local lqc = require 'src.quickcheck'
 local results = require 'src.property_result'
 local p = require 'src.property'
 local property = p.property
+local r = require 'src.report'
 
-local function clear_properties()
-  lqc.properties = {}  
+local function do_setup()
+  random.seed()
+  lqc.properties = {}
+  r.report = function() end
 end
 
 describe('property helper function', function()
-  before_each(clear_properties)
+  before_each(do_setup)
 
   it('should add function to array of other properties', function()
     assert.is.equal(0, #lqc.properties)
@@ -32,7 +36,7 @@ describe('property helper function', function()
 end)
 
 describe('property', function()
-  before_each(clear_properties)
+  before_each(do_setup)
 
   it('should be callable', function()
     property 'a property' {
@@ -153,6 +157,29 @@ describe('property', function()
       } 
       assert.equal(results.SUCCESS, lqc.properties[1]())
       assert.spy(on_fail).was.not_called()
+    end)
+  end)
+
+  describe('numtests', function()
+    it('executes a property X amount of times if specified', function()
+      local spy_check1 = spy.new(function() return true end)
+      property 'property with default iteration amount' {
+        generators = {},
+        check = spy_check1
+      }
+      lqc.check()
+      assert.spy(spy_check1).was.called(lqc.iteration_amount)
+      lqc.properties = {}
+
+      local spy_check2 = spy.new(function() return true end)
+      local new_iteration_amount = lqc.iteration_amount + 10
+      property 'property with non-default iteration_amount' {
+        generators = {},
+        check = spy_check2,
+        numtests = new_iteration_amount
+      }
+      lqc.check()
+      assert.spy(spy_check2).was.called()
     end)
   end)
 end)
