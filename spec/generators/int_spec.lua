@@ -19,13 +19,32 @@ describe('int generator module', function()
 
   describe('pick function', function()
     it('should pick an integer', function()
-      local spy_check = spy.new(function(x) return is_integer(x) end)
-      property 'int() should pick an integer' {
+      local spy_check1 = spy.new(function(x) 
+        return is_integer(x) 
+           and x >= - lqc.iteration_amount / 2
+           and x <=   lqc.iteration_amount / 2
+      end)
+      property 'int() should pick between +- sample_size / 2, pt 1' {
         generators = { int() },
-        check = spy_check
+        check = spy_check1
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check1).was.called(lqc.iteration_amount)
+      lqc.properties = {}
+
+      local num_tests = 10
+      local spy_check2 = spy.new(function(x) 
+        return is_integer(x) 
+           and x >= - num_tests / 2
+           and x <=   num_tests / 2
+      end)
+      property 'int() should pick between +- sample_size / 2, pt 2' {
+        generators = { int() },
+        check = spy_check2,
+        numtests = num_tests
+      }
+      lqc.check()
+      assert.spy(spy_check2).was.called(num_tests)
     end)
 
     it('should pick an integer between 0 and X if only max is specified', function()

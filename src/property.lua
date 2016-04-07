@@ -65,7 +65,7 @@ local function new(descr, func, gens, numtests)
   function prop:pick()
     local generated_values = {}
     for i = 1, #self.generators do
-      generated_values[i] = self.generators[i]:pick()
+      generated_values[i] = self.generators[i]:pick(numtests)
     end
     return generated_values
   end
