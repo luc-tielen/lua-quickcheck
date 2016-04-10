@@ -23,6 +23,7 @@ install:
   - luarocks install luacov
   - luarocks install luacov-coveralls
   - luarocks install busted
+  - luarocks install moonscript
 
 script:
   - luacheck --std max+busted src spec
