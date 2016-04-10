@@ -87,14 +87,13 @@ local function new(descr, func, gens, numtests)
   })
 end
 
-
 -- Inserts the property into the list of existing properties.
-local function property(descr)
+local function property(descr, prop_info_table)
   local function prop_func(prop_table)
     if not prop_table.generators then
       error('Need to supply generators in property!')
     end
- 
+
     local check_type = type(prop_table.check)
     if check_type ~= 'function' and check_type ~= 'table' then
       error('Need to provide a check function to property!')
@@ -118,6 +117,13 @@ local function property(descr)
     table.insert(lqc.properties, new_prop)
   end
 
+  -- Property called without DSL-like syntax
+  if prop_info_table then
+    prop_func(prop_info_table)
+    return
+  end
+
+  -- Property called with DSL syntax!
   return prop_func
 end
 

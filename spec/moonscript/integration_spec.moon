@@ -16,7 +16,7 @@ describe 'integration with moonscript', ->
   it 'should be possible to write properties in moonscript', ->
     spy_check = spy.new((x) -> x >= 0)
 
-    property('simple example')
+    property 'simple example'
       generators: { byte! }
       check: spy_check
 
