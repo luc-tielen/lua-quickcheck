@@ -146,11 +146,11 @@ end
 
 -- Creates a new ascii string generator
 local function new(size)
-  if not size then
-    return arbitrary_length_string()
+  if size then
+    return specific_length_string(size)
   end
 
-  return specific_length_string(size)
+  return arbitrary_length_string()
 end
 
 return new

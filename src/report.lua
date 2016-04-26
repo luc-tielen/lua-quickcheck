@@ -3,7 +3,13 @@ local lib = {}
 
 local function format_table(t)
   local result = '{ '
-  for _, v in ipairs(t) do result = result .. v .. ' ' end
+  for _, v in ipairs(t) do 
+    if type(v) == 'table' then
+      result = result .. format_table(v) .. ' '
+    else
+      result = result .. v .. ' '
+    end
+  end
   return result .. '}'
 end
 

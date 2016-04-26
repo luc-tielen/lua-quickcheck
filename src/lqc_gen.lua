@@ -42,9 +42,9 @@ end
 function lib.oneof(generators)
   local which  -- shared state between pick and shrink needed to shrink correctly
 
-  local function oneof_pick()
+  local function oneof_pick(numtests)
     which = random.between(1, #generators)
-    return generators[which]:pick()
+    return generators[which]:pick(numtests)
   end
   local function oneof_shrink(prev)
     return generators[which]:shrink(prev)
@@ -56,7 +56,7 @@ end
 -- Select a generator from a list of weighted generators ({{weight1, gen1}, ... })
 function lib.frequency(generators)
   local which
-  local function frequency_pick()
+  local function frequency_pick(numtests)
     local sum = reduce(generators, 0, function(generator, acc) 
       return generator[1] + acc 
     end)
@@ -71,7 +71,7 @@ function lib.frequency(generators)
       end
     end)[2]
     
-    return generators[which][2]:pick()
+    return generators[which][2]:pick(numtests)
   end
   local function frequency_shrink(prev)
     return generators[which][2]:shrink(prev)
