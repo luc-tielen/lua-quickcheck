@@ -319,3 +319,56 @@ describe('elements', function()
 
 end)
 
+describe('combinations of the above', function()
+  it('should be possible to combine frequency and oneof helpers', function()
+    local spy_shrink1 = spy.new(function() return 1 end)
+    local spy_shrink2 = spy.new(function() return 2 end)
+    local spy_shrink3 = spy.new(function() return 3 end)
+    
+    local which_gen, shrunk_value
+    r.report_failed = function(_, _, shrunk_vals)
+      shrunk_value = shrunk_vals[1]
+    end
+    local function gen_1()
+      local gen = {}
+      function gen.pick(_) which_gen = 1; return 1 end
+      gen.shrink = spy_shrink1
+      return gen
+    end
+    local function gen_2()
+      local gen = {}
+      function gen.pick(_) which_gen = 2; return 2 end
+      gen.shrink = spy_shrink2
+      return gen
+    end
+    local function gen_3()
+      local gen = {}
+      function gen.pick(_) which_gen = 3; return 3 end
+      gen.shrink= spy_shrink3
+      return gen
+    end
+
+    property 'frequency shrinks generated value with correct generator' {
+      generators = {
+        lqc_gen.frequency {
+          { 1, lqc_gen.oneof { gen_1(), gen_2() } },
+          { 1, gen_3() }
+        }
+      },
+      check = function(_) return false end
+    }
+    
+    for _ = 1, 30 do
+      lqc.check()
+      assert.not_equal(nil, which_gen)
+      assert.not_equal(nil, shrunk_value)
+      assert.equal(which_gen, shrunk_value)
+      which_gen, shrunk_value = nil, nil
+    end
+
+    assert.spy(spy_shrink1).was.called()
+    assert.spy(spy_shrink2).was.called()
+    assert.spy(spy_shrink3).was.called()
+  end)
+end)
+
