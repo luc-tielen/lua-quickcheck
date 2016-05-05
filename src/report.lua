@@ -4,8 +4,11 @@ local lib = {}
 local function format_table(t)
   local result = '{ '
   for _, v in ipairs(t) do 
-    if type(v) == 'table' then
+    local type_v = type(v)
+    if type_v == 'table' then
       result = result .. format_table(v) .. ' '
+    elseif type_v == 'boolean' then
+      result = result .. (v and 'true ' or 'false ')
     else
       result = result .. v .. ' '
     end

@@ -125,6 +125,7 @@ local function new_table(table_size)
     local new_tbl = shrink_values(prev, size, shrink_how_many(size))
     if deep_equals(prev, new_tbl) then
       -- shrinking didn't help, remove an element
+      -- TODO fix bug: shrink_values mutates prev and returns prev -> always true!
       return shrink_smaller(prev, size)
     end
 
