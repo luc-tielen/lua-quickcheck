@@ -17,11 +17,7 @@ local function deep_equals(tbl_a, tbl_b)
 
   for k, v1 in pairs(tbl_a) do
     local v2 = tbl_b[k]
-
-    if type(v1) == 'table' and not deep_equals(v1, v2) then 
-      return false
-    end
-
+    if type(v1) == 'table' then return deep_equals(v1, v2) end
     if v1 ~= v2 then return false end
   end
 
