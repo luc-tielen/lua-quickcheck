@@ -26,8 +26,7 @@ install:
   - luarocks install moonscript
 
 script:
-  - luacheck --std max+busted src spec
-  - busted --verbose --coverage --shuffle-files --shuffle-tests
+  - make tests
 
 after_success:
   - luacov-coveralls -v -e $TRAVIS_BUILD_DIR/lua_install

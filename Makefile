@@ -7,7 +7,10 @@ fixtures:
 
 tests: fixtures
 	luacheck --std=max+busted src spec
-	busted --coverage --verbose
+	LD_LIBRARY_PATH=spec/fixtures/ busted --coverage --verbose \
+										  --shuffle-files --shuffle-tests
+
+coverage:
 	luacov-coveralls --dryrun
 
 clean:
