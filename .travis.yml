@@ -24,7 +24,7 @@ install:
   - luarocks install luacov-coveralls
   - luarocks install busted
   - luarocks install moonscript
-  - if [[ $(echo $LUA | grep -o "jit") = "" ]]; then luarocks install ffi; fi
+  - if [[ $(echo $LUA | grep -o "jit") = "" ]]; then luarocks install luaffi --server=http://luarocks.org/dev; fi
 
 script:
   - make tests
