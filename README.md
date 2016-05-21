@@ -54,6 +54,17 @@ I wanted a quickcheck library that could also easily interface with C or C++
 side-by-side with my Lua code.
 
 
+## Supported Lua versions
+
+- Lua 5.1
+- Lua 5.2
+- LuaJIT 2.0
+- LuaJIT 2.1
+
+Lua 5.3 is currently not fully supported since the luaffi rock needed for the C
+integration does not compile with that specific Lua version. The rest of the
+functionality is available though.
+
 ## License
 
 This project is licensed under the 
