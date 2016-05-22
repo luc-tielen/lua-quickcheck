@@ -1,20 +1,22 @@
 
+local time = os.time
+local random_seed = math.randomseed
+local random = math.random
+
 local lib = {}
 
 function lib.seed(seed)
-  if not seed then
-    -- TODO improve precision of seed, right now 1 s precision!
-    -- call into C? 
-    seed = os.time()
-  end
-
-  math.randomseed(seed)
+  -- TODO improve precision of seed, right now 1 s precision!
+  -- call into C? 
+  if not seed then seed = time() end
+  random_seed(seed)
 end
 
 -- Get random number between min and max
 function lib.between(min, max)
-  return math.random(min, max)
+  return random(min, max)
 end
+
 
 return lib
 
