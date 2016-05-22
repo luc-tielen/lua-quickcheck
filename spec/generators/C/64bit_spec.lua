@@ -36,7 +36,7 @@ describe('generating 64 bit integers for C code', function()
 
   it('should be possible to shrink 64 bit integer types', function()
     local shrunk_value
-    r.report_failed = function(_, g, shrunk_vals)
+    r.report_failed = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end    
     property 'uint64_t can be shrunk to smaller values' {
