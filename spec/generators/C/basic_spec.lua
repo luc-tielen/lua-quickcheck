@@ -4,7 +4,6 @@ local property = require 'src.property'
 local lqc = require 'src.quickcheck'
 local lqc_gen = require 'src.lqc_gen'
 
-local ffi = require 'ffi'
 ffi.cdef [[
   uint8_t add(uint8_t a, uint8_t b);
   bool less_than_zero(int x);

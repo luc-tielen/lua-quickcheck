@@ -4,7 +4,6 @@ local lqc = require 'src.quickcheck'
 local r = require 'src.report'
 local int = require 'src.generators.int'
 
-local ffi = require 'ffi'
 ffi.cdef [[
   uint64_t u64_add(uint64_t a, uint64_t b);
   uint64_t u64_invert(uint64_t x);

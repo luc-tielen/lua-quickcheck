@@ -5,7 +5,6 @@ local r = require 'src.report'
 local double = require 'src.generators.float'
 local float = double
 
-local ffi = require 'ffi'
 ffi.cdef [[
   float flt_add(float a, float b);
   double dbl_add(double a, double b);
