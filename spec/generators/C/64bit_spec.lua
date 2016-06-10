@@ -21,7 +21,7 @@ describe('generating 64 bit integers for C code', function()
   before_each(do_setup)
   -- NOTE: values won't go higher than max value of double (around 2^52)
 
-  it('should be possible to test functions that use 64 bit integers', function()
+  it('should be possible to test functions that use 64 bit integers #jit_only', function()
     local spy_check = spy.new(function(a, b)
       return a + b == clib.u64_add(a, b)
     end)
