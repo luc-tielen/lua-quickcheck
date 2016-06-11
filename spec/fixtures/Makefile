@@ -1,6 +1,6 @@
 
-CC ?= gcc
-CFLAGS=-O2 -Wall -Wextra -Werror
+CC = gcc
+CFLAGS=-O2 -Wall -Wextra -Werror -fPIC
 
 %.o: %.c %.h
 	$(CC) -c $@ $< $(CFLAGS)

@@ -1,6 +1,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <string.h>
+
 
 /**
  * Adds 2 bytes together and returns the result.
@@ -72,4 +75,25 @@ bool point_add(struct point* a, struct point* b, struct point* c_out)
     c_out->y = a->y + b->y;
     return true;
 }
+
+/**
+ * Adds 2 NULL-terminated strings together.
+ * returns a new string (which has to be freed afterwards!)
+ * returns NULL if a or b are NULL
+ */
+const char* str_add(const char* const a, const char* const b)
+{
+  if (!a || !b) { return NULL; }
+  
+  size_t len_a = strlen(a);
+  size_t len_b = strlen(b);
+  char* result = (char*) malloc(sizeof(char) * (len_a + len_b + 1));
+  
+  if (!result) { return NULL; }
+
+  memcpy(result, a, len_a);
+  memcpy(result + len_a, b, len_b + 1);
+  return result;
+}
+
 
