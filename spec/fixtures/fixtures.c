@@ -51,3 +51,25 @@ uint64_t u64_invert(uint64_t x)
   return x ^ 0xFFFFFFFFFFFFFFFFULL;
 }
 
+/*
+ * Struct representing a 2D point.
+ */
+struct point
+{
+    uint32_t x;
+    uint32_t y;
+};
+
+/**
+ * Adds 2 points a and b and stores the result in c_out.
+ * a, b and c_out must point to a pre-allocated part of memory.
+ * Returns true if add operation was successful, false otherwise.
+ */
+bool point_add(struct point* a, struct point* b, struct point* c_out)
+{
+    if (!a || !b || !c_out) { return false; }
+    c_out->x = a->x + b->x; 
+    c_out->y = a->y + b->y;
+    return true;
+}
+
