@@ -32,7 +32,7 @@ describe('Basic usage of properties to test strings in C', function()
     assert.spy(spy_check).was.called(lqc.iteration_amount)
   end)
 
-  it('should be possible to shrink properties with C strings', function()
+  it('should be possible to shrink properties with C strings #jit_only', function()
     local shrunk_value
     r.report_failed = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
