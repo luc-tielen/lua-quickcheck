@@ -1,0 +1,74 @@
+local Gen = require 'src.generator'
+local random = require 'src.random'
+local map = require 'src.functional.map'
+local deep_copy = require 'src.helpers.deep_copy'
+
+
+-- Converts a generator from 1 of the command arguments into an actual argument
+local function arg_generator_to_arg(num_tests)
+  local function do_conversion(arg_generator)
+    return arg_generator:pick(num_tests)
+  end
+  return do_conversion
+end
+
+
+-- Creates a function that picks a random value for each of the generators
+-- specified in the argument list. 
+-- Returns a table with keys { state_name, func, args }
+local function pick(state_name, command_func, args_generators)
+  local function do_pick(num_tests)
+    return { 
+      state_name = state_name,
+      func = command_func,
+      args = map(args_generators, arg_generator_to_arg(num_tests))
+    }
+  end
+  return do_pick
+end
+
+
+-- Does the actual shrinking of the args
+-- Randomly picks 1 of the arguments and shrinks it, rest stays the same
+local function shrink_args(prev_args, args_generators)
+  local idx = random.between(1, #prev_args)
+  local shrunk_arg = args_generators[idx]:shrink(prev_args[idx])
+  local args_copy = deep_copy(prev_args)
+  args_copy[idx] = shrunk_arg
+  return args_copy
+end
+
+
+-- Shrinks the command to a simpler form.
+-- Only args are shrunk, state_name and func are unmodified.
+local function shrink(state_name, command_func, args_generators)
+  local function do_shrink(previous)
+    return {
+      state_name = state_name, 
+      func = command_func, 
+      args = shrink_args(previous.args, args_generators)
+    }
+  end
+  return do_shrink
+end
+
+
+-- Creates a new command generator with a state_name, command function
+-- and a list of generators (args will be passed into the command_func in the FSM)
+local function new(state_name, command_func, args_generators)
+  return Gen.new(pick(state_name, command_func, args_generators),
+                 shrink(state_name, command_func, args_generators))
+end
+
+
+local command = {}
+local command_mt = {
+  __call = function(_, command_tbl)
+    return new(command_tbl[1], command_tbl[2], command_tbl[3])
+  end
+}
+
+command.stop = new('stop', function() end, {})
+
+return setmetatable(command, command_mt)
+
