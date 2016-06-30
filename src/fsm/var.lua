@@ -5,7 +5,7 @@ local Var_mt = { __index = Var }
 
 -- Creates a symbolic representation of a variable.
 function Var.new(value)
-  if not value then 
+  if value == nil then 
     error 'Need to provide a value to Var!'
   end
   local var = { value = value}
