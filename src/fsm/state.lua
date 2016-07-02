@@ -30,7 +30,7 @@ end
 
 
 -- Helper function for specifying a state in the FSM
-local function make_state(state_name)
+local function make_state(state_name, state_information)
   local function make_state_helper(state_info)
     check_valid_state(state_info, state_name)
     return {
@@ -40,10 +40,16 @@ local function make_state(state_name)
       postcondition = state_info.postcondition
     }
   end
-  return make_state_helper
+
+  if state_information ~= nil then
+    -- Called with normal syntax, directly return result
+    return make_state_helper(state_information)
+  end
+
+  -- called with Lua DSL syntax, return closue which returns result
+  return make_state_helper 
 end
 
--- TODO moonscript support
 
 return make_state
 
