@@ -9,9 +9,9 @@ describe('Variable helper object', function()
       end
       return func
     end
-    assert(pcall(make_var(1)))
-    assert(pcall(make_var('2')))
-    assert(not pcall(make_var()))
+    assert.equal(true, pcall(make_var(1)))
+    assert.equal(true, pcall(make_var('2')))
+    assert.equal(false, pcall(make_var()))
   end)
 
   it('should have a string representation', function()
