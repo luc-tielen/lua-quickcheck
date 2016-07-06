@@ -28,6 +28,12 @@ function Vector:get(index)
   return self.data[index]
 end
 
+
+-- Returns the size of the vector. (0 if empty)
+function Vector:size()
+  return #self.data
+end
+
 -- Removes an element from the vector by value
 function Vector:remove(obj)
   -- Find element, then remove by index
@@ -40,6 +46,11 @@ function Vector:remove(obj)
   end
   if pos == -1 then return end
   table.remove(self.data, pos)
+end
+
+-- Removes an element from the vector by index
+function Vector:remove_index(idx)
+  table.remove(self.data, idx)
 end
 
 -- Returns the vector, with the contents represented as a flat table
