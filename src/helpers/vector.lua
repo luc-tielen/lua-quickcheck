@@ -50,6 +50,7 @@ end
 
 -- Removes an element from the vector by index
 function Vector:remove_index(idx)
+  if idx > self:size() then return end
   table.remove(self.data, idx)
 end
 
