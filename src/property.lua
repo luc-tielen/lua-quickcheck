@@ -1,5 +1,7 @@
 local lqc = require 'src.quickcheck'
+local report = require 'src.report'
 local results = require 'src.property_result'
+local unpack = unpack or table.unpack  -- for compatibility reasons
 
 
 -- NOTE: property is limited to 1 implies, for_all, when_fail
@@ -7,6 +9,7 @@ local results = require 'src.property_result'
 
 
 -- Helper function, checks if x is an integer.
+-- Returns true if x is an integer; false otherwise.
 local function is_integer(x)
  return type(x) == 'number' and x % 1 == 0
 end
@@ -53,39 +56,101 @@ local function add_when_fail(prop_table)
 end
 
 
+-- Shrinks a property that failed with a certain set of inputs.
+-- This function returns a simplified list or inputs
+local function do_shrink(property, generated_values, tries)
+  if not tries then tries = 0 end
+  local shrunk_values = property.shrink(unpack(generated_values))
+  local result = property(unpack(shrunk_values))
+  
+  if tries == lqc.shrink_amount then
+    -- Maximum amount of shrink attempts exceeded. 
+    return generated_values
+  end
+
+  -- TODO think about correct behavior for when skipped..
+  if result == results.FAILURE or result == results.SKIPPED then
+    -- further try to shrink down
+    return do_shrink(property, shrunk_values, tries + 1)
+  end
+
+  -- return generated values since they were last values for which property failed!
+  return generated_values
+end
+
+
+-- Function that checks if the property is valid for a set amount of inputs.
+-- 1. check result of property X amount of times:
+--    - SUCCESS = OK, print '.'
+--    - SKIPPED = OK, print 'x'
+--    - FAILURE = NOT OK, see 2.
+-- 2. if FAILURE:
+--  2.1 print property info, values for which it fails
+--  2.2 do shrink to find minimal error case
+--  2.3 when shrink stays the same or max amount exceeded -> print minimal example
+--  2.4 (later) save seed to a file somewhere, for re-running stuff..
+local function do_check(property)
+  for _ = 1, property.iteration_amount do
+    local generated_values = property.pick()
+    local result = property(unpack(generated_values))
+
+    if result == results.SUCCESS then
+      report.report_success()
+    elseif result == results.SKIPPED then
+      report.report_skipped()
+    else
+      if #generated_values == 0 then
+        -- Empty list of generators -> no further shrinking possible!
+        report.report_failed(property, generated_values, generated_values)
+        break -- TODO remove break? or make configurable?
+      end
+
+      local shrunk_values = do_shrink(property, generated_values)
+      report.report_failed(property, generated_values, shrunk_values)
+      break  -- TODO remove break? or make configurable?
+    end
+  end
+end
+
+
 -- Creates a new property. 
-local function new(descr, func, gens, numtests)
+local function new(descr, property_func, generators, numtests)
   local prop = {
     description = descr,
-    prop_func = func,
-    generators = gens,
     iteration_amount = numtests
   }
 
-  function prop:pick()
+  -- Generates a new set of inputs for this property.
+  -- Returns the newly generated set of inputs as a table.
+  function prop.pick()
     local generated_values = {}
-    for i = 1, #self.generators do
-      generated_values[i] = self.generators[i]:pick(numtests)
+    for i = 1, #generators do
+      generated_values[i] = generators[i]:pick(numtests)
     end
     return generated_values
   end
 
   -- Shrink 1 value randomly out of the given list of values.
-  function prop:shrink(...)
+  function prop.shrink(...)
     local values = { ... }
     local which = math.random(#values)
-    local shrunk_value = self.generators[which]:shrink(values[which])
+    local shrunk_value = generators[which]:shrink(values[which])
     values[which] = shrunk_value
     return values
   end
 
-  -- TODO setfenv on prop_func
+  -- Function that checks if the property is valid for a set amount of inputs.
+  function prop:check()
+    do_check(self)
+  end
+
   return setmetatable(prop, { 
-    __call = function(self, ...)
-      return self.prop_func(...)
+    __call = function(_, ...)
+      return property_func(...)
     end 
   })
 end
+
 
 -- Inserts the property into the list of existing properties.
 local function property(descr, prop_info_table)
