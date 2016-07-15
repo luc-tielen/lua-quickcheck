@@ -23,6 +23,16 @@ function Vector:push_back(obj)
 end
 
 
+-- Appends another vector to this vector
+-- Returns the modified vector (self)
+function Vector:append(other_vec)
+  for i = 1, other_vec:size() do
+    self:push_back(other_vec:get(i))
+  end
+  return self
+end
+
+
 -- Gets the element at position 'index' in the vector
 function Vector:get(index)
   return self.data[index]

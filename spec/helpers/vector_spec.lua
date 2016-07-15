@@ -4,7 +4,7 @@ local Vector = require 'src.helpers.vector'
 describe('vector datastructure', function()
   it('should be possible to initialize a vector (empty or with elements)', function()
     local v1 = Vector.new()
-    local expected2 = { "a", "b", "c" }
+    local expected2 = { 'a', 'b', 'c' }
     local v2 = Vector.new(expected2)
     assert.same({}, v1:to_table())
     assert.same(expected2, v2:to_table())
@@ -15,7 +15,7 @@ describe('vector datastructure', function()
     local expected = {}
     assert.same(expected, v:to_table())
 
-    local values = { 1, "a", { { 2 }, false } }
+    local values = { 1, 'a', { { 2 }, false } }
     for _, value in ipairs(values) do
       v:push_back(value)
       table.insert(expected, value)
@@ -26,7 +26,7 @@ describe('vector datastructure', function()
   end)
 
   it('should be possible to retrieve certain elements out of the vector', function()
-    local value1, value2, value3 = 1, "a", { { 2 }, false }
+    local value1, value2, value3 = 1, 'a', { { 2 }, false }
     local values = { value1, value2, value3 }
     local v = Vector.new(values)
 
@@ -36,10 +36,19 @@ describe('vector datastructure', function()
     end
   end)
 
+  it('should be possible to append 2 vectors', function()
+    local vec_a, vec_b = Vector.new(), Vector.new({ 1, 2, 3 })
+    local vec_c, vec_d = Vector.new({ 'a', 'b' }), Vector.new()
+    local vec_e, vec_f = Vector.new({ true, false }), Vector.new({ 'x', 'y', 'z' })
+    assert.same({ 1, 2, 3 }, vec_a:append(vec_b):to_table())
+    assert.same({ 'a', 'b' }, vec_c:append(vec_d):to_table())
+    assert.same({ true, false, 'x', 'y', 'z' }, vec_e:append(vec_f):to_table())
+  end)
+
   it('should be possible to get the size of the vector', function()
     local v = Vector.new()
     assert.equal(0, v:size())
-    local values = { 1, "a", { { 2 }, false } }
+    local values = { 1, 'a', { { 2 }, false } }
     for i = 1, #values do
       v:push_back(values[i])
       assert.equal(i, v:size())
@@ -53,7 +62,7 @@ describe('vector datastructure', function()
   end)
 
   it('should be possible to remove elements of the vector by value', function()
-    local value1, value2, value3 = 1, "a", { { 2 }, false }
+    local value1, value2, value3 = 1, 'a', { { 2 }, false }
     local values = { value1, value2, value3 }
     local v = Vector.new(values)
    
@@ -68,7 +77,7 @@ describe('vector datastructure', function()
   end)
 
   it('should be possible to remove elements of the vector by index', function()
-    local value1, value2, value3 = 1, "a", { { 2 }, false }
+    local value1, value2, value3 = 1, 'a', { { 2 }, false }
     local values = { value1, value2, value3 }
     local v = Vector.new(values)
    
