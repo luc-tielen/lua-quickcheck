@@ -8,6 +8,8 @@ local lqc_gen = require 'src.lqc_gen'
 local oneof = lqc_gen.oneof
 local frequency = lqc_gen.frequency
 local deep_equals = require 'src.helpers.deep_equals'
+local deep_copy = require 'src.helpers.deep_copy'
+
 
 -- Generator for tables of varying sizes and types!
 
@@ -127,16 +129,16 @@ local function new_table(table_size)
   -- Shrinks a table by removing elements or shrinking values in the table.
   local function arbitrary_size_shrink(prev)
     local size = #prev
-    if size == 0 then return prev end -- handle empty tables
+    if size == 0 then return prev end  -- handle empty tables
     
     if should_shrink_smaller(size) then
       return shrink_smaller(prev, size)
     end
 
-    local new_tbl = shrink_values(prev, size, shrink_how_many(size))
+    local tbl_copy = deep_copy(prev)
+    local new_tbl = shrink_values(tbl_copy, size, shrink_how_many(size))
     if deep_equals(prev, new_tbl) then
       -- shrinking didn't help, remove an element
-      -- TODO fix bug: shrink_values mutates prev and returns prev -> always true!
       return shrink_smaller(prev, size)
     end
 
