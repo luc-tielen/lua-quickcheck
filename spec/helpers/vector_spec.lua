@@ -1,4 +1,5 @@
 local Vector = require 'src.helpers.vector'
+local deep_copy = require 'src.helpers.deep_copy'
 
 
 describe('vector datastructure', function()
@@ -23,6 +24,23 @@ describe('vector datastructure', function()
     end
     assert.equal(false, pcall(function() v:push_back(nil) end))  
     -- TODO add multiple elements at once?
+  end)
+
+  it('should be possible to replace elements in the vector', function()
+    local v = Vector.new({ 1, 2, 3 })
+    local function try_replace(idx, obj)
+      local function do_replace()
+        v:replace(idx, obj)
+      end
+      return do_replace
+    end
+
+    assert.is_false(pcall(try_replace(0, 'invalid')))
+    assert.is_true(pcall(try_replace(1, 4)))
+    assert.is_true(pcall(try_replace(2, 5)))
+    assert.is_true(pcall(try_replace(3, 6)))
+    assert.is_false(pcall(try_replace(4, 'invalid')))
+    assert.same(v:to_table(), { 4, 5, 6 })
   end)
 
   it('should be possible to retrieve certain elements out of the vector', function()
@@ -74,6 +92,12 @@ describe('vector datastructure', function()
     assert.same(v:to_table(), {})
     v:remove(value1)
     assert.same(v:to_table(), {})
+
+    -- check if it removes by value for tables
+    local value4 = { 1, 2, 3 }
+    local v2 = Vector.new({ value4 })
+    v2:remove(deep_copy(value4))
+    assert.equal(0, v2:size())
   end)
 
   it('should be possible to remove elements of the vector by index', function()
@@ -89,6 +113,19 @@ describe('vector datastructure', function()
     assert.same(v:to_table(), {})
     v:remove_index(3)
     assert.same(v:to_table(), {})
+  end)
+
+  it('should be possible to check if an element is in the container', function()
+    local values_a = { 1, 2, 3, 4, 5 }
+    local values_b = { 6, 7, 8, 9, 10 }
+    local v = Vector.new(values_a)
+
+    for i = 1, #values_a do
+      assert.is_true(v:contains(values_a[i]))
+    end
+    for i = 1, #values_b do
+      assert.is_false(v:contains(values_b[i]))
+    end
   end)
 end)
 

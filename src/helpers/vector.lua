@@ -1,3 +1,4 @@
+local deep_equals = require 'src.helpers.deep_equals'
 
 local Vector = {}
 local Vector_mt = { 
@@ -23,6 +24,17 @@ function Vector:push_back(obj)
 end
 
 
+-- Replaces an element in the vector.
+-- Raises an error if idx is an index not present in the vector
+function Vector:replace(idx, obj)
+  local vec_size = self:size()
+  if idx < 1 or idx > vec_size then
+    error('Invalid index! Index should be between 1 and ' .. vec_size)
+  end
+  self.data[idx] = obj
+end
+
+
 -- Appends another vector to this vector
 -- Returns the modified vector (self)
 function Vector:append(other_vec)
@@ -39,6 +51,15 @@ function Vector:get(index)
 end
 
 
+-- Checks if an element is contained in the vector
+-- Returns true if the element is already in the vector; otherwise false.
+function Vector:contains(element)
+  for i = 1, #self.data do
+    if self.data[i] == element then return true end
+  end
+  return false
+end
+
 -- Returns the size of the vector. (0 if empty)
 function Vector:size()
   return #self.data
@@ -49,7 +70,7 @@ function Vector:remove(obj)
   -- Find element, then remove by index
   local pos = -1
   for i = 1, #self.data do
-    if self.data[i] == obj then
+    if deep_equals(self.data[i], obj) then
       pos = i
       break
     end
