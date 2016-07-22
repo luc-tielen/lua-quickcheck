@@ -7,22 +7,10 @@ local string = require 'src.generators.string'
 local lqc_gen = require 'src.lqc_gen'
 local oneof = lqc_gen.oneof
 local frequency = lqc_gen.frequency
+local deep_equals = require 'src.helpers.deep_equals'
 
 -- Generator for tables of varying sizes and types!
 
-
--- Checks a table is equal to another, value by value
-local function deep_equals(tbl_a, tbl_b)
-  if type(tbl_a) ~= type(tbl_b) then return false end
-
-  for k, v1 in pairs(tbl_a) do
-    local v2 = tbl_b[k]
-    if type(v1) == 'table' then return deep_equals(v1, v2) end
-    if v1 ~= v2 then return false end
-  end
-
-  return true
-end
 
 -- Checks if an object is equal to another
 local function normal_equals(a, b)
@@ -98,8 +86,8 @@ local function new_table(table_size)
       -- math.log (e.g. ln(size + 1) ?
       local subtable_size = math.floor(size * 0.01)
       local generator = frequency { 
-        { 90, oneof { bool(), int(size), float(), string(size) } },
-        { 10, new_table(subtable_size) }
+        { 10, new_table(subtable_size) },
+        { 90, oneof { bool(), int(size), float(), string(size) } }
       }
       generators[idx] = generator
       result[idx] = generator:pick(size)
@@ -107,6 +95,29 @@ local function new_table(table_size)
     return result
   end
 
+
+  -- Now actually generate a table:
+  if table_size then  -- Specific size
+    -- Returns a function which can generate a table of a specific size
+    local function specific_size_pick(size)
+      local function do_pick()
+        return do_generic_pick(size)
+      end
+      return do_pick
+    end
+
+    -- Shrinks a table without removing any elements.
+    local function specific_size_shrink(prev)
+      local size = #prev
+      if size == 0 then return prev end -- handle empty tables
+      return shrink_values(prev, size, shrink_how_many(size))
+    end
+
+    return Gen.new(specific_size_pick(table_size), specific_size_shrink)
+  end
+
+  -- Arbitrary size
+  
   -- Generate a (nested / empty) table of an arbitrary size.
   local function arbitrary_size_pick(numtests)
     local size = random.between(0, numtests)
@@ -133,30 +144,6 @@ local function new_table(table_size)
     return new_tbl
   end
 
-  -- Returns a function which can generate a table of a specific size
-  local function specific_size_pick(size)
-    local function do_pick()
-      return do_generic_pick(size)
-    end
-    return do_pick
-  end
-
-  -- Shrinks a table without removing any elements.
-  local function specific_size_shrink(prev)
-    local size = #prev
-    if size == 0 then return prev end -- handle empty tables
-    return shrink_values(prev, size, shrink_how_many(size))
-  end
-
-
-  -- Now actually generate a table:
-  
-  if table_size then
-    -- Specific size
-    return Gen.new(specific_size_pick(table_size), specific_size_shrink)
-  end
-
-  -- Arbitrary size
   return Gen.new(arbitrary_size_pick, arbitrary_size_shrink)
 end
 
