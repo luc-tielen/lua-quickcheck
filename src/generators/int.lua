@@ -11,9 +11,7 @@ end
 
 -- Returns the number closest to 0.
 local function find_closest_to_zero(a, b)
-  return abs(a) < abs(b) 
-     and a
-      or b
+  return (abs(a) < abs(b)) and a or b
 end
 
 -- Shrinks an integer, bounded by min and max. (min <= int <= max)

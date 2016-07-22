@@ -336,11 +336,8 @@ local function shrink_args(fsm_table, action_list)
     for _ = 1, fsm_shrink_amount do
       local command_copy = action.command  -- shallow copy (reference only)
       action.command = action.cmd_gen:shrink(command_copy)
-
-      if not lib.is_action_sequence_valid(fsm_table, action_list) then
-        action.command = command_copy  -- revert since shrink is not valid
-        break
-      end
+      -- revert if shrink is not valid 
+      if not lib.is_action_sequence_valid(fsm_table, action_list) then action.command = command_copy; break end
     end
   end
 

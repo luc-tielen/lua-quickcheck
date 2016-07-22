@@ -135,12 +135,34 @@ describe('statemachine specification', function()
         }
       }
     } end))
+    assert.is_false(pcall(function() fsm 'invalid precondition in a state' {
+      commands = function() end,
+      initial_state = function() return 0 end,
+      states = {
+        state '1' {
+          precondition = 'invalid (not callable)',
+          next_state = function() end,
+          postcondition = function() end
+        }
+      }
+    } end))
     assert.is_false(pcall(function() fsm 'missing next_state in a state' {
       commands = function() end,
       initial_state = function() return 0 end,
       states = {
         state '1' {
           precondition = function() end,
+          postcondition = function() end
+        }
+      }
+    } end))
+    assert.is_false(pcall(function() fsm 'invalid next_state in a state' {
+      commands = function() end,
+      initial_state = function() return 0 end,
+      states = {
+        state '1' {
+          precondition = function() end,
+          next_state = 'invalid (not callable)',
           postcondition = function() end
         }
       }
@@ -152,6 +174,17 @@ describe('statemachine specification', function()
         state '1' {
           precondition = function() end,
           next_state = function() end,
+        }
+      }
+    } end))
+    assert.is_false(pcall(function() fsm 'invalid postcondition in a state' {
+      commands = function() end,
+      initial_state = function() return 0 end,
+      states = {
+        state '1' {
+          precondition = function() end,
+          next_state = function() end,
+          postcondition = 'invalid (not callable)'
         }
       }
     } end))
