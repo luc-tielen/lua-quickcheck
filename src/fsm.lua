@@ -24,25 +24,6 @@ local function is_callable(obj)
 end
 
 
--- Checks if a state in the FSM is defined correctly.
--- Each state should contain a precondition, next_state and post condition function!
-local function verify_state(the_state)
-  local name = the_state.name
-  if type(name) ~= 'string' then
-    error 'Need to provide a name to the state of the FSM (corresponding to a command)!'
-  end
-  if not is_callable(the_state.precondition) then
-    error('Need to provide a precondition function for state ' .. name .. '!')
-  end
-  if not is_callable(the_state.next_state) then
-    error('Need to provide a next_state function for state ' .. name .. '!')
-  end
-  if not is_callable(the_state.postcondition) then
-    error('Need to provide a postcondition function for state ' .. name .. '!')
-  end
-end
-
-
 -- Checks if the FSM table contains a valid specification of a state machine
 -- Gives an error message if specification is not valid; otherwise does nothing
 local function check_valid_fsm_spec(fsm_table)
@@ -57,9 +38,8 @@ local function check_valid_fsm_spec(fsm_table)
   if type(states) ~= 'table' then
     error 'Need to provide a table of possible states of the FSM!'
   end
-  for i = 1, #states do
-    verify_state(states[i])
-  end
+
+  -- States are already checked in state.lua
 end
 
 
