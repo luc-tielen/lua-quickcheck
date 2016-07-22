@@ -42,7 +42,7 @@ describe('float generator module', function()
   describe('shrink function', function()
     it('should converge to 0.0', function()
       local shrunk_value
-      r.report_failed = function(_, _, shrunk_vals)
+      r.report_failed_property = function(_, _, shrunk_vals)
         shrunk_value = shrunk_vals[1]
       end
       property 'float() should converge to 0.0' {

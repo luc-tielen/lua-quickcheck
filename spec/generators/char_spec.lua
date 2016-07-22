@@ -42,7 +42,7 @@ describe('char generator module', function()
     before_each(do_setup)
     it('should converge to " "', function()
       local shrunk_values
-      r.report_failed = function(_, _, shrunk_vals)
+      r.report_failed_property = function(_, _, shrunk_vals)
         shrunk_values = shrunk_vals[1]
       end
       property 'char() should converge to 32 (lowest allowed ASCII value)' {

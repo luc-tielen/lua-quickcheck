@@ -62,8 +62,8 @@ describe('reporting of results', function()
   end)
 
   it('should report failure when a a property fails', function()
-    local report_spy = spy.new(r.report_failed)
-    r.report_failed = report_spy
+    local report_spy = spy.new(r.report_failed_property)
+    r.report_failed_property = report_spy
     
     property 'test property' {
       generators = {},

@@ -63,7 +63,7 @@ describe('string generator module', function()
   describe('shrink function', function()
     it('should shrink to a smaller string if no size specified', function()
       local generated_value, shrunk_value
-      r.report_failed = function(_, generated_vals, shrunk_vals)
+      r.report_failed_property = function(_, generated_vals, shrunk_vals)
         generated_value = generated_vals[1]
         shrunk_value = shrunk_vals[1]
       end
@@ -86,7 +86,7 @@ describe('string generator module', function()
     it('should shrink to a simpler string of same size if size specified', function()
       local length = 5
       local generated_value, shrunk_value
-      r.report_failed = function(_, generated_vals, shrunk_vals)
+      r.report_failed_property = function(_, generated_vals, shrunk_vals)
         generated_value = generated_vals[1]
         shrunk_value = shrunk_vals[1]
       end

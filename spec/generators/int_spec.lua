@@ -77,7 +77,7 @@ describe('int generator module', function()
   describe('shrink function', function()
     it('should converge to 0', function()
       local shrunk_values
-      r.report_failed = function(_, _, shrunk_vals)
+      r.report_failed_property = function(_, _, shrunk_vals)
         shrunk_values = shrunk_vals[1]
       end
       property 'int() should converge to 0' {
@@ -91,6 +91,26 @@ describe('int generator module', function()
         shrunk_values = nil
         lqc.check()
         assert.equal(0, shrunk_values)
+      end
+    end)
+
+    it('should converge to 0 or closest value to 0 for int(min, max)', function()
+      local shrunk_values
+      r.report_failed_property = function(_, _, shrunk_vals)
+        shrunk_values = shrunk_vals
+      end
+      property 'int() should converge to 1' {
+        generators = { int(1, 1000), int(-1000, -1) },
+        check = function(x, y)
+          return not (is_integer(x) or is_integer(y))  -- always fails!
+        end
+      }
+
+      for _ = 1, 100 do
+        shrunk_values = nil
+        lqc.check()
+        assert.equal(1, shrunk_values[1])
+        assert.equal(-1, shrunk_values[2])
       end
     end)
   end)

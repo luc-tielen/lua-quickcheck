@@ -44,9 +44,9 @@ describe('any generator module', function()
       }
 
       for _ = 1, 30 do
-        r.report_failed = spy.new(function() end)
+        r.report_failed_property = spy.new(function() end)
         lqc.check()
-        assert.spy(r.report_failed).was.called(1)
+        assert.spy(r.report_failed_property).was.called(1)
         -- TODO shrink test -> how to check values shrunk properly..
       end
     end)

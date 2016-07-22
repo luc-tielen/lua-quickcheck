@@ -73,7 +73,7 @@ describe('table generator module', function()
   describe('shrink function', function()
     it('should shrink table values and size when no size specified', function()
       local shrunk_value, generated_value
-      r.report_failed = function(_, generated_vals, shrunk_vals)
+      r.report_failed_property = function(_, generated_vals, shrunk_vals)
         generated_value = generated_vals[1]
         shrunk_value = shrunk_vals[1]
       end
@@ -95,7 +95,7 @@ describe('table generator module', function()
     it('should only shrink table values when a size is specified', function()
       local size = 5
       local shrunk_value
-      r.report_failed = function(_, _, shrunk_vals)
+      r.report_failed_property = function(_, _, shrunk_vals)
         shrunk_value = shrunk_vals[1]
       end
 

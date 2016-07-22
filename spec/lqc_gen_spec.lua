@@ -42,7 +42,7 @@ describe('choose', function()
   it('shrinks the generated value towards the value closest to 0', function()
     local min1, max1 = 5, 10
     local shrunk_value1 = nil
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value1 = shrunk_vals[1]
     end
     property 'shrinks the generated value towards min value (positive integers)' {
@@ -58,7 +58,7 @@ describe('choose', function()
     lqc.properties = {}
     local min2, max2 = -999, -333
     local shrunk_value2 = nil
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value2 = shrunk_vals[1]
     end
     property 'shrinks the generated value towards min value (negative integers)' {
@@ -79,7 +79,7 @@ describe('oneof', function()
   it('chooses a generator from a list of generators', function()
     local min1, max1, min2, max2 = 1, 10, 11, 20
     local shrunk_value = nil
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
     local spy_check = spy.new(function(x)
@@ -135,7 +135,7 @@ describe('oneof', function()
       gen.shrink = spy_shrink2
       return gen
     end
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
     
@@ -240,7 +240,7 @@ describe('frequency', function()
       gen.shrink = spy_shrink2
       return gen
     end
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
     
@@ -293,7 +293,7 @@ describe('elements', function()
   it('shrinks towards the beginning of the list', function()
     local input = { false, {}, 1, 'a',  -1.5, function() end }
     local shrunk_value
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
     property 'elements shrinks to beginning of the list, pt1' {
@@ -326,7 +326,7 @@ describe('combinations of the above', function()
     local spy_shrink3 = spy.new(function() return 3 end)
     
     local which_gen, shrunk_value
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
     local function gen_1()

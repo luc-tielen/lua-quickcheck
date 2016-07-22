@@ -1,12 +1,32 @@
 local Gen = require 'src.generator'
 local random = require 'src.random'
+local abs = math.abs
+
 
 -- Picks a random integer, bounded by min and max. (min <= int <= max)
 local function pick_bounded(min, max)
-  local function do_pick()
-    return random.between(min, max)
-  end
+  local function do_pick() return random.between(min, max) end
   return do_pick
+end
+
+-- Returns the number closest to 0.
+local function find_closest_to_zero(a, b)
+  return abs(a) < abs(b) 
+     and a
+      or b
+end
+
+-- Shrinks an integer, bounded by min and max. (min <= int <= max)
+-- Returns a shrunk integer (shrinks towards 0 / closest value to 0 determined
+--                           by min and max)
+local function shrink_bounded(min, max)
+  local bound_limit = find_closest_to_zero(min, max)
+  local function do_shrink(previous)
+    if previous == 0 or previous == bound_limit then return previous end
+    if previous > 0 then return math.floor(previous / 2) end
+    return math.ceil(previous / 2)
+  end
+  return do_shrink
 end
 
 -- Picks a random integer, uniformy spread between +- sample_size / 2.
@@ -22,9 +42,10 @@ local function shrink(previous)
   return math.ceil(previous / 2)
 end
 
+
 -- Picks an integer between min and max.
 local function integer_between(min, max)
-  return Gen.new(pick_bounded(min, max), shrink)
+  return Gen.new(pick_bounded(min, max), shrink_bounded(min, max))
 end
 
 -- Picks a positive integer between 0 and max.

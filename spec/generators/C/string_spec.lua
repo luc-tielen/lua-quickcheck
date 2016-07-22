@@ -34,7 +34,7 @@ describe('Basic usage of properties to test strings in C', function()
 
   it('should be possible to shrink properties with C strings #jit_only', function()
     local shrunk_value
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
     property 'C strings can also be shrunk to simpler inputs' {

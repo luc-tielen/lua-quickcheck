@@ -11,7 +11,7 @@ local unpack = unpack or table.unpack  -- for compatibility reasons
 -- Helper function, checks if x is an integer.
 -- Returns true if x is an integer; false otherwise.
 local function is_integer(x)
- return type(x) == 'number' and x % 1 == 0
+  return type(x) == 'number' and x % 1 == 0
 end
 
 
@@ -101,12 +101,12 @@ local function do_check(property)
     else
       if #generated_values == 0 then
         -- Empty list of generators -> no further shrinking possible!
-        report.report_failed(property, generated_values, generated_values)
+        report.report_failed_property(property, generated_values, generated_values)
         break -- TODO remove break? or make configurable?
       end
 
       local shrunk_values = do_shrink(property, generated_values)
-      report.report_failed(property, generated_values, shrunk_values)
+      report.report_failed_property(property, generated_values, shrunk_values)
       break  -- TODO remove break? or make configurable?
     end
   end
@@ -155,7 +155,8 @@ end
 -- Inserts the property into the list of existing properties.
 local function property(descr, prop_info_table)
   local function prop_func(prop_table)
-    if not prop_table.generators then
+    local generators = prop_table.generators
+    if not generators or type(generators) ~= 'table' then
       error('Need to supply generators in property!')
     end
 
@@ -182,13 +183,13 @@ local function property(descr, prop_info_table)
     table.insert(lqc.properties, new_prop)
   end
 
-  -- Property called without DSL-like syntax
+  -- property called without DSL-like syntax
   if prop_info_table then
     prop_func(prop_info_table)
-    return
+    return function() end
   end
 
-  -- Property called with DSL syntax!
+  -- property called with DSL syntax!
   return prop_func
 end
 

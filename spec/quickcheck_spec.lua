@@ -73,7 +73,7 @@ describe('quickcheck', function()
     it('should try to reduce failing properties to a simpler form (0 params)', function()
       local generated_values
       local shrunk_values
-      r.report_failed = function(_, generated_vals, shrunk_vals)
+      r.report_failed_property = function(_, generated_vals, shrunk_vals)
         generated_values = generated_vals
         shrunk_values = shrunk_vals
       end
@@ -91,7 +91,7 @@ describe('quickcheck', function()
     it('should try to reduce failing properties to a simpler form (1 param)', function()
       local generated_values
       local shrunk_values
-      r.report_failed = function(_, generated_vals, shrunk_vals)
+      r.report_failed_property = function(_, generated_vals, shrunk_vals)
         generated_values = generated_vals
         shrunk_values = shrunk_vals
       end
@@ -109,7 +109,7 @@ describe('quickcheck', function()
     it('should try to reduce failing properties to a simpler form (2 params)', function()
       local generated_values
       local shrunk_values
-      r.report_failed = function(_, generated_vals, shrunk_vals)
+      r.report_failed_property = function(_, generated_vals, shrunk_vals)
         generated_values = generated_vals
         shrunk_values = shrunk_vals
       end

@@ -33,7 +33,7 @@ describe('boolean generator', function()
   describe('shrink function', function()
     it('should shrink to false', function()
       local shrunk_value
-      r.report_failed = function(_, _, shrunk_vals)
+      r.report_failed_property = function(_, _, shrunk_vals)
         shrunk_value = shrunk_vals[1]
       end
       property 'bool() generator shrinks to false' {

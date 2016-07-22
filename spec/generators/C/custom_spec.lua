@@ -40,7 +40,7 @@ describe('Basic usage of properties to test custom structs in C', function()
 
   it('should be possible to shrink properties with custom C structs', function()
     local shrunk_value_x, shrunk_value_y
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value_x = shrunk_vals[1]
       shrunk_value_y = shrunk_vals[2]
     end

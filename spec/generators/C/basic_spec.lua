@@ -36,7 +36,7 @@ describe('Basic usage of properties to test C code', function()
   it('should be possible to shrink an incorrect C property', function()
     local min_val = 1
     local shrunk_value
-    r.report_failed = function(_, _, shrunk_vals)
+    r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
     property 'C functions can also be shrank to simpler inputs' {
