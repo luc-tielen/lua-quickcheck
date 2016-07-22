@@ -4,7 +4,7 @@ local Action_mt = { __index = Action }
 
 
 -- Creates a new action.
-function Action.new(var, cmd, command_generator)
+function Action.new(var, cmd, command_generator)  -- TODO rename to args_generators
   if var == nil then
     error 'Need to provide variable to action object!'
   end

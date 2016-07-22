@@ -13,6 +13,24 @@ local function arg_generator_to_arg(num_tests)
 end
 
 
+-- Returns a string representation of the command.
+local function stringify(cmd)
+  local result = {
+    '{ call, ',
+    cmd.state_name,
+  }
+  
+  local size_result = #result
+  for i = 1, #cmd.args do
+    -- TODO allow printing of table etc..
+    result[i + size_result] = ', ' .. cmd.args[i]
+  end
+  
+  result[#result + 1] = ' }'
+  return table.concat(result)
+end
+
+
 -- Creates a function that picks a random value for each of the generators
 -- specified in the argument list. 
 -- Returns a table with keys { state_name, func, args }
@@ -21,7 +39,8 @@ local function pick(state_name, command_func, args_generators)
     return { 
       state_name = state_name,
       func = command_func,
-      args = map(args_generators, arg_generator_to_arg(num_tests))
+      args = map(args_generators, arg_generator_to_arg(num_tests)),
+      to_string = stringify
     }
   end
   return do_pick
@@ -43,10 +62,12 @@ end
 -- Only args are shrunk, state_name and func are unmodified.
 local function shrink(state_name, command_func, args_generators)
   local function do_shrink(previous)
+    if #previous.args == 0 then return previous end
     return {
       state_name = state_name, 
       func = command_func, 
-      args = shrink_args(previous.args, args_generators)
+      args = shrink_args(previous.args, args_generators),
+      to_string = stringify
     }
   end
   return do_shrink
@@ -56,8 +77,10 @@ end
 -- Creates a new command generator with a state_name, command function
 -- and a list of generators (args will be passed into the command_func in the FSM)
 local function new(state_name, command_func, args_generators)
-  return Gen.new(pick(state_name, command_func, args_generators),
-                 shrink(state_name, command_func, args_generators))
+  local generator = Gen.new(pick(state_name, command_func, args_generators),
+                            shrink(state_name, command_func, args_generators))
+  generator.state_name = state_name
+  return generator
 end
 
 

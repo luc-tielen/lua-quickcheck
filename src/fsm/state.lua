@@ -1,5 +1,4 @@
 
-
 -- Checks if object is callable (a function or a functable)
 -- returns true if obj is callable; otherwise false.
 local function is_callable(obj)
