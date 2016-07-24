@@ -68,10 +68,12 @@ local function do_shrink(property, generated_values, tries)
     return generated_values
   end
 
-  -- TODO think about correct behavior for when skipped..
-  if result == results.FAILURE or result == results.SKIPPED then
+  if result == results.FAILURE then
     -- further try to shrink down
     return do_shrink(property, shrunk_values, tries + 1)
+  elseif result == results.SKIPPED then
+    -- shrunk to invalid situation, retry
+    return do_shrink(property, generated_values, tries + 1)
   end
 
   -- return generated values since they were last values for which property failed!
@@ -102,12 +104,12 @@ local function do_check(property)
       if #generated_values == 0 then
         -- Empty list of generators -> no further shrinking possible!
         report.report_failed_property(property, generated_values, generated_values)
-        break -- TODO remove break? or make configurable?
+        break
       end
 
       local shrunk_values = do_shrink(property, generated_values)
       report.report_failed_property(property, generated_values, shrunk_values)
-      break  -- TODO remove break? or make configurable?
+      break
     end
   end
 end

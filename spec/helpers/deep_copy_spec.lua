@@ -30,5 +30,22 @@ describe('deep_copy helper function', function()
     lqc.check()
     assert.spy(spy_check).was.called(lqc.iteration_amount)
   end)
+
+  it('should not be possible to modify the original by modifying the copy', function()
+    local x = { 1, 2,  { a = 4 } }
+    local y = deep_copy(x)
+    for i = 1, #x do
+      y[i] = 0
+    end
+    assert.not_same(x, y)
+    assert.same({ 1, 2, { a = 4 } }, x)
+    
+    y = deep_copy(x)
+    assert.same(x, y)
+
+    y[3].a = 5
+    assert.not_same(x, y)
+    assert.same({ 1, 2, { a = 4 } }, x)
+  end)
 end)
 

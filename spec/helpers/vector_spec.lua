@@ -23,7 +23,6 @@ describe('vector datastructure', function()
       assert.same(expected, v:to_table())
     end
     assert.equal(false, pcall(function() v:push_back(nil) end))  
-    -- TODO add multiple elements at once?
   end)
 
   it('should be possible to replace elements in the vector', function()

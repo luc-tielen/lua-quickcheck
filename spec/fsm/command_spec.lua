@@ -75,7 +75,7 @@ describe('command generator', function()
       for _ = 1, 10 do
         shrunk_value = nil
         lqc.check()
-        assert.equal(cmd_name, shrunk_value.state_name) -- TODO replace cmd_name with state_name)
+        assert.equal(cmd_name, shrunk_value.state_name)
         assert.equal(test_func, shrunk_value.func)
         assert.equal(1, #shrunk_value.args)
         assert.equal(1, shrunk_value.args[1])
@@ -100,7 +100,7 @@ describe('command generator', function()
       for _ = 1, 10 do
         shrunk_value = nil
         lqc.check()
-        assert.equal(cmd_name, shrunk_value.state_name) -- TODO replace cmd_name with state_name)
+        assert.equal(cmd_name, shrunk_value.state_name)
         assert.equal(test_func, shrunk_value.func)
         assert.equal(0, #shrunk_value.args)
         assert.same({}, shrunk_value.args)

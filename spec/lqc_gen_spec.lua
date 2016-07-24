@@ -272,8 +272,6 @@ end)
 describe('elements', function()
   before_each(do_setup)
 
-  -- TODO remove: input = lijst (tabel), pick = 1 element hieruit..  
-  
   it('generates an element out of a list', function()
     local input = { 1, 'a', false, {}, -1.5 }
     local spy_check = spy.new(function(_)

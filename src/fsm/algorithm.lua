@@ -312,14 +312,13 @@ end
 
 
 local function select_actions_for_arg_shrinking(action_list)
-  local which_actions, idx_vector = lib.select_actions(action_list)
+  local _, idx_vector = lib.select_actions(action_list)
   if idx_vector:size() == 0 and is_between(action_list:size(), 2, 10) then
     -- try shrinking 1 action anyway
     local idx = random.between(1, action_list:size() - 1)  -- don't shrink stop action!
     idx_vector:push_back(idx)
-    which_actions:push_back(action_list:get(idx))
   end
-  return which_actions, idx_vector
+  return idx_vector
 end
 
 
@@ -327,7 +326,7 @@ end
 -- Returns an updated sequence of the action list (original is modified!) with
 -- shrunk arguments.
 local function shrink_args(fsm_table, action_list)
-  local _, idx_vector = select_actions_for_arg_shrinking(action_list)
+  local idx_vector = select_actions_for_arg_shrinking(action_list)
   
   for i = idx_vector:size(), 1, -1 do  -- shrunk from end to beginning (most likely to succeed)
     local idx = idx_vector:get(i)
@@ -335,10 +334,13 @@ local function shrink_args(fsm_table, action_list)
   
     for _ = 1, fsm_shrink_amount do
       local command_copy = action.command  -- shallow copy (reference only)
-      action.command = action.cmd_gen:shrink(command_copy)
-      -- revert if shrink is not valid 
-      if not lib.is_action_sequence_valid(fsm_table, action_list) then action.command = command_copy; break end
+      action.command = action.cmd_gen:shrink(action.command)
+      -- revert if shrink is not valid
+      local is_valid = lib.is_action_sequence_valid(fsm_table, action_list)
+      if not is_valid then action.command = command_copy; break end
     end
+
+    assert(deep_equals(action, action_list:get(idx)))
   end
 
   return action_list
