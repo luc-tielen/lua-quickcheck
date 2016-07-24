@@ -605,9 +605,9 @@ describe('Tests for the FSM algorithm', function()
   it('should be able to shrink down a FSM, pt2', function()
     local counter = 0
     local should_introduce_glitch = false  -- messes up every command afrer substract is called
-    local history, last_state, last_result = {}, nil, nil
-    local spy_when_fail = spy.new(function(h, s, r)
-      history, last_state, last_result = h, s, r
+    local history, last_state = {}, nil
+    local spy_when_fail = spy.new(function(h, s, _)
+      history, last_state = h, s
     end)
     local fsm_table = {
       commands = function()
@@ -664,12 +664,10 @@ describe('Tests for the FSM algorithm', function()
         assert.is_equal(counter, last_state)
         -- Verify actions get shrunk down:
         local action_names = map(history, function(action) return action.command.state_name end)
-        local args = map(history, function(action) return action.command.args end)
-
         assert.is_true(deep_equals({ 'add', 'stop' }, action_names)
                     or deep_equals({ 'subtract', 'stop' }, action_names))
 
-        history, last_state, last_result = {}, nil, nil
+        history, last_state = {}, nil
         return true
       end
     }
