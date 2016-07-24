@@ -511,7 +511,7 @@ describe('Tests for the FSM algorithm', function()
       assert.spy(r.report_success).was.called(expected_amount)
     end)
 
-    it('should be able to shrink down a failing FSM #test', function()
+    it('should be able to shrink down a failing FSM', function()
       local counter = 0
       local history, last_state, last_result = {}, nil, nil
       local spy_when_fail = spy.new(function(the_history, lst_state, lst_result)
@@ -557,7 +557,7 @@ describe('Tests for the FSM algorithm', function()
             postcondition = function() return true end
           }
         },
-        numtests = lqc.iteration_amount,
+        numtests = 50,
         cleanup = function() counter = 0 end,
         when_fail = spy_when_fail
       }
@@ -596,10 +596,84 @@ describe('Tests for the FSM algorithm', function()
           return true
         end,
         generators = {},
-        numtests = 5  -- check function itself executes 100 times!
+        numtests = 3  -- check function itself executes multiple times!
       }
       lqc.check()
     end)
+  end)
+
+  it('should be able to shrink down a FSM, pt2', function()
+    local counter = 0
+    local should_introduce_glitch = false  -- messes up every command afrer substract is called
+    local history, last_state, last_result = {}, nil, nil
+    local spy_when_fail = spy.new(function(h, s, r)
+      history, last_state, last_result = h, s, r
+    end)
+    local fsm_table = {
+      commands = function()
+        return frequency {
+          { 1, Command.stop }, 
+          { 10, oneof {
+            Command { 'add', function()
+                if should_introduce_glitch then return end
+                counter = counter + 1 
+              end, 
+              {} },
+            Command { 'subtract', function()
+                if should_introduce_glitch then return end
+                counter = counter - 1 
+                should_introduce_glitch = true
+              end, 
+              {} }
+          } }
+        }
+      end,
+      initial_state = function() return 0 end,
+      states = {
+        state 'add' {
+          precondition = function() return true end,
+          next_state = function(s) return s + 1 end,
+          postcondition = function(s) return counter == s + 1 end
+        },
+        state 'subtract' {
+          precondition = function() return true end,
+          next_state = function(s) return s - 1 end,
+          postcondition = function(s) return counter == s - 1 end
+        },
+        state 'stop' {
+          precondition = function() return true end,
+          next_state = function(s) return s end,
+          postcondition = function() return true end
+        }
+      },
+      cleanup = function() counter = 0 end,
+      when_fail = spy_when_fail,
+      numtests = 50
+    }
+    local amount = 0
+    property 'shrinking of failing FSMs, pt2' {
+      numtests = 3,
+      generators = {},
+      check = function()
+        algorithm.check('FSM can be shrunk down, pt2', fsm_table)
+        amount = amount + 1
+
+        -- Verify when fail is called at end with simplified sequence:
+        assert.spy(spy_when_fail).was.called(amount)
+        -- Assert model state corresponds with state right before failure:
+        assert.is_equal(counter, last_state)
+        -- Verify actions get shrunk down:
+        local action_names = map(history, function(action) return action.command.state_name end)
+        local args = map(history, function(action) return action.command.args end)
+
+        assert.is_true(deep_equals({ 'add', 'stop' }, action_names)
+                    or deep_equals({ 'subtract', 'stop' }, action_names))
+
+        history, last_state, last_result = {}, nil, nil
+        return true
+      end
+    }
+    lqc.check()
   end)
 end)
 
