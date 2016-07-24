@@ -4,7 +4,6 @@ local Command = require 'src.fsm.command'
 local Action = require 'src.fsm.action'
 local random = require 'src.random'
 local deep_copy = require 'src.helpers.deep_copy'
-local deep_equals = require 'src.helpers.deep_equals'
 local report = require 'src.report'
 local unpack = unpack or table.unpack  -- for compatibility reasons
 
@@ -225,20 +224,12 @@ end
 
 -- Does the shrinking of the FSM actions
 -- choose 1 - N steps and delete them from list of actions
--- 1. shrinking worked 
--- 1.1 try shrinking down arguments of the actions
--- 1.2 try to further shrink down
--- 2. shrinking failed -> shrink down args and return result
+-- repeat X amount of times (recursively)
+-- returns the shrunk down list
 local function shrink_actions(fsm_table, generated_actions, removed_actions, tries)
   if tries == 0 then return generated_actions, removed_actions end
-
+  
   local shrunk_actions, deleted_actions = do_shrink_actions(fsm_table, generated_actions)
-  if deep_equals(shrunk_actions, generated_actions) then  
-    -- shrinking didn't help, try again
-    return shrink_actions(fsm_table, generated_actions, removed_actions, tries - 1)
-  end
-
-  -- shrinking did help, try further shrinking
   local total_removed_actions = removed_actions:append(deleted_actions)
   return shrink_actions(fsm_table, shrunk_actions, total_removed_actions, tries - 1)
 end
@@ -339,8 +330,6 @@ local function shrink_args(fsm_table, action_list)
       local is_valid = lib.is_action_sequence_valid(fsm_table, action_list)
       if not is_valid then action.command = command_copy; break end
     end
-
-    assert(deep_equals(action, action_list:get(idx)))
   end
 
   return action_list
@@ -350,18 +339,15 @@ end
 local function shrink_fsm_args(fsm_table, generated_actions, tries)
   if tries == 0 then return generated_actions end
 
-  local shrunk_actions = shrink_args(fsm_table, generated_actions, fsm_shrink_amount)
+  local shrunk_actions = shrink_args(fsm_table, 
+                                     deep_copy(generated_actions), 
+                                     fsm_shrink_amount)
   
-  if deep_equals(shrunk_actions, generated_actions) then
-    -- shrinking did not help, try again
-    return shrink_fsm_args(fsm_table, generated_actions, tries - 1)
-  end
-
-  -- shrinking did help, retry FSM!
+  -- retry FSM
   local is_successful = lib.execute_fsm(fsm_table, shrunk_actions)
   if not is_successful then
     -- FSM still fails, shrinking of args was successful, try further shrinking
-    return shrink_fsm_args(fsm_table, shrunk_actions, fsm_shrink_amount)
+    return shrink_fsm_args(fsm_table, shrunk_actions, tries - 1)
   end
 
   -- FSM works now, shrinking of args unsuccessful -> retry

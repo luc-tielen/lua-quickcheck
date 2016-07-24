@@ -114,5 +114,27 @@ describe('int generator module', function()
       end
     end)
   end)
+
+  it('should retry shrinking previous values if shrunk values are skipped', function()
+    local shrunk_value
+    r.report_failed_property = function(_, _, shrunk_vals)
+      shrunk_value = shrunk_vals[1]
+    end
+    property 'shrinking when constraint is not met retries with previous values' {
+      generators = { int(100) },
+      check = function()
+        return false  -- always fails
+      end,
+      implies = function(x)
+        return x >= 1
+      end
+    }
+
+    for _ = 1, 5 do
+      shrunk_value = nil
+      lqc.check()
+      assert.equal(1, shrunk_value)
+    end
+  end)
 end)
 

@@ -673,5 +673,74 @@ describe('Tests for the FSM algorithm', function()
     }
     lqc.check()
   end)
+
+  it('should be able to shrink down a FSM, pt3', function()
+    local should_introduce_glitch = true
+    local counter, counter_copy = 0, 0
+    local history, last_state = {}, nil
+    local spy_when_fail = spy.new(function(h, s, _)
+      history, last_state = h, s
+    end)
+    local fsm_table = {
+      commands = function()
+        return frequency {
+          { 1, Command.stop }, 
+          { 10, Command { 'add', function(x)
+              if should_introduce_glitch then
+                -- this glitch is only triggered once, afterwards works fine
+                counter = counter + x / 2
+                counter_copy = counter
+                should_introduce_glitch = false
+                return
+              end
+              counter = counter + x
+            end, 
+            { int(1, 100) } }
+          }
+        }
+      end,
+      initial_state = function() return 0 end,
+      states = {
+        state 'add' {
+          precondition = function() return true end,
+          next_state = function(s, _, args) return s + args[1] end,
+          postcondition = function(s, _, args) return counter == s + args[1] end
+        },
+        state 'stop' {
+          precondition = function() return true end,
+          next_state = function(s) return s end,
+          postcondition = function() return true end
+        }
+      },
+      cleanup = function() counter = 0 end,
+      when_fail = spy_when_fail,
+      numtests = 50
+    }
+    local amount = 0
+    property 'shrinking of failing FSMs, pt3' {
+      numtests = 3,
+      generators = {},
+      check = function()
+        algorithm.check('FSM can be shrunk down, pt3', fsm_table)
+        amount = amount + 1
+
+        -- Verify when fail is called at end with simplified sequence:
+        assert.spy(spy_when_fail).was.called(amount)
+        -- Verify actions get shrunk down:
+        local action_names = map(history, function(action) return action.command.state_name end)
+        assert.is_true(deep_equals({ 'add', 'stop' }, action_names))
+        -- Verify args get shrunk down
+        local args = map(history, function(action) return action.command.args end)
+        assert.is_true(deep_equals(args[1], { last_state }))
+        assert.is_true(last_state == 2 * counter_copy)
+
+        history, last_state = {}, nil
+        should_introduce_glitch = true  -- reactivate glitch
+        counter_copy = 0
+        return true
+      end
+    }
+    lqc.check()
+  end)
 end)
 
