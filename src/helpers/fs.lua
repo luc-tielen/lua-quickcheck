@@ -11,15 +11,29 @@ local function strcat(...) return table.concat({ ... }) end
 
 -- Is 'f' a file?
 -- Returns true if f is a file; otherwise false
-local function is_file(f)
+function lib.is_file(f)
   return lfs.attributes(f, 'mode') == 'file'
 end
 
 
 -- Is 'd' a directory?
 -- Returns true if d is a directory; otherwise false
-local function is_dir(d)
+function lib.is_dir(d)
   return lfs.attributes(d, 'mode') == 'directory'
+end
+
+
+-- Is the file a Lua file? (ends in .lua)
+-- Returns true if it is a Lua file; otherwise false.
+function lib.is_lua_file(file)
+  return file:match('%.lua$') ~= nil
+end
+
+
+-- Is the file a Moonscript file? (ends in .moon)
+-- Returns true if it is a Moonscript file; otherwise false.
+function lib.is_moonscript_file(file)
+  return file:match('%.moon$') ~= nil
 end
 
 
@@ -31,9 +45,9 @@ function lib.find_files(directory_path)
   for file_name in lfs.dir(directory_path) do
     if file_name ~= '.' and file_name ~= '..' then 
       local file = strcat(directory_path, '/', file_name)
-      if is_dir(file) then
+      if lib.is_dir(file) then
         result:append(Vector.new(lib.find_files(file)))
-      elseif is_file(file) then
+      elseif lib.is_file(file) then
         result:push_back(file)
       end
     end
@@ -41,8 +55,6 @@ function lib.find_files(directory_path)
 
   return result:to_table()
 end
-
--- TODO current dir wrapper?
 
 
 return lib

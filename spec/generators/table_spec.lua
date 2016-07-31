@@ -10,6 +10,7 @@ end
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -20,14 +21,14 @@ describe('table generator module', function()
   describe('pick function', function()
     it('should pick an arbitrarily sized table with tbl()', function()
       local spy_check1 = spy.new(function(x) 
-        return is_table(x) and #x <= lqc.iteration_amount
+        return is_table(x) and #x <= lqc.numtests
       end)
       property 'table() should pick a table' {
         generators = { tbl() },
         check = spy_check1
       }
       lqc.check()
-      assert.spy(spy_check1).was.called(lqc.iteration_amount)
+      assert.spy(spy_check1).was.called(lqc.numtests)
       lqc.properties = {}
 
       local num_tests = 10
@@ -53,7 +54,7 @@ describe('table generator module', function()
         check = spy_check1
       }
       lqc.check()
-      assert.spy(spy_check1).was.called(lqc.iteration_amount)
+      assert.spy(spy_check1).was.called(lqc.numtests)
       lqc.properties = {}
 
       local num_tests = 10

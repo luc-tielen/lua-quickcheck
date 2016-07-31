@@ -21,6 +21,7 @@ function Vector:push_back(obj)
     error 'nil is not allowed in vector datastructure!'
   end
   table.insert(self.data, obj)
+  return self
 end
 
 

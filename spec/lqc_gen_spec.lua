@@ -4,12 +4,13 @@ local property = require 'src.property'
 local lqc_gen = require 'src.lqc_gen'
 local lqc = require 'src.quickcheck'
 
+
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
-
 
 
 describe('choose', function()
@@ -35,8 +36,8 @@ describe('choose', function()
     }
 
     lqc.check()
-    assert.spy(spy_check_pos).was.called(lqc.iteration_amount)
-    assert.spy(spy_check_neg).was.called(lqc.iteration_amount)
+    assert.spy(spy_check_pos).was.called(lqc.numtests)
+    assert.spy(spy_check_neg).was.called(lqc.numtests)
   end)
 
   it('shrinks the generated value towards the value closest to 0', function()
@@ -97,7 +98,7 @@ describe('oneof', function()
 
     lqc.check()
     assert.is_same(min2, shrunk_value)
-    assert.spy(spy_check).was.not_called(lqc.iteration_amount)
+    assert.spy(spy_check).was.not_called(lqc.numtests)
   end)
 
   it('chooses the same generator each time if only 1 is supplied.', function() 
@@ -115,7 +116,7 @@ describe('oneof', function()
     }
 
     lqc.check()
-    assert.spy(spy_check).was.called(lqc.iteration_amount)
+    assert.spy(spy_check).was.called(lqc.numtests)
   end)
 
   it('shrinks one of the generated values from the supplied list of generators', function()
@@ -194,7 +195,7 @@ describe('frequency', function()
     assert.not_equal(0, x)
     assert.not_equal(0, y)
     local function expected_calls(weight)
-      return lqc.iteration_amount / (weight1 + weight2) * weight
+      return lqc.numtests / (weight1 + weight2) * weight
     end
 
     local function almost_equal(a, b, margin)
@@ -220,7 +221,7 @@ describe('frequency', function()
     }
 
     lqc.check()
-    assert.spy(spy_pick).was.called(lqc.iteration_amount)
+    assert.spy(spy_pick).was.called(lqc.numtests)
   end)
 
   it('shrinks one of the generated values from the supplied list of weighted generators', function()

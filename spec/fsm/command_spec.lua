@@ -26,6 +26,7 @@ end
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end

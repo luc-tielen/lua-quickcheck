@@ -12,6 +12,7 @@ elements = lqc_gen.elements
 
 do_setup = ->
   random.seed!
+  lqc.init 100, 100
   lqc.properties = {}
   r.report = ->
 
@@ -69,5 +70,5 @@ describe 'statemachine specification', ->
     
     assert.equal(1, #lqc.properties)
     lqc.check()
-    assert.spy(r.report_success).was.called(lqc.iteration_amount)
+    assert.spy(r.report_success).was.called(lqc.numtests)
 

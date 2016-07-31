@@ -13,6 +13,7 @@ end
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -29,7 +30,7 @@ describe('byte generator module', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
   end)
 

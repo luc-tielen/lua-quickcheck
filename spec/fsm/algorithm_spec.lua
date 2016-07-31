@@ -19,6 +19,7 @@ local reduce = require 'src.helpers.reduce'
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -158,7 +159,7 @@ describe('Tests for the FSM algorithm', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
 
     it('should return a stop command if no next action can be found', function()
@@ -181,7 +182,7 @@ describe('Tests for the FSM algorithm', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
   end)
 
@@ -229,7 +230,7 @@ describe('Tests for the FSM algorithm', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
   end)
 
@@ -279,7 +280,7 @@ describe('Tests for the FSM algorithm', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
   end)
 
@@ -305,7 +306,7 @@ describe('Tests for the FSM algorithm', function()
       }
 
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
   end)
 
@@ -360,7 +361,7 @@ describe('Tests for the FSM algorithm', function()
         },
         initial_state = function() return 0 end,
         cleanup = spy_cleanup,
-        numtests = lqc.iteration_amount
+        numtests = lqc.numtests
       }
 
       local spy_check = spy.new(function()
@@ -397,8 +398,8 @@ describe('Tests for the FSM algorithm', function()
       }
 
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
-      assert.spy(spy_cleanup).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
+      assert.spy(spy_cleanup).was.called(lqc.numtests)
     end)
   end)
 
@@ -494,10 +495,10 @@ describe('Tests for the FSM algorithm', function()
           }
         },
         cleanup = function() counter = 0 end,
-        numtests = lqc.iteration_amount
+        numtests = lqc.numtests
       }
 
-      property 'correct FSM is executed "iteration_amount" of times' {
+      property 'correct FSM is executed "numtests" of times' {
         check = function()
           algorithm.check('properly working FSM', fsm_table)
           return true
@@ -506,8 +507,8 @@ describe('Tests for the FSM algorithm', function()
       }
       lqc.check()
       local expected_amount = 
-        lqc.iteration_amount * lqc.iteration_amount  -- loop once from property, once from FSM
-        + lqc.iteration_amount  -- property also calls report_success itself
+        lqc.numtests * lqc.numtests  -- loop once from property, once from FSM
+        + lqc.numtests  -- property also calls report_success itself
       assert.spy(r.report_success).was.called(expected_amount)
     end)
 

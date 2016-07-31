@@ -16,6 +16,7 @@ end
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -37,12 +38,12 @@ describe('string generator module', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
       
       -- If all lengths were equal:
-      -- sum of lengths = first element times iteration_amount
+      -- sum of lengths = first element times numtests
       local sum_lengths = reduce(results, 0, function(x, acc) return x + acc end)
-      assert.not_equal(results[1] * lqc.iteration_amount, sum_lengths)
+      assert.not_equal(results[1] * lqc.numtests, sum_lengths)
     end)
 
     it('should pick a fixed size string if size is specified', function()
@@ -56,7 +57,7 @@ describe('string generator module', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
   end)
 

@@ -10,6 +10,7 @@ end
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -21,15 +22,15 @@ describe('int generator module', function()
     it('should pick an integer', function()
       local spy_check1 = spy.new(function(x) 
         return is_integer(x) 
-           and x >= - lqc.iteration_amount / 2
-           and x <=   lqc.iteration_amount / 2
+           and x >= - lqc.numtests / 2
+           and x <=   lqc.numtests / 2
       end)
       property 'int() should pick between +- sample_size / 2, pt 1' {
         generators = { int() },
         check = spy_check1
       }
       lqc.check()
-      assert.spy(spy_check1).was.called(lqc.iteration_amount)
+      assert.spy(spy_check1).was.called(lqc.numtests)
       lqc.properties = {}
 
       local num_tests = 10
@@ -57,7 +58,7 @@ describe('int generator module', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
 
     it('should pick an integer between X and Y if max and min are specified', function()
@@ -70,7 +71,7 @@ describe('int generator module', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
   end)
 

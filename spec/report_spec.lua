@@ -3,7 +3,7 @@ local r = require 'src.report'
 local property = require 'src.property'
 
 local function setup_property_engine()
-  lqc.iteration_amount = 1
+  lqc.init(1, 100)
   lqc.properties = {}
   r.report = function(_) end
 end
@@ -30,7 +30,7 @@ describe('reporting of results', function()
     }
 
     lqc.check()
-    assert.spy(report_spy).was.called(2 * lqc.iteration_amount)
+    assert.spy(report_spy).was.called(2 * lqc.numtests)
   end)
 
   it('should report skipped for a generated set of inputs that dit not meat the constraints', function()
@@ -58,7 +58,7 @@ describe('reporting of results', function()
     }
 
     lqc.check()
-    assert.spy(report_spy).was.called(2 * lqc.iteration_amount)
+    assert.spy(report_spy).was.called(2 * lqc.numtests)
   end)
 
   it('should report failure when a a property fails', function()

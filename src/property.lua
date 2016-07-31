@@ -63,7 +63,7 @@ local function do_shrink(property, generated_values, tries)
   local shrunk_values = property.shrink(unpack(generated_values))
   local result = property(unpack(shrunk_values))
   
-  if tries == lqc.shrink_amount then
+  if tries == lqc.numshrinks then
     -- Maximum amount of shrink attempts exceeded. 
     return generated_values
   end
@@ -92,7 +92,7 @@ end
 --  2.3 when shrink stays the same or max amount exceeded -> print minimal example
 --  2.4 (later) save seed to a file somewhere, for re-running stuff..
 local function do_check(property)
-  for _ = 1, property.iteration_amount do
+  for _ = 1, property.numtests do
     local generated_values = property.pick()
     local result = property(unpack(generated_values))
 
@@ -119,7 +119,7 @@ end
 local function new(descr, property_func, generators, numtests)
   local prop = {
     description = descr,
-    iteration_amount = numtests
+    numtests = numtests
   }
 
   -- Generates a new set of inputs for this property.
@@ -180,7 +180,7 @@ local function property(descr, prop_info_table)
     end
 
     local it_amount = prop_table.numtests
-    local numtests = is_integer(it_amount) and it_amount or lqc.iteration_amount
+    local numtests = is_integer(it_amount) and it_amount or lqc.numtests
     local new_prop = new(descr, prop_table.check, prop_table.generators, numtests)
     table.insert(lqc.properties, new_prop)
   end

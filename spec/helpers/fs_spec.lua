@@ -40,5 +40,7 @@ describe('file system helper module', function()
       assert.same(expected2, files2)
     end)
   end)
+
+  -- TODO tests for is_file, is_dir, is_lua_file and is_moonscript_file
 end)
 

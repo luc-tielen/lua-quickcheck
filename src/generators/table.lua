@@ -75,7 +75,7 @@ local function new_table(table_size)
   -- Shrinks an amount of values in the table
   local function shrink_values(tbl, size, how_many)
     if how_many ~= 0 then
-      local new_tbl = do_shrink_values(tbl, size, lqc.shrink_amount)
+      local new_tbl = do_shrink_values(tbl, size, lqc.numshrinks)
       return shrink_values(new_tbl, size, how_many - 1)
     end
     return tbl

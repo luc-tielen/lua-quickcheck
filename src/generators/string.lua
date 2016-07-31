@@ -45,7 +45,7 @@ end
 -- Shrinks an amount of characters in the string.
 local function shrink_generic(str, length, how_many)
   if how_many ~= 0 then
-    local new_str = do_shrink_generic(str, length, lqc.shrink_amount)
+    local new_str = do_shrink_generic(str, length, lqc.numshrinks)
     return shrink_generic(new_str, length, how_many - 1)
   end
 

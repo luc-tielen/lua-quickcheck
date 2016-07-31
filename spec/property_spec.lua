@@ -6,6 +6,7 @@ local r = require 'src.report'
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -167,11 +168,11 @@ describe('property', function()
         check = spy_check1
       }
       lqc.check()
-      assert.spy(spy_check1).was.called(lqc.iteration_amount)
+      assert.spy(spy_check1).was.called(lqc.numtests)
       lqc.properties = {}
 
       local spy_check2 = spy.new(function() return true end)
-      local new_iteration_amount = lqc.iteration_amount + 10
+      local new_iteration_amount = lqc.numtests + 10
       property 'property with non-default iteration_amount' {
         generators = {},
         check = spy_check2,

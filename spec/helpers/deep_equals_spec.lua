@@ -12,6 +12,7 @@ local Vector = require 'src.helpers.vector'
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -28,7 +29,7 @@ describe('deep_equals', function()
         generators = { int() }
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
 
     it('returns false if ints are not the same', function()
@@ -51,7 +52,7 @@ describe('deep_equals', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
 
     it('returns false for 2 different strings', function()
@@ -74,7 +75,7 @@ describe('deep_equals', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
 
     it('returns false for 2 different boolean values', function()
@@ -97,7 +98,7 @@ describe('deep_equals', function()
         check = spy_check
       }
       lqc.check()
-      assert.spy(spy_check).was.called(lqc.iteration_amount)
+      assert.spy(spy_check).was.called(lqc.numtests)
     end)
 
     it('returns false if 2 tables contain different values (also recursively)', function()

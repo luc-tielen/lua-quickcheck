@@ -3,6 +3,7 @@ local r = require 'src.report'
 local property = require 'src.property'
 
 local function clear_properties()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function(_) end
 end
@@ -35,7 +36,7 @@ describe('quickcheck', function()
       end
 
       lqc.check()
-      local expected = prop_amount * lqc.iteration_amount
+      local expected = prop_amount * lqc.numtests
       assert.spy(spy_check).was.called(expected)
     end)
 
@@ -49,7 +50,7 @@ describe('quickcheck', function()
       }
 
       lqc.check()
-      local expected = lqc.iteration_amount
+      local expected = lqc.numtests
       assert.spy(spy_check).was.not_called()
       assert.spy(spy_implies).was.called(expected)
     end)
@@ -127,6 +128,15 @@ describe('quickcheck', function()
       end
 
       assert.is_true(shrunk_values[1] >= shrunk_values[2])
+    end)
+  end)
+
+  describe('init function', function()
+    it('should be called before quickcheck.check or it will raise an error', function()
+      lqc.init(nil, nil)
+      assert.is_false(pcall(function() lqc.check() end))
+      lqc.init(100, 100)
+      assert.is_true(pcall(function() lqc.check() end))
     end)
   end)
 end)

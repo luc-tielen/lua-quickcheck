@@ -14,6 +14,7 @@ local clib = ffi.load 'fixtures'
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -31,7 +32,7 @@ describe('double precision value generator for C functions', function()
       check = spy_check
     }
     lqc.check()
-    assert.spy(spy_check).was.called(lqc.iteration_amount)
+    assert.spy(spy_check).was.called(lqc.numtests)
   end)
 
   it('should be possible to pick floats', function()
@@ -43,7 +44,7 @@ describe('double precision value generator for C functions', function()
       check = spy_check
     }
     lqc.check()
-    assert.spy(spy_check).was.called(lqc.iteration_amount)
+    assert.spy(spy_check).was.called(lqc.numtests)
   end)
 end)
 

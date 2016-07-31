@@ -64,7 +64,7 @@ local function fsm(descr, fsm_info_table)
     fsm_table.states = add_stop_state(fsm_table.states)
     fsm_table.cleanup = fsm_table.cleanup or default_cleanup
     fsm_table.when_fail = fsm_table.when_fail or default_when_fail
-    fsm_table.numtests = fsm_table.numtests or lqc.iteration_amount
+    fsm_table.numtests = fsm_table.numtests or lqc.numtests
     
     check_valid_fsm_spec(fsm_table)
     local new_fsm = new(descr, fsm_table)

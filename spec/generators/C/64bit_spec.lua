@@ -13,6 +13,7 @@ local clib = ffi.load 'fixtures'
 
 local function do_setup()
   random.seed()
+  lqc.init(100, 100)
   lqc.properties = {}
   r.report = function() end
 end
@@ -30,7 +31,7 @@ describe('generating 64 bit integers for C code', function()
       check = spy_check
     }
     lqc.check()
-    assert.spy(spy_check).was.called(lqc.iteration_amount)
+    assert.spy(spy_check).was.called(lqc.numtests)
   end)
 
   it('should be possible to shrink 64 bit integer types', function()
