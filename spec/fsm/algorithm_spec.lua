@@ -13,8 +13,8 @@ local Action = require 'src.fsm.action'
 local Command = require 'src.fsm.command'
 local deep_copy = require 'src.helpers.deep_copy'
 local deep_equals = require 'src.helpers.deep_equals'
-local map = require 'src.functional.map'
-local reduce = require 'src.functional.reduce'
+local map = require 'src.helpers.map'
+local reduce = require 'src.helpers.reduce'
 
 
 local function do_setup()

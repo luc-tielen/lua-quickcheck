@@ -1,4 +1,4 @@
-local reduce = require 'src.functional.reduce'
+local reduce = require 'src.helpers.reduce'
 
 describe('reduce function', function()
   local t1 = { 1, 2, 3, 4, 5 }

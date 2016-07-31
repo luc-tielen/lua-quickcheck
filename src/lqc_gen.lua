@@ -1,6 +1,6 @@
 local Gen = require 'src.generator'
 local random = require 'src.random'
-local reduce = require 'src.functional.reduce'
+local reduce = require 'src.helpers.reduce'
 
 local lib = {}
 

@@ -3,7 +3,7 @@ local str = require 'src.generators.string'
 local r = require 'src.report'
 local property = require 'src.property'
 local lqc = require 'src.quickcheck'
-local reduce = require 'src.functional.reduce'
+local reduce = require 'src.helpers.reduce'
 
 local function is_string(s)
   return type(s) == 'string'

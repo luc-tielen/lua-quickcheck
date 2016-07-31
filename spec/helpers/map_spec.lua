@@ -1,4 +1,4 @@
-local map = require 'src.functional.map'
+local map = require 'src.helpers.map'
 
 describe('map function', function()
   local t1 = { 1, 2, 3, 4, 5 }

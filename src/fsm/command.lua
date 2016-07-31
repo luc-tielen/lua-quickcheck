@@ -1,6 +1,6 @@
 local Gen = require 'src.generator'
 local random = require 'src.random'
-local map = require 'src.functional.map'
+local map = require 'src.helpers.map'
 local deep_copy = require 'src.helpers.deep_copy'
 
 
