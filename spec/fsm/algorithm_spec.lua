@@ -742,5 +742,87 @@ describe('Tests for the FSM algorithm', function()
     }
     lqc.check()
   end)
+
+  it('should be able to shrink down a FSM, pt4', function()
+    local should_introduce_glitch = false
+    local amount = 0
+    local counter = 0
+    local history = {}
+    local spy_when_fail = spy.new(function(h)
+      history = h
+    end)
+    local fsm_table = {
+      commands = function()
+        return frequency {
+          { 1, Command.stop }, 
+          { 10, oneof {
+            Command { '1', function()
+              counter = 1
+            end, {} },
+            Command { '2', function()
+              counter = 2
+            end, {} },
+            Command { '3', function()
+              counter = 4
+            end, {} }
+          }        
+        } }
+      end,
+      initial_state = function() return 0 end,
+      states = {
+        state '1' {
+          precondition = function(s) 
+            return s == 0 or should_introduce_glitch
+          end,
+          next_state = function() return 1 end,
+          postcondition = function(s) return counter == s + 1 end
+        },
+        state '2' {
+          precondition = function(s) return s == 1 end,
+          next_state = function() return 2 end,
+          postcondition = function(s) return counter == s + 1 end
+        },
+        state '3' {
+          precondition = function(s) 
+            local introduce_glitch = should_introduce_glitch
+            should_introduce_glitch = true
+            return s == 2 or introduce_glitch 
+          end,
+          next_state = function() return 3 end,
+          postcondition = function(s) return counter == s + 1 or should_introduce_glitch end
+        },
+        state 'stop' {
+          precondition = function() return true end,
+          next_state = function(s) return s end,
+          postcondition = function() return true end
+        }
+      },
+      cleanup = function() counter = 0 end,
+      when_fail = spy_when_fail,
+      numtests = 50
+    }
+ 
+    property 'shrinking down failed FSMs, pt4' {
+      generators = {},
+      check = function()
+        algorithm.check('FSM can be shrunk down, pt3', fsm_table)
+        amount = amount + 1
+
+        -- Verify when fail is called at end with simplified sequence:
+        assert.spy(spy_when_fail).was.called(amount)
+        -- Verify actions get shrunk down:
+        local action_names = map(history, function(action) return action.command.state_name end)
+        assert.is_true(action_names[#action_names - 1] == '3'
+                    or action_names[#action_names - 1] == '1')
+        assert.is_true(action_names[1] == '1'
+                    or action_names[1] == '3')
+
+        history = {}
+        return true
+      end,
+      numtests = 3
+    }
+    lqc.check()
+  end)
 end)
 
