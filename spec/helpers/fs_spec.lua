@@ -9,14 +9,13 @@ describe('file system helper module', function()
       local dir1 = 'spec/moonscript'
       local dir2 = 'spec/generators'
       local files1 = fs.find_files(dir1)
-      assert.same(files1, map({
-        'integration_spec.moon',
-        'fsm/state_spec.moon',
-        'fsm/fsm_spec.moon',
-      }, function(f) return dir1 .. '/' .. f end))
-
       local files2 = fs.find_files(dir2)
-      assert.same(files2, map({
+      local expected1 = map({
+        'fsm/fsm_spec.moon',
+        'fsm/state_spec.moon',
+        'integration_spec.moon'
+      }, function(f) return dir1 .. '/' .. f end)
+      local expected2 = map({
         'C/float_spec.lua',
         'C/64bit_spec.lua',
         'C/basic_spec.lua',
@@ -30,7 +29,15 @@ describe('file system helper module', function()
         'any_spec.lua',
         'int_spec.lua',
         'string_spec.lua'
-      }, function(f) return dir2 .. '/' .. f end))
+      }, function(f) return dir2 .. '/' .. f end)
+
+      table.sort(files1)
+      table.sort(files2)
+      table.sort(expected1)
+      table.sort(expected2)
+
+      assert.same(expected1, files1)
+      assert.same(expected2, files2)
     end)
   end)
 end)
