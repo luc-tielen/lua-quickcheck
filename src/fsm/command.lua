@@ -1,16 +1,6 @@
 local Gen = require 'src.generator'
 local random = require 'src.random'
-local map = require 'src.helpers.map'
 local deep_copy = require 'src.helpers.deep_copy'
-
-
--- Converts a generator from 1 of the command arguments into an actual argument
-local function arg_generator_to_arg(num_tests)
-  local function do_conversion(arg_generator)
-    return arg_generator:pick(num_tests)
-  end
-  return do_conversion
-end
 
 
 -- Returns a string representation of the command.
@@ -36,10 +26,14 @@ end
 -- Returns a table with keys { state_name, func, args }
 local function pick(state_name, command_func, args_generators)
   local function do_pick(num_tests)
+    local args = {}
+    for i = 1, #args_generators do
+      args[i] = args_generators[i]:pick(num_tests)
+    end
     return { 
       state_name = state_name,
       func = command_func,
-      args = map(args_generators, arg_generator_to_arg(num_tests)),
+      args = args,
       to_string = stringify
     }
   end

@@ -15,12 +15,12 @@ local fsm_shrink_amount = 100  -- TODO make configurable
 
 -- Creates a small helper object that keeps track of a counter
 function lib.make_counter()
-  local value = 1
-  local Counter = { 
-    increase = function() value = value + 1 end,
-    value = function() return value end
+  local Counter = {
+    val = 1,
+    increase = function(self) self.val = self.val + 1 end,
+    value = function(self) return self.val end
   }
-  return Counter
+  return setmetatable(Counter, { __index = Counter })
 end
 
 

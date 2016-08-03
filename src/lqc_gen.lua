@@ -53,13 +53,14 @@ function lib.oneof(generators)
   return Gen.new(oneof_pick, oneof_shrink)
 end
 
+
 -- Select a generator from a list of weighted generators ({{weight1, gen1}, ... })
 function lib.frequency(generators)
   local which
+
+  local function do_sum(generator, acc) return generator[1] + acc end
   local function frequency_pick(numtests)
-    local sum = reduce(generators, 0, function(generator, acc) 
-      return generator[1] + acc 
-    end)
+    local sum = reduce(generators, 0, do_sum)
     
     local val = random.between(1, sum)
     which = reduce(generators, { 0, 1 }, function(generator, acc)
