@@ -30,6 +30,25 @@ do
 end
 
 
+-- setfenv is removed from Lua for versions > 5.1;
+-- this function aims to provide same functionality.
+-- Based mostly on http://leafo.net/guides/setfenv-in-lua52-and-above.html
+local function setfenv_compat(func, new_env)
+  local idx = 1
+  repeat
+    local name = debug.getupvalue(func, idx)
+    if name == '_ENV' then
+      debug.upvaluejoin(func, idx, function() return new_env end, 1)
+    end
+    idx = idx + 1
+  until name == '_ENV' or name == nil
+  
+  return func
+end
+
+local setfenv = setfenv or setfenv_compat
+
+
 -- Loads a script, sets a new environment (for easier property based testing),
 -- then returns the modified script which can be called as a function.
 function lib.load_script(file_path)
