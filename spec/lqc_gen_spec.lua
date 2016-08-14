@@ -319,6 +319,8 @@ describe('elements', function()
 end)
 
 describe('combinations of the above', function()
+  before_each(do_setup)
+
   it('should be possible to combine frequency and oneof helpers', function()
     local spy_shrink1 = spy.new(function() return 1 end)
     local spy_shrink2 = spy.new(function() return 2 end)
