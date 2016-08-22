@@ -3,6 +3,7 @@ local lqc = require 'src.quickcheck'
 local results = require 'src.property_result'
 local property = require 'src.property'
 local r = require 'src.report'
+local Gen = require 'src.generator'
 
 local function do_setup()
   random.seed()
@@ -10,6 +11,11 @@ local function do_setup()
   lqc.properties = {}
   r.report = function() end
 end
+
+local function dummy_gen()
+  return Gen.new(function() return 1 end, function(prev) return prev end)
+end
+
 
 describe('property helper function', function()
   before_each(do_setup)
@@ -179,7 +185,30 @@ describe('property', function()
         numtests = new_iteration_amount
       }
       lqc.check()
-      assert.spy(spy_check2).was.called()
+      assert.spy(spy_check2).was.called(new_iteration_amount)
+    end)
+  end)
+
+  describe('numshrinks', function()
+    it('shrinks a property X amount of times if specified', function()
+      property 'property with default shrinks amount' {
+        generators = { dummy_gen() },
+        check = function() return false end
+      }
+      lqc.properties[1].shrink = spy.new(lqc.properties[1].shrink)
+      lqc.check()
+      assert.spy(lqc.properties[1].shrink).was.called(lqc.numshrinks)
+      lqc.properties = {}
+
+      local new_shrink_amount = lqc.numshrinks + 10
+      property 'property with non-default shrink_amount' {
+        generators = { dummy_gen() },
+        check = function() return false end,
+        numshrinks = new_shrink_amount
+      }
+      lqc.properties[1].shrink = spy.new(lqc.properties[1].shrink)
+      lqc.check()
+      assert.spy(lqc.properties[1].shrink).was.called(new_shrink_amount)
     end)
   end)
 end)

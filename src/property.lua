@@ -59,11 +59,11 @@ end
 -- Shrinks a property that failed with a certain set of inputs.
 -- This function returns a simplified list or inputs
 local function do_shrink(property, generated_values, tries)
-  if not tries then tries = 0 end
+  if not tries then tries = 1 end
   local shrunk_values = property.shrink(unpack(generated_values))
   local result = property(unpack(shrunk_values))
   
-  if tries == lqc.numshrinks then
+  if tries == property.numshrinks then
     -- Maximum amount of shrink attempts exceeded. 
     return generated_values
   end
@@ -116,10 +116,11 @@ end
 
 
 -- Creates a new property. 
-local function new(descr, property_func, generators, numtests)
+local function new(descr, property_func, generators, numtests, numshrinks)
   local prop = {
     description = descr,
-    numtests = numtests
+    numtests = numtests,
+    numshrinks = numshrinks
   }
 
   -- Generates a new set of inputs for this property.
@@ -180,8 +181,11 @@ local function property(descr, prop_info_table)
     end
 
     local it_amount = prop_table.numtests
+    local shrink_amount = prop_table.numshrinks
     local numtests = is_integer(it_amount) and it_amount or lqc.numtests
-    local new_prop = new(descr, prop_table.check, prop_table.generators, numtests)
+    local numshrinks = is_integer(shrink_amount) and shrink_amount or lqc.numshrinks
+    local new_prop = new(descr, prop_table.check, prop_table.generators, 
+                         numtests, numshrinks)
     table.insert(lqc.properties, new_prop)
   end
 
