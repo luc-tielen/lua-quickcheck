@@ -3,6 +3,7 @@ local r = require 'src.report'
 local command = require 'src.fsm.command'
 local fsm = require 'src.fsm'
 local state = require 'src.fsm.state'
+local algorithm = require 'src.fsm.algorithm'
 local lqc = require 'src.quickcheck'
 local lqc_gen = require 'src.lqc_gen'
 local frequency = lqc_gen.frequency
@@ -83,6 +84,30 @@ local function describe_counter_fsm(iteration_amount)
       -- ...
     end,
     numtests = iteration_amount
+  }
+end
+
+local function describe_failing_fsm(shrink_amount)
+  fsm 'failing' {
+    commands = function()
+      return frequency {
+        { 1, command.stop },
+        { 10, oneof {
+          command { 'failing_state', function() end, {} },
+        } }
+      }
+    end,
+    initial_state = function() return 0 end,
+    states = {
+      state 'failing_state' {
+        precondition = function() return true end,
+        next_state = function() return true end,
+        postcondition = function() return false end  -- always fails
+      },
+    },
+    cleanup = function(_) end,
+    when_fail = function() end,
+    numshrinks = shrink_amount
   }
 end
 
@@ -200,6 +225,17 @@ describe('statemachine specification', function()
     describe_counter_fsm(100)
     lqc.check()
     assert.spy(r.report_success).was.called(1 + 100)
+  end)
+
+  it('should be possible to modify number of shrinks', function()
+    algorithm.shrink_fsm_actions = spy.new(algorithm.shrink_fsm_actions)
+    describe_failing_fsm(1)
+    lqc.check()
+    assert.spy(algorithm.shrink_fsm_actions).was.called(1)
+    lqc.properties = {}
+    describe_failing_fsm(10)
+    lqc.check()
+    assert.spy(algorithm.shrink_fsm_actions).was.called(1 + 10)
   end)
 end)
 

@@ -361,7 +361,8 @@ describe('Tests for the FSM algorithm', function()
         },
         initial_state = function() return 0 end,
         cleanup = spy_cleanup,
-        numtests = lqc.numtests
+        numtests = lqc.numtests,
+        numshrinks = lqc.numshrinks
       }
 
       local spy_check = spy.new(function()
@@ -559,6 +560,7 @@ describe('Tests for the FSM algorithm', function()
           }
         },
         numtests = 50,
+        numshrinks = 10,
         cleanup = function() counter = 0 end,
         when_fail = spy_when_fail
       }
@@ -597,7 +599,8 @@ describe('Tests for the FSM algorithm', function()
           return true
         end,
         generators = {},
-        numtests = 3  -- check function itself executes multiple times!
+        numtests = 3,  -- check function itself executes multiple times!
+        numshrinks = 10
       }
       lqc.check()
     end)
@@ -649,7 +652,8 @@ describe('Tests for the FSM algorithm', function()
       },
       cleanup = function() counter = 0 end,
       when_fail = spy_when_fail,
-      numtests = 50
+      numtests = 50,
+      numshrinks = 10
     }
     local amount = 0
     property 'shrinking of failing FSMs, pt2' {
@@ -715,7 +719,8 @@ describe('Tests for the FSM algorithm', function()
       },
       cleanup = function() counter = 0 end,
       when_fail = spy_when_fail,
-      numtests = 50
+      numtests = 50,
+      numshrinks = 10
     }
     local amount = 0
     property 'shrinking of failing FSMs, pt3' {
@@ -800,7 +805,8 @@ describe('Tests for the FSM algorithm', function()
       },
       cleanup = function() counter = 0 end,
       when_fail = spy_when_fail,
-      numtests = 50
+      numtests = 50,
+      numshrinks = 10
     }
  
     property 'shrinking down failed FSMs, pt4' {

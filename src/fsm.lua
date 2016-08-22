@@ -65,6 +65,7 @@ local function fsm(descr, fsm_info_table)
     fsm_table.cleanup = fsm_table.cleanup or default_cleanup
     fsm_table.when_fail = fsm_table.when_fail or default_when_fail
     fsm_table.numtests = fsm_table.numtests or lqc.numtests
+    fsm_table.numshrinks = fsm_table.numshrinks or lqc.numshrinks
     
     check_valid_fsm_spec(fsm_table)
     local new_fsm = new(descr, fsm_table)
