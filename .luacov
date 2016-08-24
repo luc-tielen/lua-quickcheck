@@ -56,7 +56,7 @@ return {
     -- Exclude specs themselves:
     '^spec*',
     -- Exclude src/report.lua (not that meaningful to test coverage for)
-    'src.report',
+    'lqc.report',
     -- Exclude argparse library
     'argparse$',
     'argparse.*$'
