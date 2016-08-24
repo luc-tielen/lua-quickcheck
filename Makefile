@@ -18,7 +18,7 @@ fixtures:
 	$(MAKE) -C spec/fixtures build
 
 tests: fixtures
-	luacheck --std=max+busted src spec \
+	luacheck --std=max+busted lqc spec \
 		--exclude-files=$(HELPER_SCRIPT) $(EXAMPLE_SCRIPTS) \
 		--globals ffi
 	LD_LIBRARY_PATH=spec/fixtures/ busted $(BUSTED_FLAGS)
