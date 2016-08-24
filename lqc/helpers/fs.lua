@@ -1,5 +1,5 @@
 local lfs = require 'lfs'
-local Vector = require 'src.helpers.vector'
+local Vector = require 'lqc.helpers.vector'
 
 local lib = {}
 

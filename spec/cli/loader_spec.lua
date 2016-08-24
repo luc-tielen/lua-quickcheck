@@ -1,7 +1,7 @@
-local loader = require 'src.cli.loader'
-local lqc = require 'src.quickcheck'
-local random = require 'src.random'
-local r = require 'src.report'
+local loader = require 'lqc.cli.loader'
+local lqc = require 'lqc.quickcheck'
+local random = require 'lqc.random'
+local r = require 'lqc.report'
 
 
 local function do_setup()

@@ -1,9 +1,9 @@
-local random = require 'src.random'
-local lqc = require 'src.quickcheck'
-local results = require 'src.property_result'
-local property = require 'src.property'
-local r = require 'src.report'
-local Gen = require 'src.generator'
+local random = require 'lqc.random'
+local lqc = require 'lqc.quickcheck'
+local results = require 'lqc.property_result'
+local property = require 'lqc.property'
+local r = require 'lqc.report'
+local Gen = require 'lqc.generator'
 
 local function do_setup()
   random.seed()

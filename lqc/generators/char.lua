@@ -1,5 +1,5 @@
-local Gen = require 'src.generator'
-local int = require 'src.generators.int'
+local Gen = require 'lqc.generator'
+local int = require 'lqc.generators.int'
 
 local lowest_ascii_value = 32    -- 'space'
 local highest_ascii_value = 126  -- '~'

@@ -1,4 +1,4 @@
-state = require 'src.fsm.state'
+state = require 'lqc.fsm.state'
 
 
 make_state = (name, precondition, next_state, postcondition) ->

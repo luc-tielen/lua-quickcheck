@@ -1,6 +1,6 @@
-local Gen = require 'src.generator'
-local random = require 'src.random'
-local deep_copy = require 'src.helpers.deep_copy'
+local Gen = require 'lqc.generator'
+local random = require 'lqc.random'
+local deep_copy = require 'lqc.helpers.deep_copy'
 
 
 -- Returns a string representation of the command.

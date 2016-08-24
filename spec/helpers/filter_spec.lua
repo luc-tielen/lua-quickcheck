@@ -1,4 +1,4 @@
-local filter = require 'src.helpers.filter'
+local filter = require 'lqc.helpers.filter'
 
 describe('filter function', function()
   local t1 = { 1, 2, 3, 4, 5 }

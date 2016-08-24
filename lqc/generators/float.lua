@@ -1,4 +1,4 @@
-local Gen = require 'src.generator'
+local Gen = require 'lqc.generator'
 
 -- TODO rename to real!
 

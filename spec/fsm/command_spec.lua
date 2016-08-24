@@ -1,10 +1,10 @@
-local random = require 'src.random'
-local r = require 'src.report'
-local command = require 'src.fsm.command'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
-local lqc_gen = require 'src.lqc_gen'
-local int = require 'src.generators.int'
+local random = require 'lqc.random'
+local r = require 'lqc.report'
+local command = require 'lqc.fsm.command'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
+local lqc_gen = require 'lqc.lqc_gen'
+local int = require 'lqc.generators.int'
 local elements = lqc_gen.elements
 
 

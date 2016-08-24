@@ -1,15 +1,15 @@
-local Gen = require 'src.generator'
-local random = require 'src.random'
-local bool = require 'src.generators.bool'
-local int = require 'src.generators.int'
-local float = require 'src.generators.float'
-local string = require 'src.generators.string'
-local lqc = require 'src.quickcheck'
-local lqc_gen = require 'src.lqc_gen'
+local Gen = require 'lqc.generator'
+local random = require 'lqc.random'
+local bool = require 'lqc.generators.bool'
+local int = require 'lqc.generators.int'
+local float = require 'lqc.generators.float'
+local string = require 'lqc.generators.string'
+local lqc = require 'lqc.quickcheck'
+local lqc_gen = require 'lqc.lqc_gen'
 local oneof = lqc_gen.oneof
 local frequency = lqc_gen.frequency
-local deep_equals = require 'src.helpers.deep_equals'
-local deep_copy = require 'src.helpers.deep_copy'
+local deep_equals = require 'lqc.helpers.deep_equals'
+local deep_copy = require 'lqc.helpers.deep_copy'
 
 
 -- Generator for tables of varying sizes and types!

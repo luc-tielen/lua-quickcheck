@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local r = require 'src.report'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
-local str = require 'src.generators.string'
+local random = require 'lqc.random'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
+local str = require 'lqc.generators.string'
 
 ffi.cdef [[
   const char* str_add(const char* const a, const char* const b); 

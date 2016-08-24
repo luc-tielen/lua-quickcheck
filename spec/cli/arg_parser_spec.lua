@@ -1,4 +1,4 @@
-local p = require 'src.cli.arg_parser'
+local p = require 'lqc.cli.arg_parser'
 
 
 -- Checks if the seed used is within a 1 second margin compared to now

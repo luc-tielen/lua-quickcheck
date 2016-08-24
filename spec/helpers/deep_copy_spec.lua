@@ -1,9 +1,9 @@
-local tbl = require 'src.generators.table'
-local lqc = require 'src.quickcheck'
-local property = require 'src.property'
-local r = require 'src.report'
-local random = require 'src.random'
-local deep_copy = require 'src.helpers.deep_copy'
+local tbl = require 'lqc.generators.table'
+local lqc = require 'lqc.quickcheck'
+local property = require 'lqc.property'
+local r = require 'lqc.report'
+local random = require 'lqc.random'
+local deep_copy = require 'lqc.helpers.deep_copy'
 
 
 local function do_setup()

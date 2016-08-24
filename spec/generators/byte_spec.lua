@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local byte = require 'src.generators.byte'
-local r = require 'src.report'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
+local random = require 'lqc.random'
+local byte = require 'lqc.generators.byte'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
 
 local function is_byte(value)
   return type(value) == 'number' 

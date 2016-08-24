@@ -1,5 +1,5 @@
 
-local Action = require 'src.fsm.action'
+local Action = require 'lqc.fsm.action'
 
 
 local function mock_obj(value)

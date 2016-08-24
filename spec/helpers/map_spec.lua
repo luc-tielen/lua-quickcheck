@@ -1,4 +1,4 @@
-local map = require 'src.helpers.map'
+local map = require 'lqc.helpers.map'
 
 describe('map function', function()
   local t1 = { 1, 2, 3, 4, 5 }

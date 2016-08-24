@@ -1,6 +1,6 @@
-local lqc = require 'src.quickcheck'
-local report = require 'src.report'
-local results = require 'src.property_result'
+local lqc = require 'lqc.quickcheck'
+local report = require 'lqc.report'
+local results = require 'lqc.property_result'
 local unpack = unpack or table.unpack  -- for compatibility reasons
 
 

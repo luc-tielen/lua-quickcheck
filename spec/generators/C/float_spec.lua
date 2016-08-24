@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
-local r = require 'src.report'
-local double = require 'src.generators.float'
+local random = require 'lqc.random'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
+local r = require 'lqc.report'
+local double = require 'lqc.generators.float'
 local float = double
 
 ffi.cdef [[

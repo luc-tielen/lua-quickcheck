@@ -1,10 +1,10 @@
-local Vector = require 'src.helpers.vector'
-local Var = require 'src.fsm.var'
-local Command = require 'src.fsm.command'
-local Action = require 'src.fsm.action'
-local random = require 'src.random'
-local deep_copy = require 'src.helpers.deep_copy'
-local report = require 'src.report'
+local Vector = require 'lqc.helpers.vector'
+local Var = require 'lqc.fsm.var'
+local Command = require 'lqc.fsm.command'
+local Action = require 'lqc.fsm.action'
+local random = require 'lqc.random'
+local deep_copy = require 'lqc.helpers.deep_copy'
+local report = require 'lqc.report'
 local unpack = unpack or table.unpack  -- for compatibility reasons
 
 

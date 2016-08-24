@@ -1,7 +1,7 @@
-local app = require 'src.cli.app'
-local lqc = require 'src.quickcheck'
-local random = require 'src.random'
-local r = require 'src.report'
+local app = require 'lqc.cli.app'
+local lqc = require 'lqc.quickcheck'
+local random = require 'lqc.random'
+local r = require 'lqc.report'
 
 
 local function do_setup()

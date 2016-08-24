@@ -1,4 +1,4 @@
-local Var = require 'src.fsm.var'
+local Var = require 'lqc.fsm.var'
 
 
 describe('Variable helper object', function()

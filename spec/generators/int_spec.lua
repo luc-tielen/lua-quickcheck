@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local int = require 'src.generators.int'
-local r = require 'src.report'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
+local random = require 'lqc.random'
+local int = require 'lqc.generators.int'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
 
 local function is_integer(value)
   return type(value) == 'number' and value % 1 == 0

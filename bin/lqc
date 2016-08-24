@@ -1,0 +1,5 @@
+#!/usr/bin/env lua
+
+local app = require 'lqc.cli.app'
+app.main(arg)
+

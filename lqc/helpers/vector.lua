@@ -1,4 +1,4 @@
-local deep_equals = require 'src.helpers.deep_equals'
+local deep_equals = require 'lqc.helpers.deep_equals'
 
 local Vector = {}
 local Vector_mt = { 

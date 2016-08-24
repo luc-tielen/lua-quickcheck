@@ -1,11 +1,11 @@
-local Vector = require 'src.helpers.vector'
-local reduce = require 'src.helpers.reduce'
-local filter = require 'src.helpers.filter'
-local fs = require 'src.helpers.fs'
-local random = require 'src.random'
-local lqc = require 'src.quickcheck'
-local loader = require 'src.cli.loader'
-local arg_parser = require 'src.cli.arg_parser'
+local Vector = require 'lqc.helpers.vector'
+local reduce = require 'lqc.helpers.reduce'
+local filter = require 'lqc.helpers.filter'
+local fs = require 'lqc.helpers.fs'
+local random = require 'lqc.random'
+local lqc = require 'lqc.quickcheck'
+local loader = require 'lqc.cli.loader'
+local arg_parser = require 'lqc.cli.arg_parser'
 
 
 -- Depending on the config, return a list of files that should be executed.

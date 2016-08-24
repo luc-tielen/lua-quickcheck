@@ -1,5 +1,5 @@
-local fs = require 'src.helpers.fs'
-local map = require 'src.helpers.map'
+local fs = require 'lqc.helpers.fs'
+local map = require 'lqc.helpers.map'
 
 
 describe('file system helper module', function()

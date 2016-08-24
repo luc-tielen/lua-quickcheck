@@ -1,5 +1,5 @@
-local Vector = require 'src.helpers.vector'
-local deep_copy = require 'src.helpers.deep_copy'
+local Vector = require 'lqc.helpers.vector'
+local deep_copy = require 'lqc.helpers.deep_copy'
 
 
 describe('vector datastructure', function()

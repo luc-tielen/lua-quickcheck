@@ -1,4 +1,4 @@
-local reduce = require 'src.helpers.reduce'
+local reduce = require 'lqc.helpers.reduce'
 
 describe('reduce function', function()
   local t1 = { 1, 2, 3, 4, 5 }

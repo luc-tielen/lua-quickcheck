@@ -1,5 +1,5 @@
-local Gen = require 'src.generator'
-local random = require 'src.random'
+local Gen = require 'lqc.generator'
+local random = require 'lqc.random'
 local abs = math.abs
 
 

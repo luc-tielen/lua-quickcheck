@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local char = require 'src.generators.char'
-local r = require 'src.report'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
+local random = require 'lqc.random'
+local char = require 'lqc.generators.char'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
 
 local lowest_ascii_value = 32
 local highest_ascii_value = 126

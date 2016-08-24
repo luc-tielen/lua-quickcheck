@@ -1,10 +1,10 @@
-random = require 'src.random'
-r = require 'src.report'
-command = require 'src.fsm.command'
-fsm = require 'src.fsm'
-state = require 'src.fsm.state'
-lqc = require 'src.quickcheck'
-lqc_gen = require 'src.lqc_gen'
+random = require 'lqc.random'
+r = require 'lqc.report'
+command = require 'lqc.fsm.command'
+fsm = require 'lqc.fsm'
+state = require 'lqc.fsm.state'
+lqc = require 'lqc.quickcheck'
+lqc_gen = require 'lqc.lqc_gen'
 frequency = lqc_gen.frequency
 oneof = lqc_gen.oneof
 elements = lqc_gen.elements

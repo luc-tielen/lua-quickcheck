@@ -11,8 +11,8 @@ BUSTED_FLAGS += --exclude-tags=jit_only
 endif
 
 
-all:
-	luarocks make rockspecs/lua-quickcheck-0.0-1.rockspec
+install:
+	luarocks make rockspecs/lua-quickcheck-0.1-0.rockspec
 
 fixtures:
 	$(MAKE) -C spec/fixtures build

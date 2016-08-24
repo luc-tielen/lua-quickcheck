@@ -1,9 +1,9 @@
-local random = require 'src.random'
-local str = require 'src.generators.string'
-local r = require 'src.report'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
-local reduce = require 'src.helpers.reduce'
+local random = require 'lqc.random'
+local str = require 'lqc.generators.string'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
+local reduce = require 'lqc.helpers.reduce'
 
 local function is_string(s)
   return type(s) == 'string'

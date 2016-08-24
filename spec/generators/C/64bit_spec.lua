@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
-local r = require 'src.report'
-local int = require 'src.generators.int'
+local random = require 'lqc.random'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
+local r = require 'lqc.report'
+local int = require 'lqc.generators.int'
 
 ffi.cdef [[
   uint64_t u64_add(uint64_t a, uint64_t b);

@@ -1,5 +1,5 @@
 local argparse = require 'argparse'
-local config = require 'src.config'
+local config = require 'lqc.config'
 
 
 -- Module for easily parsing list of command line arguments

@@ -1,9 +1,9 @@
 
-random = require 'src.random'
-property = require 'src.property'
-lqc = require 'src.quickcheck'
-byte = require 'src.generators.byte'
-r = require 'src.report'
+random = require 'lqc.random'
+property = require 'lqc.property'
+lqc = require 'lqc.quickcheck'
+byte = require 'lqc.generators.byte'
+r = require 'lqc.report'
 
 do_setup = ->
   random.seed()

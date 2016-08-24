@@ -1,4 +1,4 @@
-local gen = require 'src.generator'
+local gen = require 'lqc.generator'
 
 
 describe('generator module', function()

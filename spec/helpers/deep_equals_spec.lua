@@ -1,13 +1,13 @@
-local deep_equals = require 'src.helpers.deep_equals'
-local random = require 'src.random'
-local r = require 'src.report'
-local lqc = require 'src.quickcheck'
-local property = require 'src.property'
-local int = require 'src.generators.int'
-local str = require 'src.generators.string'
-local bool = require 'src.generators.bool'
-local tbl = require 'src.generators.table'
-local Vector = require 'src.helpers.vector'
+local deep_equals = require 'lqc.helpers.deep_equals'
+local random = require 'lqc.random'
+local r = require 'lqc.report'
+local lqc = require 'lqc.quickcheck'
+local property = require 'lqc.property'
+local int = require 'lqc.generators.int'
+local str = require 'lqc.generators.string'
+local bool = require 'lqc.generators.bool'
+local tbl = require 'lqc.generators.table'
+local Vector = require 'lqc.helpers.vector'
 
 
 local function do_setup()

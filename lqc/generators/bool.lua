@@ -1,5 +1,5 @@
-local Gen = require 'src.generator'
-local random = require 'src.random'
+local Gen = require 'lqc.generator'
+local random = require 'lqc.random'
 
 -- picks a random bool (true or false)
 local function pick()

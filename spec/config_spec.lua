@@ -1,4 +1,4 @@
-local config = require 'src.config'
+local config = require 'lqc.config'
 local sort = table.sort
 
 

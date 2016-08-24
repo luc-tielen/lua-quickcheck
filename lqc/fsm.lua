@@ -1,6 +1,6 @@
-local algorithm = require 'src.fsm.algorithm'
-local state = require 'src.fsm.state'
-local lqc = require 'src.quickcheck'
+local algorithm = require 'lqc.fsm.algorithm'
+local state = require 'lqc.fsm.state'
+local lqc = require 'lqc.quickcheck'
 
 
 -- Adds a stop state to the list of states. (variable modified in place)

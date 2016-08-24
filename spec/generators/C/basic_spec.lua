@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local r = require 'src.report'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
-local lqc_gen = require 'src.lqc_gen'
+local random = require 'lqc.random'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
+local lqc_gen = require 'lqc.lqc_gen'
 
 ffi.cdef [[
   uint8_t add(uint8_t a, uint8_t b);

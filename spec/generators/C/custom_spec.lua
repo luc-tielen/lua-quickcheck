@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local r = require 'src.report'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
-local int = require 'src.generators.int'
+local random = require 'lqc.random'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
+local int = require 'lqc.generators.int'
 
 ffi.cdef [[
   struct point { uint32_t x; uint32_t y; };

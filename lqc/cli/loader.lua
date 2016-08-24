@@ -1,5 +1,5 @@
-local deep_copy = require 'src.helpers.deep_copy'
-local fs = require 'src.helpers.fs'
+local deep_copy = require 'lqc.helpers.deep_copy'
+local fs = require 'lqc.helpers.fs'
 local has_moonscript, moonscript = pcall(require, 'moonscript')
 
 
@@ -7,22 +7,22 @@ local lib = {}
 
 -- Prepare new global env for easier use of property based testing library
 local new_global_env = deep_copy(_G)
-new_global_env.Generator = require 'src.generator'
-new_global_env.any = require 'src.generators.any'
-new_global_env.bool = require 'src.generators.bool'
-new_global_env.byte = require 'src.generators.byte'
-new_global_env.char = require 'src.generators.char'
-new_global_env.float = require 'src.generators.float'
-new_global_env.int = require 'src.generators.int'
-new_global_env.str = require 'src.generators.string'
-new_global_env.tbl = require 'src.generators.table'
-new_global_env.random = require 'src.random'
-new_global_env.property = require 'src.property'
-new_global_env.fsm = require 'src.fsm'
-new_global_env.state = require 'src.fsm.state'
-new_global_env.command = require 'src.fsm.command'
+new_global_env.Generator = require 'lqc.generator'
+new_global_env.any = require 'lqc.generators.any'
+new_global_env.bool = require 'lqc.generators.bool'
+new_global_env.byte = require 'lqc.generators.byte'
+new_global_env.char = require 'lqc.generators.char'
+new_global_env.float = require 'lqc.generators.float'
+new_global_env.int = require 'lqc.generators.int'
+new_global_env.str = require 'lqc.generators.string'
+new_global_env.tbl = require 'lqc.generators.table'
+new_global_env.random = require 'lqc.random'
+new_global_env.property = require 'lqc.property'
+new_global_env.fsm = require 'lqc.fsm'
+new_global_env.state = require 'lqc.fsm.state'
+new_global_env.command = require 'lqc.fsm.command'
 do
-  local lqc_gen = require 'src.lqc_gen'
+  local lqc_gen = require 'lqc.lqc_gen'
   new_global_env.choose = lqc_gen.choose
   new_global_env.frequency = lqc_gen.frequency
   new_global_env.elements = lqc_gen.elements

@@ -1,7 +1,7 @@
-local random = require 'src.random'
-local lqc = require 'src.quickcheck'
-local Gen = require 'src.generator'
-local char = require 'src.generators.char'
+local random = require 'lqc.random'
+local lqc = require 'lqc.quickcheck'
+local Gen = require 'lqc.generator'
+local char = require 'lqc.generators.char'
 local char_gen = char()
 
 

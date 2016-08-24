@@ -1,6 +1,6 @@
-local lqc = require 'src.quickcheck'
-local r = require 'src.report'
-local property = require 'src.property'
+local lqc = require 'lqc.quickcheck'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
 
 local function setup_property_engine()
   lqc.init(1, 100)

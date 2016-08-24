@@ -1,4 +1,4 @@
-local state = require 'src.fsm.state'
+local state = require 'lqc.fsm.state'
 
 -- Helper function to make a state
 local function make_state(state_name, precond, next_state, postcond)

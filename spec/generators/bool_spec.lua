@@ -1,8 +1,8 @@
-local random = require 'src.random'
-local bool = require 'src.generators.bool'
-local r = require 'src.report'
-local property = require 'src.property'
-local lqc = require 'src.quickcheck'
+local random = require 'lqc.random'
+local bool = require 'lqc.generators.bool'
+local r = require 'lqc.report'
+local property = require 'lqc.property'
+local lqc = require 'lqc.quickcheck'
 
 local function is_bool(x)
   return type(x) == 'boolean'
