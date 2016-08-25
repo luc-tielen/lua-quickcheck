@@ -4,6 +4,12 @@
 [![Build Status](https://travis-ci.org/Primordus/lua-quickcheck.svg?branch=master)](https://travis-ci.org/Primordus/lua-quickcheck)
 [![Coverage Status](https://coveralls.io/repos/github/Primordus/lua-quickcheck/badge.svg?branch=master)](https://coveralls.io/github/Primordus/lua-quickcheck?branch=master)
 
+[![Lua 5.1 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=Lua5.1&env=LUA=%22lua=5.1%22)](https://travis-ci.org/Primordus/lua-quickcheck)
+[![Lua 5.2 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=Lua5.2&env=LUA=%22lua=5.2%22)](https://travis-ci.org/Primordus/lua-quickcheck)
+[![LuaJIT 2.0 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=LuaJIT2.0&env=LUA=%22luajit=2.0%22)](https://travis-ci.org/Primordus/lua-quickcheck)
+[![LuaJIT 2.1 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=LuaJIT2.1&env=LUA=%22luajit=2.1%22)](https://travis-ci.org/Primordus/lua-quickcheck)
+
+
 Lua-QuickCheck is a Quickcheck clone for Lua.
 
 QuickCheck is a way to do property based testing using randomly generated 
@@ -55,18 +61,6 @@ written in Moonscript.
 
 I wanted a quickcheck library that could also easily interface with C or C++
 side-by-side with my Lua code.
-
-
-## Supported Lua versions
-
-- Lua 5.1
-- Lua 5.2
-- LuaJIT 2.0
-- LuaJIT 2.1
-
-Lua 5.3 is currently not fully supported since the luaffi rock needed for the C
-integration does not compile with that specific Lua version. The rest of the
-functionality is available though.
 
 
 ## License
