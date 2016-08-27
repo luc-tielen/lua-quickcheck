@@ -55,7 +55,7 @@ return {
     'socket*$',
     -- Exclude specs themselves:
     '^spec*',
-    -- Exclude src/report.lua (not that meaningful to test coverage for)
+    -- Exclude lqc/report.lua (not that meaningful to test coverage for)
     'lqc.report',
     -- Exclude argparse library
     'argparse$',

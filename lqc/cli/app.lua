@@ -6,6 +6,7 @@ local random = require 'lqc.random'
 local lqc = require 'lqc.quickcheck'
 local loader = require 'lqc.cli.loader'
 local arg_parser = require 'lqc.cli.arg_parser'
+local report = require 'lqc.report'
 
 
 -- Depending on the config, return a list of files that should be executed.
@@ -45,11 +46,14 @@ end
 
 
 -- Shows the test output (statistics)
--- TODO statistics etc
-local function show_output() end
+local function show_output() 
+  report.report_errors()
+  report.report_summary()
+end
 
 
 local app = {}
+
 
 -- Exits the application
 function app.exit() os.exit(0) end
