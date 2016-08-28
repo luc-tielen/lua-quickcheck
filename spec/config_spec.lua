@@ -19,6 +19,8 @@ describe('config handling', function()
     local result4 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30 }
     local result5 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30, 
                                      files_or_dirs = { 'file1', 'file2' } }
+    local result6 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30, 
+                                     files_or_dirs = { 'file1', 'file2' }, colors = true }
     local expected0 = { files_or_dirs = { '.' }, seed = os.time(), 
                         numtests = 100, numshrinks = 100 }
     local expected1 = { files_or_dirs = { '.' }, seed = os.time(), 
@@ -27,11 +29,14 @@ describe('config handling', function()
                         numtests = 100, numshrinks = 100000 }
 
     local expected3 = { files_or_dirs = { '.' }, seed = 123, 
-                        numtests = 100, numshrinks = 100 }
+                        numtests = 100, numshrinks = 100, colors = false }
     local expected4 = { files_or_dirs = { '.' }, seed = 12345, 
-                        numtests = 20, numshrinks = 30 }
+                        numtests = 20, numshrinks = 30, colors = false }
     local expected5 = { seed = 12345, numtests = 20, numshrinks = 30,
-                        files_or_dirs = { 'file1', 'file2' } }
+                        files_or_dirs = { 'file1', 'file2' }, colors = false }
+    local expected6 = { seed = 12345, numtests = 20, numshrinks = 30,
+                        files_or_dirs = { 'file1', 'file2' }, colors = true }
+ 
     
     -- 0 -> 2 have to be checked in a more difficult way because the seed
     -- depends on current timestamp
@@ -56,13 +61,16 @@ describe('config handling', function()
     sort(result3)
     sort(result4)
     sort(result5)
+    sort(result6)
     sort(expected3)
     sort(expected4)
     sort(expected5)
+    sort(expected6)
 
     assert.same(expected3, result3)
     assert.same(expected4, result4)
     assert.same(expected5, result5)
+    assert.same(expected6, result6)
   end)
 end)
 

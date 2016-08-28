@@ -16,37 +16,42 @@ describe('arg parser', function()
     assert.same(args1.numtests, 100)
     assert.same(args1.numshrinks, 100)
     assert.is_true(is_expected_seed(args1.seed))
+    assert.same(args1.colors, false)
 
     local args2 = p.parse({ 'a' })
     assert.same(args2.files_or_dirs, { 'a' })
     assert.same(args2.numtests, 100)
     assert.same(args2.numshrinks, 100)
     assert.is_true(is_expected_seed(args2.seed))
+    assert.same(args2.colors, false)
 
     local args3 = p.parse({ 'a', 'b' })
     assert.same(args3.files_or_dirs, { 'a', 'b' })
     assert.same(args3.numtests, 100)
     assert.same(args3.numshrinks, 100)
     assert.is_true(is_expected_seed(args3.seed))
-
+    assert.same(args3.colors, false)
 
     local args4 = p.parse({ 'a', 'b', '-s', '123' })
     assert.same(args4.files_or_dirs, { 'a', 'b' })
     assert.same(args4.numtests, 100)
     assert.same(args4.numshrinks, 100)
     assert.same(args4.seed, 123)
+    assert.same(args4.colors, false)
 
     local args5 = p.parse({ 'a', 'b', '--seed', '123' })
     assert.same(args5.files_or_dirs, { 'a', 'b' })
     assert.same(args5.numtests, 100)
     assert.same(args5.numshrinks, 100)
     assert.same(args5.seed, 123)
+    assert.same(args5.colors, false)
 
     local args6 = p.parse({ 'a', 'b', '--seed', '123', '--numtests', '5' })
     assert.same(args6.files_or_dirs, { 'a', 'b' })
     assert.same(args6.numtests, 5)
     assert.same(args6.numshrinks, 100)
     assert.same(args6.seed, 123)
+    assert.same(args6.colors, false)
 
     local args7 = p.parse({ 'a', 'b', '--seed', '123', 
                             '--numtests', '5', '--numshrinks', '3' })
@@ -54,6 +59,25 @@ describe('arg parser', function()
     assert.same(args7.numtests, 5)
     assert.same(args7.numshrinks, 3)
     assert.same(args7.seed, 123)
+    assert.same(args7.colors, false)
+
+    local args8 = p.parse({ 'a', 'b', '--seed', '123', 
+                            '--numtests', '5', '--numshrinks', '3',
+                            '-c' })
+    assert.same(args8.files_or_dirs, { 'a', 'b' })
+    assert.same(args8.numtests, 5)
+    assert.same(args8.numshrinks, 3)
+    assert.same(args8.seed, 123)
+    assert.same(args8.colors, true)
+
+    local args9 = p.parse({ 'a', 'b', '--seed', '123', 
+                            '--numtests', '5', '--numshrinks', '3',
+                            '--colors' })
+    assert.same(args9.files_or_dirs, { 'a', 'b' })
+    assert.same(args9.numtests, 5)
+    assert.same(args9.numshrinks, 3)
+    assert.same(args9.seed, 123)
+    assert.same(args9.colors, true)
   end)
 
   it('raises an error if invalid options are specified', function()

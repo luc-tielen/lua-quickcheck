@@ -38,21 +38,42 @@ function lib.report(s) write(s) end
 -- Prints a '.' to stdout
 function lib.report_success()
   passed_amount = passed_amount + 1
-  lib.report '.'  -- TODO print green .
+  lib.report '.'
+end
+
+
+-- Prints a green '.' to stdout
+local function report_success_colored()
+  passed_amount = passed_amount + 1
+  lib.report '\27[32m.\27[0m'
 end
 
 
 -- Prints a 'x' to stdout
 function lib.report_skipped()
   skipped_amount = skipped_amount + 1
-  lib.report 'x'  -- TODO print orange 'x'
+  lib.report 'x'
 end
 
 
--- Prints 'F' to stdout
+-- Prints a yellow 'x' to stdout
+local function report_skipped_colored()
+  skipped_amount = skipped_amount + 1
+  lib.report '\27[33mx\27[0m'
+end
+
+
+-- Prints an 'F' to stdout
 local function report_failed()
   failed_amount = failed_amount + 1
-  lib.report 'F'  -- TODO print red F
+  lib.report 'F'
+end
+
+
+-- Prints a red 'F' to stdout
+local function report_failed_colored()
+  failed_amount = failed_amount + 1
+  lib.report '\27[31mF\27[0m'
 end
 
 
@@ -91,6 +112,17 @@ function lib.report_summary()
   lib.report('' .. total_tests .. ' tests, ' 
                 .. failed_amount .. ' failures, ' 
                 .. skipped_amount .. ' skipped.\n')
+end
+
+
+-- Configures this module to use ANSI colors when printing to terminal or not.
+-- If enable_colors is true; colors will be used when printing to terminal;
+-- otherwise plain text will be printed.
+function lib.configure(enable_colors)
+  if not enable_colors then return end
+  lib.report_success = report_success_colored
+  lib.report_skipped = report_skipped_colored
+  report_failed = report_failed_colored
 end
 
 

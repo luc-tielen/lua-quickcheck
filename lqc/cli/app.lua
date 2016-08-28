@@ -73,6 +73,7 @@ function app.main(cli_args)
 
   random.seed(config.seed)
   lqc.init(config.numtests, config.numshrinks)
+  report.configure(config.colors)
   execute_scripts(script_files)  
   lqc.check()
   show_output()

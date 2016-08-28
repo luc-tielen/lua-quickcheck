@@ -15,6 +15,7 @@ local default_config = {
   seed = config.default_seed(),
   numtests = 100,
   numshrinks = 100,
+  colors = false
 }
 
 
@@ -30,7 +31,9 @@ end
 -- (see top of file).
 -- Returns the updated config.
 function config.resolve(values)
-  for _, arg_name in ipairs { 'files_or_dirs', 'seed', 'numtests', 'numshrinks' } do
+  for _, arg_name in ipairs { 'files_or_dirs', 'seed', 
+                              'numtests', 'numshrinks',
+                              'colors' } do
     if is_empty_arg(values[arg_name]) then
       values[arg_name] = default_config[arg_name]
     end

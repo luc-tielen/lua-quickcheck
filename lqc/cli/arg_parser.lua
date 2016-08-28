@@ -27,6 +27,7 @@ parser:option('--numtests', 'Number of iterations per property, default = 100',
               nil, str_to_int)
 parser:option('--numshrinks', 'Number of shrinks per failing property, default = 100',
               nil, str_to_int)
+parser:flag('-c --colors', "Enable coloring of test output, default = disabled (doesn't work on Windows!).")
 -- TODO option --check to re-run last seed
 
 
