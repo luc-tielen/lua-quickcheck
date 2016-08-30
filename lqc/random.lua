@@ -10,6 +10,7 @@ function lib.seed(seed)
   -- call into C? 
   if not seed then seed = time() end
   random_seed(seed)
+  return seed
 end
 
 -- Get random number between min and max

@@ -21,6 +21,9 @@ describe('config handling', function()
                                      files_or_dirs = { 'file1', 'file2' } }
     local result6 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30, 
                                      files_or_dirs = { 'file1', 'file2' }, colors = true }
+    local result7 = config.resolve { check = true, numtests = 20, numshrinks = 30, 
+                                     files_or_dirs = { 'file1', 'file2' }, colors = true }
+
     local expected0 = { files_or_dirs = { '.' }, seed = os.time(), 
                         numtests = 100, numshrinks = 100 }
     local expected1 = { files_or_dirs = { '.' }, seed = os.time(), 
@@ -29,12 +32,14 @@ describe('config handling', function()
                         numtests = 100, numshrinks = 100000 }
 
     local expected3 = { files_or_dirs = { '.' }, seed = 123, 
-                        numtests = 100, numshrinks = 100, colors = false }
+                        numtests = 100, numshrinks = 100, colors = false, check = false }
     local expected4 = { files_or_dirs = { '.' }, seed = 12345, 
-                        numtests = 20, numshrinks = 30, colors = false }
+                        numtests = 20, numshrinks = 30, colors = false, check = false }
     local expected5 = { seed = 12345, numtests = 20, numshrinks = 30,
-                        files_or_dirs = { 'file1', 'file2' }, colors = false }
+                        files_or_dirs = { 'file1', 'file2' }, colors = false, check = false }
     local expected6 = { seed = 12345, numtests = 20, numshrinks = 30,
+                        files_or_dirs = { 'file1', 'file2' }, colors = true, check = false }
+    local expected7 = { check = true, numtests = 20, numshrinks = 30,
                         files_or_dirs = { 'file1', 'file2' }, colors = true }
  
     

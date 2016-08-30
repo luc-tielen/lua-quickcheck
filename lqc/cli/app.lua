@@ -9,6 +9,36 @@ local arg_parser = require 'lqc.cli.arg_parser'
 local report = require 'lqc.report'
 
 
+-- File used for remembering last used seed for generating test cases.
+local check_file = '.lqc.lua'
+
+
+-- Tries to read the last quickcheck seed.
+-- Returns the last used seed (or nil on error).
+local function read_from_check_file()
+  return fs.read_file(check_file)
+end
+ 
+
+-- Writes the seed to the check file (.lqc.lua).
+local function write_to_check_file(seed)
+  fs.write_file(check_file, seed)
+end
+
+
+-- Initializes the random seed; either with last used value (--check) or a
+-- specific seed (-s, --seed) or default (current timestamp)
+local function initialize_random_seed(config)
+  local seed = config.seed
+  if config.check then  -- redo last generated test run (if --check specified)
+    seed = read_from_check_file()  
+  end
+  local actual_used_seed = random.seed(seed)
+  write_to_check_file(actual_used_seed)
+  -- TODO write seed to output?
+end
+
+
 -- Depending on the config, return a list of files that should be executed.
 local function find_files(files_or_dirs)
   return reduce(files_or_dirs, Vector.new(), function(file_or_dir, acc)
@@ -71,7 +101,7 @@ function app.main(cli_args)
   local files = find_files(config.files_or_dirs)
   local script_files = find_script_files(files)
 
-  random.seed(config.seed)
+  initialize_random_seed(config)
   lqc.init(config.numtests, config.numshrinks)
   report.configure(config.colors)
   execute_scripts(script_files)  

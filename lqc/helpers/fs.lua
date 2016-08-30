@@ -37,6 +37,41 @@ function lib.is_moonscript_file(file)
 end
 
 
+-- Removes a file from the filesystem.
+function lib.remove_file(path)
+  os.remove(path)
+end
+
+
+-- Checks if a file exists.
+-- Returns true if the file does exist; otherwise false
+function lib.file_exists(path)
+  return lfs.attributes(path) ~= nil
+end
+
+
+-- Reads the entire contents from a (binary) file and returns it.
+-- Returns the contents of the file as a string or nil on error
+function lib.read_file(path)
+  local file = io.open(path, 'rb')
+  if not file then return nil end
+  local contents = file:read '*a'
+  file:close()
+  return contents
+end
+
+
+-- Writes the 'new_contents' to the (binary) file specified by 'path'
+-- Raises an error if file could not be opened.
+function lib.write_file(path, new_contents)
+  if not new_contents then return end
+  local file = io.open(path, 'wb')
+  if not file then error('Could not write to ' .. path .. '!') end
+  file:write(new_contents)
+  file:close()
+end
+
+
 -- Returns a table containing all files in this directory and it's
 -- subdirectories. Raises an error if dir is not a valid string to a directory path.
 function lib.find_files(directory_path)
