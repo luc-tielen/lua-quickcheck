@@ -10,7 +10,7 @@ local report = require 'lqc.report'
 
 
 -- File used for remembering last used seed for generating test cases.
-local check_file = '.lqc.lua'
+local check_file = '.lqc'
 
 
 -- Tries to read the last quickcheck seed.
@@ -35,7 +35,7 @@ local function initialize_random_seed(config)
   end
   local actual_used_seed = random.seed(seed)
   write_to_check_file(actual_used_seed)
-  -- TODO write seed to output?
+  report.report_seed(actual_used_seed)
 end
 
 

@@ -39,7 +39,7 @@ describe('config handling', function()
                         files_or_dirs = { 'file1', 'file2' }, colors = false, check = false }
     local expected6 = { seed = 12345, numtests = 20, numshrinks = 30,
                         files_or_dirs = { 'file1', 'file2' }, colors = true, check = false }
-    local expected7 = { check = true, numtests = 20, numshrinks = 30,
+    local expected7 = { seed = os.time(), check = true, numtests = 20, numshrinks = 30,
                         files_or_dirs = { 'file1', 'file2' }, colors = true }
  
     
@@ -67,15 +67,18 @@ describe('config handling', function()
     sort(result4)
     sort(result5)
     sort(result6)
+    sort(result7)
     sort(expected3)
     sort(expected4)
     sort(expected5)
     sort(expected6)
+    sort(expected7)
 
     assert.same(expected3, result3)
     assert.same(expected4, result4)
     assert.same(expected5, result5)
     assert.same(expected6, result6)
+    assert.same(expected7, result7)
   end)
 end)
 

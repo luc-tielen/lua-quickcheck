@@ -35,6 +35,12 @@ end
 function lib.report(s) write(s) end
 
 
+-- Prints the used random seed to stdout.
+function lib.report_seed(seed)
+  lib.report('Random seed = ' .. seed .. '\n')
+end
+
+
 -- Prints a '.' to stdout
 function lib.report_success()
   passed_amount = passed_amount + 1

@@ -12,7 +12,7 @@ local function do_setup()
   app.exit = function() end
 end
 
-local check_file = '.lqc.lua'
+local check_file = '.lqc'
 
 
 describe('CLI application', function()
