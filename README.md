@@ -3,6 +3,7 @@
 
 [![Build Status](https://travis-ci.org/Primordus/lua-quickcheck.svg?branch=master)](https://travis-ci.org/Primordus/lua-quickcheck)
 [![Coverage Status](https://coveralls.io/repos/github/Primordus/lua-quickcheck/badge.svg?branch=master)](https://coveralls.io/github/Primordus/lua-quickcheck?branch=master)
+[![License (MIT)](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Primordus/lua-quickcheck/blob/master/LICENSE)
 
 [![Lua 5.1 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=Lua5.1&env=LUA=%22lua=5.1%22)](https://travis-ci.org/Primordus/lua-quickcheck)
 [![Lua 5.2 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=Lua5.2&env=LUA=%22lua=5.2%22)](https://travis-ci.org/Primordus/lua-quickcheck)
@@ -25,9 +26,6 @@ In short:
 "Don't write tests... generate them!" - John Hughes
 
 
-NOTE: this is currently a work in progress.
-
-
 ## Examples
 
 Some example properties can be found [here](https://github.com/Primordus/lua-quickcheck/tree/master/spec/fixtures/examples).
@@ -37,6 +35,19 @@ Some example properties can be found [here](https://github.com/Primordus/lua-qui
 
 For more information on how to contribute to Lua-QuickCheck, take a look at 
 [CONTRIBUTING.md](https://github.com/Primordus/lua-quickcheck/blob/master/CONTRIBUTING.md).
+
+
+## Installation
+
+From the commandline, enter the following command:
+
+```bash
+luarocks install lua-quickcheck
+```
+
+After installation, 'lqc' will be available for usage.
+The lqc command can be configured with various options (use lqc --help for a
+list of commandline parameters).
 
 
 ## Tests
@@ -52,8 +63,9 @@ make tests
 
 ## Dependencies
 
-LuaQuickcheck currently depends on LuaFilesystem and argparse.
-There is also an optional dependency to Moonscript for testing properties 
+LuaQuickcheck currently only directly depends on LuaFilesystem and argparse.
+There is also an optional dependency to Lua(JIT) FFI for testing properties in
+C / C++ / ... and an optional dependency on Moonscript for testing properties 
 written in Moonscript.
 
 
@@ -62,9 +74,4 @@ written in Moonscript.
 I wanted a quickcheck library that could also easily interface with C or C++
 side-by-side with my Lua code.
 
-
-## License
-
-This project is licensed under the 
-[MIT license](https://www.github.com/Primordus/lua-quickcheck/LICENSE)
 
