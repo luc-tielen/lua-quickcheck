@@ -63,10 +63,10 @@ make tests
 
 ## Dependencies
 
-LuaQuickcheck currently only directly depends on LuaFilesystem and argparse.
-There is also an optional dependency to Lua(JIT) FFI for testing properties in
-C / C++ / ... and an optional dependency on Moonscript for testing properties 
-written in Moonscript.
+- LuaFilesystem
+- argparse
+- Lua(JIT) FFI (optional, for testing C / C++ / ...)
+- Moonscript (optional, for testing properties written in Moonscript)
 
 
 ## Why another QuickCheck clone?
