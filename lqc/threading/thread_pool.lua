@@ -70,7 +70,7 @@ function ThreadPool.new(num_threads)
     end
   end
 
-  for i = 1, num_threads do
+  for _ = 1, num_threads do
     table.insert(thread_pool.threads, make_thread(msg_processor))
   end
   
@@ -92,7 +92,7 @@ function ThreadPool:join()
   map(self.threads, function(thread) thread:join() end)
 
   local results = {}
-  for i = 1, self.numjobs - #self.threads do  -- don't count stop job at end
+  for _ = 1, self.numjobs - #self.threads do  -- don't count stop job at end
     local _, result = self.linda:receive(nil, RESULT_TAG)
     table.insert(results, result)
   end
