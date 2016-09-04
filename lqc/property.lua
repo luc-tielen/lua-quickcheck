@@ -91,6 +91,7 @@ end
 --  2.2 do shrink to find minimal error case
 --  2.3 when shrink stays the same or max amount exceeded -> print minimal example
 --  2.4 (later) save seed to a file somewhere, for re-running stuff..
+--  Returns nil on success; otherwise returns a table containing error info.
 local function do_check(property)
   for _ = 1, property.numtests do
     local generated_values = property.pick()
@@ -101,17 +102,26 @@ local function do_check(property)
     elseif result == results.SKIPPED then
       report.report_skipped()
     else
+      report.report_failed()
       if #generated_values == 0 then
         -- Empty list of generators -> no further shrinking possible!
-        report.report_failed_property(property, generated_values, generated_values)
-        break
+        return {
+          property = property,
+          generated_values = generated_values,
+          shrunk_values = generated_values
+        }  
       end
 
       local shrunk_values = do_shrink(property, generated_values)
-      report.report_failed_property(property, generated_values, shrunk_values)
-      break
+      return {
+        property = property,
+        generated_values = generated_values,
+        shrunk_values = shrunk_values
+      }
     end
   end
+
+  return nil
 end
 
 
@@ -144,7 +154,7 @@ local function new(descr, property_func, generators, numtests, numshrinks)
 
   -- Function that checks if the property is valid for a set amount of inputs.
   function prop:check()
-    do_check(self)
+    return do_check(self)
   end
 
   return setmetatable(prop, { 

@@ -373,22 +373,29 @@ end
 -- Checks a number of times (according to FSM spec) if property is true.
 -- If the specification failed, then the result will be shrunk down to a
 -- simpler case.
+-- Returns nil on success; otherwise a table containing info related to FSM error.
 function lib.check(description, fsm_table)
   for _ = 1, fsm_table.numtests do
     local generated_actions = lib.generate_actions(fsm_table)
   
     local is_successful, last_step = lib.execute_fsm(fsm_table, generated_actions)
     if not is_successful then
+      report.report_failed()
       local shrunk_actions, last_state, last_result = shrink_fsm(fsm_table,
                                                                  generated_actions, 
                                                                  last_step)
-      report.report_failed_fsm(description)
       fsm_table.when_fail(shrunk_actions:to_table(), last_state, last_result)
-      return
+      return {
+        description = description,
+        generated_actions = generated_actions,
+        shrunk_actions = shrunk_actions
+      }
     end
     
     report.report_success()
   end
+
+  return nil
 end
 
 

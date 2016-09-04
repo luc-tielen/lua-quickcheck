@@ -1,5 +1,7 @@
 local map = require 'lqc.helpers.map'
-local lanes = require('lanes').configure()  -- TODO make lanes optional
+local lanes = require('lanes').configure {
+  with_timers = false
+}  -- TODO make lanes optional
 
 
 local TASK_TAG = 'task'

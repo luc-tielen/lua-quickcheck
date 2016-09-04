@@ -52,7 +52,7 @@ local function new(description, fsm_table)
   local FSM = {}
 
   function FSM.check(_)
-    algorithm.check(description, fsm_table)
+    return algorithm.check(description, fsm_table)
   end
 
   return FSM

@@ -70,7 +70,7 @@ end
 
 
 -- Prints an 'F' to stdout
-local function report_failed()
+function lib.report_failed()
   failed_amount = failed_amount + 1
   lib.report 'F'
 end
@@ -84,24 +84,23 @@ end
 
 
 -- Saves an error to the list of errors.
-local function save_error(failure_str)
+function lib.save_error(failure_str)
   table.insert(reported_errors, failure_str)
 end
 
--- Prints 'F' to stdout, saves information about the failed property for later.
-function lib.report_failed_property(prop, generated_values, shrunk_values)
-  report_failed()
-  save_error('\nProperty "' .. prop.description .. '" failed!\n'
-          .. 'Generated values = ' .. format_table(generated_values) .. '\n'
-          .. 'Simplified solution to = ' .. format_table(shrunk_values) .. '\n')
+
+-- Prints out information regarding the failed property
+function lib.report_failed_property(property, generated_values, shrunk_values)
+  lib.save_error('\nProperty "' .. property.description .. '" failed!\n'
+                .. 'Generated values = ' .. format_table(generated_values) .. '\n'
+                .. 'Simplified solution to = ' .. format_table(shrunk_values) .. '\n')
 end
 
 
--- Prints 'F' to stdout, saves information about the failed FSM for later
+-- Prints out information regarding the failed FSM.
 function lib.report_failed_fsm(description)
-  report_failed()
-  -- TODO print more information
-  save_error('\nFSM ' .. description .. ' failed!\n')
+  -- TODO output more information
+  lib.save_error('\nFSM ' .. description .. ' failed!\n')
 end
 
 
@@ -128,7 +127,7 @@ function lib.configure(enable_colors)
   if not enable_colors then return end
   lib.report_success = report_success_colored
   lib.report_skipped = report_skipped_colored
-  report_failed = report_failed_colored
+  lib.report_failed = report_failed_colored
 end
 
 
