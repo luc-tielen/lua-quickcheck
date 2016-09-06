@@ -75,6 +75,17 @@ local function execute_scripts(files)
 end
 
 
+-- Verifies all properties, with the work divided over X number of threads.
+local function verify_properties(numthreads)
+  if numthreads == 1 then
+    lqc.check()
+    return
+  end
+
+  lqc.check_mt(numthreads)
+end
+
+
 -- Shows the test output (statistics)
 local function show_output() 
   report.report_errors()
@@ -105,7 +116,7 @@ function app.main(cli_args)
   lqc.init(config.numtests, config.numshrinks)
   report.configure(config.colors)
   execute_scripts(script_files)  
-  lqc.check()
+  verify_properties(config.threads)
   show_output()
  
   app.exit()

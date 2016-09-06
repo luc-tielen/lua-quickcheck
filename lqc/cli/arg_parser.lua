@@ -31,6 +31,8 @@ parser:option('--numtests', 'Number of iterations per property, default = 100',
 parser:option('--numshrinks', 'Number of shrinks per failing property, default = 100',
               nil, str_to_int)
 parser:flag('--colors -c', "Enable coloring of test output, default = disabled (doesn't work on Windows!).")
+parser:option('--threads -t', "Executes properties in parallel, default = single-threaded (requires Lua Lanes!).",
+              nil, str_to_int)
 
 
 local lib = {}

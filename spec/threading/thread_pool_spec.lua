@@ -9,6 +9,7 @@ local fsm = require 'lqc.fsm'
 local state = require 'lqc.fsm.state'
 local frequency = require('lqc.lqc_gen').frequency
 local command = require 'lqc.fsm.command'
+local app = require 'lqc.cli.app'
 
 
 local function contains(t, v)
@@ -78,6 +79,7 @@ local function do_setup()
   lqc.properties = {}
   lqc.init(100, 100)
   r.report = function() end
+  app.exit = function() end
 end
 
 
@@ -165,4 +167,26 @@ describe('multi threaded check', function()
     assert.spy(r.report_failed_fsm).was.called(5)
   end)
 end)
+
+
+-- NOTE: this test should be put in app_spec but then a bug in busted/lualanes
+-- is triggered. 
+describe('multi-threaded checking of tests', function()
+  it('should save last seed to .lqc.lua', function()
+    -- Can't use spy across threads (r.report_success)
+    app.exit = spy.new(app.exit)
+    
+    app.main({ 'spec/fixtures/script.lua', '--threads', '2' })
+    assert.spy(app.exit).was.called()
+    lqc.properties = {}
+
+    app.main({ 'spec/fixtures/script.lua', '-t', '2' })
+    assert.spy(app.exit).was.called(2)
+    lqc.properties = {}
+
+    app.main({ 'spec/fixtures/examples/', '-t', '2' })
+    assert.spy(app.exit).was.called(3)
+  end)
+end)
+
 

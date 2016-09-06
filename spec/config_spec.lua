@@ -23,6 +23,9 @@ describe('config handling', function()
                                      files_or_dirs = { 'file1', 'file2' }, colors = true }
     local result7 = config.resolve { check = true, numtests = 20, numshrinks = 30, 
                                      files_or_dirs = { 'file1', 'file2' }, colors = true }
+    local result8 = config.resolve { check = true, numtests = 20, numshrinks = 30, 
+                                     files_or_dirs = { 'file1', 'file2' }, colors = true,
+                                     threads = 3 }
 
     local expected0 = { files_or_dirs = { '.' }, seed = os.time(), 
                         numtests = 100, numshrinks = 100 }
@@ -30,17 +33,24 @@ describe('config handling', function()
                         numtests = 100000, numshrinks = 100 }
     local expected2 = { files_or_dirs = { '.' }, seed = os.time(),
                         numtests = 100, numshrinks = 100000 }
-
     local expected3 = { files_or_dirs = { '.' }, seed = 123, 
-                        numtests = 100, numshrinks = 100, colors = false, check = false }
+                        numtests = 100, numshrinks = 100, colors = false, check = false,
+                        threads = 1  }
     local expected4 = { files_or_dirs = { '.' }, seed = 12345, 
-                        numtests = 20, numshrinks = 30, colors = false, check = false }
+                        numtests = 20, numshrinks = 30, colors = false, check = false,
+                        threads = 1  }
     local expected5 = { seed = 12345, numtests = 20, numshrinks = 30,
-                        files_or_dirs = { 'file1', 'file2' }, colors = false, check = false }
+                        files_or_dirs = { 'file1', 'file2' }, colors = false, check = false,
+                        threads = 1  }
     local expected6 = { seed = 12345, numtests = 20, numshrinks = 30,
-                        files_or_dirs = { 'file1', 'file2' }, colors = true, check = false }
+                        files_or_dirs = { 'file1', 'file2' }, colors = true, check = false,
+                        threads = 1  }
     local expected7 = { seed = os.time(), check = true, numtests = 20, numshrinks = 30,
-                        files_or_dirs = { 'file1', 'file2' }, colors = true }
+                        files_or_dirs = { 'file1', 'file2' }, colors = true,
+                        threads = 1  }
+    local expected8 = { seed = os.time(), check = true, numtests = 20, numshrinks = 30,
+                        files_or_dirs = { 'file1', 'file2' }, colors = true,
+                        threads = 3 }
  
     
     -- 0 -> 2 have to be checked in a more difficult way because the seed
@@ -68,11 +78,13 @@ describe('config handling', function()
     sort(result5)
     sort(result6)
     sort(result7)
+    sort(result8)
     sort(expected3)
     sort(expected4)
     sort(expected5)
     sort(expected6)
     sort(expected7)
+    sort(expected8)
 
     assert.same(expected3, result3)
     assert.same(expected4, result4)
