@@ -12,7 +12,7 @@ endif
 
 
 install:
-	luarocks make rockspecs/lua-quickcheck-0.1-0.rockspec
+	luarocks make rockspecs/lua-quickcheck-0.2-0.rockspec
 
 fixtures:
 	$(MAKE) -C spec/fixtures build

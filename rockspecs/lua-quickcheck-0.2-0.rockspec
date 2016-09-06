@@ -1,8 +1,8 @@
 package = 'lua-quickcheck'
-version = '0.1-0'
+version = '0.2-0'
 source = {
   url = 'git://github.com/Primordus/lua-quickcheck',
-  tag = 'v0.1-0'
+  tag = 'v0.2-0'
 }
 description = {
   summary = 'Property based testing library for Lua',
@@ -58,7 +58,8 @@ build = {
     ['lqc.quickcheck'] = 'lqc/quickcheck.lua',
     ['lqc.config'] = 'lqc/config.lua',
     ['lqc.property'] = 'lqc/property.lua',
-    ['lqc.fsm'] = 'lqc/fsm.lua'
+    ['lqc.fsm'] = 'lqc/fsm.lua',
+    ['lqc.threading.thread_pool'] = 'lqc/threading/thread_pool.lua'
   },
   install = {
     bin = {
