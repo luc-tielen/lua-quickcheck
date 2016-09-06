@@ -24,6 +24,7 @@ install:
   - luarocks install luacov
   - luarocks install luacov-coveralls
   - luarocks install busted
+  - luarocks install lanes
   - luarocks install moonscript
   - if [[ $(echo $LUA | grep -o "jit") = "" ]]; then luarocks install luaffi --server=http://luarocks.org/dev; fi
 
