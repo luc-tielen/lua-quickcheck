@@ -1,5 +1,14 @@
 local ThreadPool = require 'lqc.threading.thread_pool'
 local filter = require 'lqc.helpers.filter'
+local lqc = require 'lqc.quickcheck'
+local r = require 'lqc.report'
+local random = require 'lqc.random'
+local property = require 'lqc.property'
+local int = require 'lqc.generators.int'
+local fsm = require 'lqc.fsm'
+local state = require 'lqc.fsm.state'
+local frequency = require('lqc.lqc_gen').frequency
+local command = require 'lqc.fsm.command'
 
 
 local function contains(t, v)
@@ -60,6 +69,100 @@ describe('thread pool', function()
     local results2 = pool2:join()
     assert.is_true(contains(results2, 123456789) 
                and contains(results2, 'test'))
+  end)
+end)
+
+
+local function do_setup()
+  random.seed()
+  lqc.properties = {}
+  lqc.init(100, 100)
+  r.report = function() end
+end
+
+
+describe('multi threaded check', function()
+  -- NOTE: this test should be put in quickcheck_spec but then a bug in busted/lualanes
+  -- is triggered.
+  before_each(do_setup)
+
+  it('raises an error if init is not called before', function()
+    lqc.init(nil, nil)
+    assert.is_false(pcall(function() lqc.check_mt(1) end))
+    lqc.init(1, 1)
+    assert.is_true(pcall(function() lqc.check_mt(1) end))
+  end)
+
+  it('works with successful properties', function()
+    r.report_failed_property = spy.new(r.report_failed_property)
+    for _ = 1, 5 do
+      property '+ is commutative' {
+        generators = { int(), int() },
+        check = function(x, y)
+          return x + y == y + x
+        end
+      }
+    end
+    lqc.check_mt(5)
+    assert.spy(r.report_failed_property).was.not_called()
+  end)
+
+  it('works with successful properties', function()
+    r.report_failed_fsm = spy.new(r.report_failed_fsm)
+    for _ = 1, 5 do
+      fsm 'successful fsm' {
+        commands = function() return frequency {
+          { 1, command { 'stop', function() end, {} } },
+          { 10, command { '1', function() end, {} } }
+        } end,
+        initial_state = function() return 0 end,
+        states = {
+          state '1' {
+            precondition = function() return true end,
+            next_state = function() end,
+            postcondition = function() return true end
+          }
+        }
+      }
+    end
+    lqc.check_mt(5)
+    assert.spy(r.report_failed_fsm).was.not_called()
+  end)
+
+  it('works with failing properties', function()
+    r.report_failed_property = spy.new(r.report_failed_property)
+    for _ = 1, 5 do
+      property '+ is commutative' {
+        generators = { int() },
+        check = function()
+          return false  -- always fails!
+        end
+      }
+    end
+    lqc.check_mt(5)
+    assert.spy(r.report_failed_property).was.called(5)
+  end)
+
+  it('works with failing FSMs', function()
+    r.report_failed_fsm = spy.new(r.report_failed_fsm)
+    for _ = 1, 5 do
+      fsm 'failing fsm' {
+        commands = function() return frequency {
+          { 1, command { 'stop', function() end, {} } },
+          { 10, command { '1', function() end, {} } }
+        } end,
+        initial_state = function() return 0 end,
+        states = {
+          state '1' {
+            precondition = function() return true end,
+            next_state = function() end,
+            postcondition = function() return false end
+          }
+        }
+      }
+    end
+    lqc.check_mt(5)
+    assert.spy(r.report_failed_fsm).was.called(5)
   end)
 end)
 

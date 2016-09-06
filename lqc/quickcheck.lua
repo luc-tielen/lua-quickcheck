@@ -20,7 +20,7 @@ end
 -- Handles the result of a property.
 local function handle_result(result)
   if not result then return end   -- successful
-  if result.property ~= nil then  -- property failed
+  if type(result.property) == 'table' then  -- property failed
     report.report_failed_property(result.property, 
                                   result.generated_values, 
                                   result.shrunk_values)

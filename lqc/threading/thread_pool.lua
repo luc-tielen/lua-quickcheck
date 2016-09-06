@@ -96,7 +96,7 @@ function ThreadPool:join()
   local results = {}
   for _ = 1, self.numjobs - #self.threads do  -- don't count stop job at end
     local _, result = self.linda:receive(nil, RESULT_TAG)
-    table.insert(results, result)
+    if result ~= VOID_RESULT then table.insert(results, result) end
   end
   return results
 end

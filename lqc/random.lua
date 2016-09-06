@@ -5,13 +5,14 @@ local random = math.random
 
 local lib = {}
 
+
+-- Seeds the random number generator
 function lib.seed(seed)
-  -- TODO improve precision of seed, right now 1 s precision!
-  -- call into C? 
   if not seed then seed = time() end
   random_seed(seed)
   return seed
 end
+
 
 -- Get random number between min and max
 function lib.between(min, max)

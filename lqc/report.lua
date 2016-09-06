@@ -1,5 +1,4 @@
 local map = require 'lqc.helpers.map'
--- TODO check cfg for ansi colors
 
 local write = io.write
 local ipairs = ipairs
