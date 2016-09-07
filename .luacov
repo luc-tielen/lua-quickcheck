@@ -59,6 +59,9 @@ return {
     'lqc.report',
     -- Exclude argparse library
     'argparse$',
-    'argparse.*$'
+    'argparse.*$',
+    -- Exclude Lua Lanes library
+    'lanes$',
+    'lanes.*$'
   }
 }
