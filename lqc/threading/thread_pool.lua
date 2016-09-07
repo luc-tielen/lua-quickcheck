@@ -1,21 +1,7 @@
+local MsgProcessor = require 'lqc.threading.msg_processor'
 local map = require 'lqc.helpers.map'
-local lanes = require('lanes').configure {
-  with_timers = false
-}  -- TODO make lanes optional
+local lanes = require('lanes').configure { with_timers = false }
 
-
-local TASK_TAG = 'task'
-local RESULT_TAG = 'result'
-local STOP_VALUE = 'stop'
-local VOID_RESULT = '__thread_pool_VOID'
-
-
--- Checks if 'x' is callable.
--- Returns true if callable; otherwise false.
-local function is_callable(x)
-  local type_x = type(x)
-  return type_x == 'function' or type_x == 'table'
-end
 
 
 -- Checks if x is a positive integer (excluding 0)
@@ -40,42 +26,22 @@ local function make_thread(func)
 end
 
 
-local ThreadPool = {
-  VOID_RESULT = VOID_RESULT
-}
+local ThreadPool = {}
 local ThreadPool_mt = { __index = ThreadPool }
 
 
 -- Creates a new thread pool with a specific number of threads
 function ThreadPool.new(num_threads)
   check_threadpool_args(num_threads)
-
   local linda = lanes.linda()
   local thread_pool = { 
     threads = {}, 
     linda = linda,
     numjobs = 0
   }
-
-  local function msg_processor()
-    -- TODO init random seed per thread?
-    while true do
-      local _, cmd = linda:receive(nil, TASK_TAG)
-      if cmd == STOP_VALUE then 
-        return 
-      elseif is_callable(cmd) then
-        local result = cmd() or VOID_RESULT  -- hangs if it returns nil.. -> TODO fix dirty workaround
-        linda:send(nil, RESULT_TAG, result)
-      else
-        break
-      end
-    end
-  end
-
   for _ = 1, num_threads do
-    table.insert(thread_pool.threads, make_thread(msg_processor))
+    table.insert(thread_pool.threads, make_thread(MsgProcessor.new(linda)))
   end
-  
   return setmetatable(thread_pool, ThreadPool_mt)
 end
 
@@ -83,20 +49,20 @@ end
 -- Schedules a task to a thread in the thread pool
 function ThreadPool:schedule(task)
   self.numjobs = self.numjobs + 1
-  self.linda:send(nil, TASK_TAG, task)
+  self.linda:send(nil, MsgProcessor.TASK_TAG, task)
 end
 
 
 -- Stops all threads in the threadpool. Blocks until all threads are finished
 -- Returns a table containing all results (in no specific order)
 function ThreadPool:join()
-  map(self.threads, function() self:schedule(STOP_VALUE) end)
+  map(self.threads, function() self:schedule(MsgProcessor.STOP_VALUE) end)
   map(self.threads, function(thread) thread:join() end)
 
   local results = {}
   for _ = 1, self.numjobs - #self.threads do  -- don't count stop job at end
-    local _, result = self.linda:receive(nil, RESULT_TAG)
-    if result ~= VOID_RESULT then table.insert(results, result) end
+    local _, result = self.linda:receive(nil, MsgProcessor.RESULT_TAG)
+    if result ~= MsgProcessor.VOID_RESULT then table.insert(results, result) end
   end
   return results
 end
