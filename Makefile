@@ -29,5 +29,8 @@ coverage:
 clean:
 	$(MAKE) -C spec/fixtures clean
 
+docs:
+	ldoc lqc \$$* --all
+
 .PHONY: clean
 

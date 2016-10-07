@@ -1,21 +1,25 @@
+
+--- Module for creating properties. Provides a small domain specific language
+--  for ease of use.
+--  @module lqc.property
+--  @alias property
+
 local lqc = require 'lqc.quickcheck'
 local report = require 'lqc.report'
 local results = require 'lqc.property_result'
 local unpack = unpack or table.unpack  -- for compatibility reasons
 
 
--- NOTE: property is limited to 1 implies, for_all, when_fail
--- more complex scenarios should be handled with state machine.
-
-
--- Helper function, checks if x is an integer.
--- Returns true if x is an integer; false otherwise.
+--- Helper function, checks if x is an integer.
+-- @param x a value to be checked
+-- @return true if x is an integer; false otherwise.
 local function is_integer(x)
   return type(x) == 'number' and x % 1 == 0
 end
 
 
--- Adds a small wrapper around the check function indicating success or failure
+--- Adds a small wrapper around the check function indicating success or failure
+-- @param prop_table Property to be wrapped.
 local function add_check_wrapper(prop_table)
   local check_func = prop_table.check
   prop_table.check = function(...)
@@ -28,7 +32,8 @@ local function add_check_wrapper(prop_table)
 end
 
 
--- Adds an 'implies' wrapper to the check function
+--- Adds an 'implies' wrapper to the check function
+-- @param prop_table Property to be wrapped.
 local function add_implies(prop_table)
   local check_func = prop_table.check
   prop_table.check = function(...)
@@ -41,7 +46,8 @@ local function add_implies(prop_table)
 end
 
 
--- Adds a 'when_fail' wrapper to the check function
+--- Adds a 'when_fail' wrapper to the check function
+-- @param prop_table Property to be wrapped.
 local function add_when_fail(prop_table)
   local check_func = prop_table.check
   prop_table.check = function(...)
@@ -56,8 +62,13 @@ local function add_when_fail(prop_table)
 end
 
 
--- Shrinks a property that failed with a certain set of inputs.
--- This function returns a simplified list or inputs
+--- Shrinks a property that failed with a certain set of inputs.
+--  This function is called recursively if a shrink fails.
+--  This function returns a simplified list or inputs.
+-- @param property the property that failed
+-- @param generated_values array of values to be shrunk down
+-- @param tries Amount of shrinking tries already done
+-- @return array of shrunk down values
 local function do_shrink(property, generated_values, tries)
   if not tries then tries = 1 end
   local shrunk_values = property.shrink(unpack(generated_values))
@@ -81,7 +92,7 @@ local function do_shrink(property, generated_values, tries)
 end
 
 
--- Function that checks if the property is valid for a set amount of inputs.
+--- Function that checks if the property is valid for a set amount of inputs.
 -- 1. check result of property X amount of times:
 --    - SUCCESS = OK, print '.'
 --    - SKIPPED = OK, print 'x'
@@ -90,8 +101,8 @@ end
 --  2.1 print property info, values for which it fails
 --  2.2 do shrink to find minimal error case
 --  2.3 when shrink stays the same or max amount exceeded -> print minimal example
---  2.4 (later) save seed to a file somewhere, for re-running stuff..
---  Returns nil on success; otherwise returns a table containing error info.
+--  @param property Property to be checked X amount of times.
+--  @return nil on success; otherwise returns a table containing error info.
 local function do_check(property)
   for _ = 1, property.numtests do
     local generated_values = property.pick()
@@ -125,7 +136,15 @@ local function do_check(property)
 end
 
 
--- Creates a new property. 
+--- Creates a new property.
+-- NOTE: property is limited to 1 implies, for_all, when_fail
+-- more complex scenarios should be handled with state machine.
+-- @param descr String containing description of the property
+-- @param property_func Function to be checked X amount of times
+-- @param generators List of generators used to generate values supplied to 'property_func'
+-- @param numtests Number of times the property should be checked
+-- @param numshrinks Number of times a failing property should be shrunk down
+-- @return property object
 local function new(descr, property_func, generators, numtests, numshrinks)
   local prop = {
     description = descr,
@@ -165,7 +184,10 @@ local function new(descr, property_func, generators, numtests, numshrinks)
 end
 
 
--- Inserts the property into the list of existing properties.
+--- Inserts the property into the list of existing properties.
+-- @param descr String containing text description of the property
+-- @param prop_info_table Table containing information of the property
+-- @return nil; raises an error if prop_info_table is not in a valid format
 local function property(descr, prop_info_table)
   local function prop_func(prop_table)
     local generators = prop_table.generators

@@ -1,3 +1,8 @@
+
+--- Module which contains the core of the quickcheck engine.
+-- @module lqc.quickcheck
+-- @alias lib
+
 local report = require 'lqc.report'
 local map = require 'lqc.helpers.map'
 
@@ -10,14 +15,16 @@ local lib = {
 }
 
 
--- Is the quickcheck configuration initialized?
--- Returns true if it is initialized; otherwise false.
+--- Checks if the quickcheck configuration is initialized
+-- @return true if it is initialized; otherwise false.
 local function is_initialized()
   return lib.numtests ~= nil and lib.numshrinks ~= nil
 end
 
 
--- Handles the result of a property.
+--- Handles the result of a property.
+-- @param result table containing information of the property (or nil on success)
+-- @see lqc.property_result
 local function handle_result(result)
   if not result then return end   -- successful
   if type(result.property) == 'table' then  -- property failed
@@ -34,16 +41,18 @@ local function handle_result(result)
 end
 
 
--- Configures the amount of iterations and shrinks the check algorithm should
--- perform.
+--- Configures the amount of iterations and shrinks the check algorithm should perform.
+-- @param numtests Default number of tests per property
+-- @param numshrinks Default number of shrinks per property
 function lib.init(numtests, numshrinks)
   lib.numtests = numtests
   lib.numshrinks = numshrinks
 end
 
 
--- Iterates over all properties in a random order and checks if the property
--- holds true for each generated set of inputs.
+--- Iterates over all properties in a random order and checks if the property
+--  holds true for each generated set of inputs. Raises an error if quickcheck
+--  engine is not initialized yet.
 function lib.check()
   if not is_initialized() then
     error 'quickcheck.init() has to be called before quickcheck.check()!'
@@ -56,7 +65,9 @@ function lib.check()
 end
 
 
--- Multithreaded version of check(), uses a thread pool underneath
+--- Multithreaded version of check(), uses a thread pool in the underlying
+--  implementation. Splits up the properties over different threads.
+-- @param numthreads Number of the threads to divide the properties over.
 function lib.check_mt(numthreads)
   local ThreadPool = require 'lqc.threading.thread_pool'
 

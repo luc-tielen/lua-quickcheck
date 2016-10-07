@@ -1,11 +1,18 @@
+
+--- Helper module for specifying finite state machines (FSMs) with. Provides a DSL.
+-- @module lqc.fsm
+-- @alias fsm
+
 local algorithm = require 'lqc.fsm.algorithm'
 local state = require 'lqc.fsm.state'
 local lqc = require 'lqc.quickcheck'
 
 
--- Adds a stop state to the list of states. (variable modified in place)
+--- Adds a stop state to the list of states. 
 -- This is a special predefined state that will stop the FSM from generating
 -- more state transitions.
+-- @param state_list List of states in the FSM (not including stop state)
+-- @return the updated state list (variable modified in place).
 local function add_stop_state(state_list)
   table.insert(state_list, state 'stop' {
     precondition = function() return true end,  -- always succeeds
@@ -16,16 +23,18 @@ local function add_stop_state(state_list)
 end
 
 
--- Checks if an object is callable (function or functable):
--- Returns true if it is callable; otherwise false.
+--- Checks if an object is callable (function or functable):
+-- @param obj Object to be checked if it is callable
+-- @return true if it is callable; otherwise false
 local function is_callable(obj)
   local type_obj = type(obj)
   return type_obj == 'function' or type_obj == 'table'
 end
 
 
--- Checks if the FSM table contains a valid specification of a state machine
--- Gives an error message if specification is not valid; otherwise does nothing
+--- Checks if the FSM table contains a valid specification of a state machine
+-- @param fsm_table Table containing FSM information/description
+-- @return nil; raises an error message if specification is not valid
 local function check_valid_fsm_spec(fsm_table)
   if not is_callable(fsm_table.commands) then
     error 'Need to provide list of commands to FSM!'
@@ -47,7 +56,10 @@ local function default_cleanup() end
 local function default_when_fail() end
 
 
--- Constructs a new FSM
+--- Constructs a new FSM
+-- @param description text description of the FSM
+-- @param fsm_table table containing FSM info
+-- @return FSM object
 local function new(description, fsm_table)
   local FSM = {}
 
@@ -59,6 +71,9 @@ local function new(description, fsm_table)
 end
 
 
+--- Creates a new FSM and inserts it into the list of properties.
+-- @param descr Text description of the FSM
+-- @param fsm_info_table Table containing information of the FSM
 local function fsm(descr, fsm_info_table)
   local function fsm_func(fsm_table)
     fsm_table.states = add_stop_state(fsm_table.states)

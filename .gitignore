@@ -3,3 +3,4 @@ spec/fixtures/*.o
 spec/fixtures/*.so
 .lqc
 *.rock
+doc/

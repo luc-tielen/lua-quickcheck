@@ -1,10 +1,18 @@
+
+--- Helper module providing various generators for generating data.
+-- @module lqc.lqc_gen
+-- @alias lib
+
 local Gen = require 'lqc.generator'
 local random = require 'lqc.random'
 local reduce = require 'lqc.helpers.reduce'
 
 local lib = {}
 
--- Picks a number randomly between min and max.
+--- Picks a number randomly between min and max.
+-- @param min Minimum value to pick from
+-- @param max Maximum value to pick from
+-- @return a random value between min and max
 local function choose_pick(min, max)
   local function pick()
     return random.between(min, max)
@@ -12,10 +20,13 @@ local function choose_pick(min, max)
   return pick
 end
 
--- Shrinks a value between min and max by dividing the sum of the closest
--- number to 0 and the generated value with 2. 
+--- Shrinks a value between min and max by dividing the sum of the closest
+--  number to 0 and the generated value with 2. 
 -- This effectively reduces it to the value closest to 0 gradually in the
 -- chosen range.
+-- @param min Minimum value to pick from
+-- @param max Maximum value to pick from
+-- @return a shrunk value between min and max
 local function choose_shrink(min, max)
   local shrink_to = (math.abs(min) < math.abs(max)) and min or max
 
@@ -32,13 +43,18 @@ local function choose_shrink(min, max)
   return shrink
 end
 
--- Creates a generator, chooses an integer between min and max.
+--- Creates a generator, chooses an integer between min and max (inclusive range).
+-- @param min Minimum value to pick from
+-- @param max Maximum value to pick from
+-- @return a random value between min and max
 function lib.choose(min, max)
   return Gen.new(choose_pick(min, max), choose_shrink(min, max))
 end
 
 
--- Select a generator from a list of generators
+--- Select a generator from a list of generators
+-- @param generators Table containing an array of generator objects.
+-- @return A new generator that randomly uses 1 of the generators in the list.
 function lib.oneof(generators)
   local which  -- shared state between pick and shrink needed to shrink correctly
 
@@ -54,7 +70,10 @@ function lib.oneof(generators)
 end
 
 
--- Select a generator from a list of weighted generators ({{weight1, gen1}, ... })
+--- Select a generator from a list of weighted generators ({{weight1, gen1}, ... })
+-- @param generators A table containing an array of weighted generators.
+-- @return A new generator that randomly uses a generator from the list, taking the
+--         weights into account.
 function lib.frequency(generators)
   local which
 
@@ -81,7 +100,10 @@ function lib.frequency(generators)
   return Gen.new(frequency_pick, frequency_shrink)
 end
 
--- Create a generator that selects an element based on the input list.
+--- Create a generator that selects an element based on the input list.
+-- @param array an array of constant values
+-- @return Generator that can pick 1 of the values in the array, shrinks
+--         towards beginning of the list.
 function lib.elements(array)
   local last_idx
   local function elements_pick()
