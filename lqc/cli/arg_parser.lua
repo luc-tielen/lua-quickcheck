@@ -1,3 +1,8 @@
+
+--- Module for parsing of commandline arguments
+-- @module lqc.cli.arg_parser
+-- @alias lib
+
 local argparse = require 'argparse'
 local config = require 'lqc.config'
 
@@ -38,8 +43,9 @@ parser:option('--threads -t', "Executes properties in parallel, default = single
 local lib = {}
 
 
--- Parses the arguments, returns a table containing the config specified by the
--- user or raises an error if parsing failed.
+--- Parses the arguments
+-- @return a table containing the config specified by the user;
+--         raises an error if parsing failed.
 function lib.parse(args)
   local parsed_values = parser:parse(args)
   return config.resolve(parsed_values)

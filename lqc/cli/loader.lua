@@ -1,3 +1,9 @@
+
+--- Module for pre-loading all lqc modules so the user does not have to do this.
+-- @module lqc.cli.loader
+-- @alias lib
+
+
 local deep_copy = require 'lqc.helpers.deep_copy'
 local fs = require 'lqc.helpers.fs'
 local has_moonscript, moonscript = pcall(require, 'moonscript')
@@ -30,9 +36,11 @@ do
 end
 
 
--- setfenv is removed from Lua for versions > 5.1;
--- this function aims to provide same functionality.
--- Based mostly on http://leafo.net/guides/setfenv-in-lua52-and-above.html
+--- Compatibility workaround: setfenv is removed from Lua for versions > 5.1.
+--  This function aims to provide same functionality.
+--  Based mostly on http://leafo.net/guides/setfenv-in-lua52-and-above.html
+--  @param func function for which the environment should be changed
+--  @param new_env table containing the new environment to be set
 local function setfenv_compat(func, new_env)
   local idx = 1
   repeat
@@ -49,8 +57,9 @@ end
 local setfenv = setfenv or setfenv_compat
 
 
--- Loads a script, sets a new environment (for easier property based testing),
--- then returns the modified script which can be called as a function.
+--- Loads a script, sets a new environment (for easier property based testing),
+-- @param file_path Path to the file containing a Lua/Moonscript script
+-- @return the modified script which can be called as a function.
 function lib.load_script(file_path)
   -- Check if Moonscript file and if Moonscript available
   if fs.is_moonscript_file(file_path) then
