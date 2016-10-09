@@ -1,3 +1,8 @@
+
+--- Module describing the algorithm used by the FSM properties.
+-- @module lqc.fsm.algorithm
+-- @alias lib
+
 local Vector = require 'lqc.helpers.vector'
 local Var = require 'lqc.fsm.var'
 local Command = require 'lqc.fsm.command'
@@ -11,7 +16,8 @@ local unpack = unpack or table.unpack  -- for compatibility reasons
 local lib = {}
 
 
--- Creates a small helper object that keeps track of a counter
+--- Creates a small helper object that keeps track of a counter
+-- @return counter object
 function lib.make_counter()
   local Counter = {
     val = 1,
@@ -22,30 +28,37 @@ function lib.make_counter()
 end
 
 
--- Checks if x lies between min and max
--- Returns true if min <= x and x <= max.
+--- Checks if x lies between min and max
+-- @param x A number
+-- @param min Minimum value
+-- @param max Maximum value
+-- @return true if min <= x and x <= max; otherwise false.
 local function is_between(x, min, max)
   return min <= x and x <= max
 end
 
 
--- How many items should be shrunk?
--- returns a random number between 1 and max_amount (inclusive)
+--- Determines how many items should be shrunk
+-- @param max_amount Maximum amount of items that are allowed to be shrunk down
+-- @return random number between 1 and max_amount (inclusive)
 local function shrink_how_many(max_amount)
   if max_amount <= 1 then return 1 end
   return random.between(1, max_amount)
 end
 
 
--- Should an action be marked for deletion?
+--- Determines if an an action should be marked for deletion
+-- @return true if it should be deleted; otherwise false
 local function should_select_action()
   return random.between(1, 4) == 1  -- 25% chance
 end
 
 
--- Finds a specific state in the list of states based on name of the state.
--- Raises an error if no state is present with the specified name; otherwise
--- returns the state with that name.
+--- Finds a specific state in the list of states based on name of the state.
+-- @param states List of states to search in
+-- @param state_name Name of the state to find
+-- @return the state with that name; 
+--         raises an error if no state is present with the specified name
 function lib.find_state(states, state_name)
   for i = 1, #states do
     local state = states[i]
@@ -55,8 +68,11 @@ function lib.find_state(states, state_name)
 end
 
 
--- Finds the next command based on the FSM model and the current state.
--- Returns 3 values: chosen_command, cmd_generator, updated_current_state
+--- Finds the next command based on the FSM model and the current state.
+-- @param fsm table describing the FSM property
+-- @param current_state Variable containing the current state of the FSM
+-- @param var_counter Number indicating how many variables have already been used
+-- @return 3 values: chosen_command, cmd_generator, updated_current_state
 function lib.find_next_action(fsm, current_state, var_counter)
   local numtests, commands, states = fsm.numtests, fsm.commands, fsm.states
   local cmd_gen = commands(current_state)
@@ -78,7 +94,9 @@ function lib.find_next_action(fsm, current_state, var_counter)
 end
 
 
--- Generates a list of steps for a FSM specification
+--- Generates a list of steps for a FSM specification
+-- @param fsm_table table containing description of a FSM property
+-- @return list of generated actions
 function lib.generate_actions(fsm_table)
   local generated_actions = Vector.new()
   local counter = lib.make_counter()
@@ -94,8 +112,10 @@ function lib.generate_actions(fsm_table)
 end
 
 
--- Slices of the last actions past index
--- Returns the action vector (modified in place)
+--- Slices of the last actions past index
+-- @param action_vector Vector of actions
+-- @param index Last position in the vector that should not be removed
+-- @return the action vector (modified in place)
 function lib.slice_last_actions(action_vector, index)
   local action_vector_copy = deep_copy(action_vector)
   local last_pos = action_vector_copy:size() - 1  -- -1 since we want to keep stop action!
@@ -106,9 +126,10 @@ function lib.slice_last_actions(action_vector, index)
 end
 
 
--- Selects at most 'how_many' amount of actions from the vector of actions 
--- to be marked for deletion.
--- returns a vector of actions which should be deleted.
+--- Selects at most 'how_many' amount of actions from the vector of actions 
+--  to be marked for deletion.
+-- @param action_vector Vector containing list of actions
+-- @return vector of actions which should be deleted.
 function lib.select_actions(action_vector)
   local selected_actions, idx_vector = Vector.new(), Vector.new()
   if action_vector:size() <= 2 then return selected_actions, idx_vector end
@@ -132,8 +153,10 @@ function lib.select_actions(action_vector)
 end
 
 
--- Removes all elements of 'which_actions' from 'action_vector'
--- returns an updated vector
+--- Removes all elements of 'which_actions' from 'action_vector'
+-- @param action_vector Vector of actions from which actions will be removed
+-- @param which_actions actions to be removed
+-- @return an updated vector
 function lib.delete_actions(action_vector, which_actions)
   local action_vector_copy = deep_copy(action_vector)
   for i = 1, which_actions:size() do
@@ -143,15 +166,22 @@ function lib.delete_actions(action_vector, which_actions)
 end
 
 
--- Does the actual execution of the FSM by executing the list of actions
--- If one of the postconditions fail after an action is applied, then the
--- actions will be shrunk down to a simpler scenario.
--- At the end, the state is cleaned up by the cleanup-callback.
--- Returns 4 values:
--- 1) true if the FSM property succeeded for these actions; false otherwise.
--- 2) index of last successful step (1-based)
--- 3) state of the model right before the failing action
--- 4) result of the last failing action
+--- Does the actual execution of the FSM by executing the list of actions
+--  If one of the postconditions fail after an action is applied, then the
+--  actions will be shrunk down to a simpler scenario.
+--  At the end, the state is cleaned up by the cleanup-callback.
+--  Returns 4 values:
+--  1) true if the FSM property succeeded for these actions; false otherwise.
+--  2) index of last successful step (1-based)
+--  3) state of the model right before the failing action
+--  4) result of the last failing action
+-- @param fsm_table table containing description of a FSM property
+-- @param generated_actions list of actions to be executed for this FSM
+-- @return 4 values:
+--  1. bool: true = FSM succeeded; false = FSM failed
+--  2. Amount of actions executed
+--  3. Last state of the FSM
+--  4. Last result (return value of last command)
 function lib.execute_fsm(fsm_table, generated_actions)
   local state = fsm_table.initial_state()
   local last_state, last_result = state, nil
@@ -180,9 +210,11 @@ function lib.execute_fsm(fsm_table, generated_actions)
 end
 
 
--- Is the list of actions valid to execute on this FSM?
--- Replays sequence symbolically to verify if it is indeed valid.
--- returns true if list of actions valid; otherwise false.
+--- Is the list of actions valid to execute on this FSM?
+--  Replays sequence symbolically to verify if it is indeed valid.
+-- @param fsm_table table containing description of a FSM property
+-- @param action_vector list of actions to be checked
+-- @return true if list of actions valid; otherwise false.
 function lib.is_action_sequence_valid(fsm_table, action_vector)
   local states = fsm_table.states
   local state = fsm_table.initial_state()
@@ -201,13 +233,15 @@ function lib.is_action_sequence_valid(fsm_table, action_vector)
 end
 
 
--- Tries to shrink the list of actions to a simpler form by removing steps of
--- the sequence and checking if it is still valid.
--- The function is recursive and will loop until tries_left is 0.
--- Returns 2 values:
--- 1) action_list if shrinking was not possible after X amount of tries;
---    otherwise it will return a shrunk list of actions.
--- 2) list of deleted actions (empty if shrinking failed after X tries)
+--- Tries to shrink the list of actions to a simpler form by removing steps of
+--  the sequence and checking if it is still valid.
+--  The function is recursive and will loop until tries_left is 0.
+-- @param fsm_table table containing description of a FSM property
+-- @param action_list list of actions to be shrunk down
+-- @return 2 values:
+--   1) action_list if shrinking was not possible after X amount of tries;
+--      otherwise it will return a shrunk list of actions.
+--   2) list of deleted actions (empty if shrinking failed after X tries)
 local function do_shrink_actions(fsm_table, action_list)
   local which_actions = lib.select_actions(action_list)
   local shrunk_actions = lib.delete_actions(action_list, which_actions)
@@ -220,10 +254,14 @@ local function do_shrink_actions(fsm_table, action_list)
 end
 
 
--- Does the shrinking of the FSM actions
--- choose 1 - N steps and delete them from list of actions
--- repeat X amount of times (recursively)
--- returns the shrunk down list
+--- Does the shrinking of the FSM actions
+--  choose 1 - N steps and delete them from list of actions
+--  repeat X amount of times (recursively)
+-- @param fsm_table table containing description of a FSM property
+-- @param generated_actions List of actions to be shrunk down
+-- @param removed_actions Already removed actions
+-- @param tries Remaining tries to recusively try shrinking the actions
+-- @return the shrunk down list of actions
 local function shrink_actions(fsm_table, generated_actions, removed_actions, tries)
   if tries == 1 then return generated_actions, removed_actions end
   
@@ -231,17 +269,21 @@ local function shrink_actions(fsm_table, generated_actions, removed_actions, tri
   local total_removed_actions = removed_actions:append(deleted_actions)
 
   -- TODO add execute fsm here and shrink deleted actions?
-
   return shrink_actions(fsm_table, shrunk_actions, total_removed_actions, tries - 1)
 end
 
 
--- Tries to shrink the list of failing actions by selecting a subset and
--- checking if the combination is now valid and if the FSM still fails or not
--- This is a recursive function which returns 3 things:
--- 1. the shrunk list of actions (or the original list if no better solution was found)
--- 2. the end state of the fsm after these actions
--- 3. result of the last action
+--- Tries to shrink the list of failing actions by selecting a subset and
+--  checking if the combination is now valid and if the FSM still fails or not
+--  This is a recursive function.
+-- @param fsm_table table containing description of a FSM property
+-- @param generated_actions List of actions to be shrunk down
+-- @param deleted_actions Already deleted actions
+-- @param tries Remaining tries to recusively try shrinking the actions
+-- @return 3 things:
+--   1. the shrunk list of actions (or the original list if no better solution was found)
+--   2. the end state of the fsm after these actions
+--   3. result of the last action
 local function shrink_deleted_actions(fsm_table, generated_actions, deleted_actions, tries)
   if tries == 1 then return generated_actions end
   
@@ -263,6 +305,14 @@ local function shrink_deleted_actions(fsm_table, generated_actions, deleted_acti
 end
 
 
+--- Tries to shrink down the list of FSM actions. This function is called
+--  recursively until all tries are used.
+-- @param fsm_table table containing description of a FSM property
+-- @param generated_actions List of actions to be shrunk down
+-- @param step last step in the series of actions that succeeded while testing
+--             the FSM property
+-- @param tries Remaining tries to recusively try shrinking the actions
+-- @return list of shrunk down actions
 function lib.shrink_fsm_actions(fsm_table, generated_actions, step, tries)
   if tries == 1 then return generated_actions end
 
@@ -295,6 +345,9 @@ function lib.shrink_fsm_actions(fsm_table, generated_actions, step, tries)
 end
 
 
+--- Select a group of actions to be marked for shrinking down.
+-- @param action_list List of actions to be shrunk down.
+-- @return vector of indices for the actions which should be removed
 local function select_actions_for_arg_shrinking(action_list)
   local _, idx_vector = lib.select_actions(action_list)
   if idx_vector:size() == 0 and is_between(action_list:size(), 2, 10) then
@@ -306,9 +359,11 @@ local function select_actions_for_arg_shrinking(action_list)
 end
 
 
--- Does the actual shrinking of the command arguments of a sequence of actions.
--- Returns an updated sequence of the action list (original is modified!) with
--- shrunk arguments.
+--- Does the actual shrinking of the command arguments of a sequence of actions.
+-- @param fsm_table table containing description of a FSM property
+-- @param action_list List of actions to be shrunk down
+-- @return an updated sequence of the action list (original is modified!) with
+--         shrunk arguments.
 local function shrink_args(fsm_table, action_list)
   local idx_vector = select_actions_for_arg_shrinking(action_list)
   
@@ -329,6 +384,12 @@ local function shrink_args(fsm_table, action_list)
 end
 
 
+--- Shrinks down the arguments provided to the sequence of actions
+--  This function is called recursively until all tries are used.
+-- @param fsm_table table containing description of a FSM property
+-- @param generated_actions List of actions to be shrunk down
+-- @param tries Remaining tries to recusively try shrinking the actions
+-- @return
 local function shrink_fsm_args(fsm_table, generated_actions, tries)
   if tries == 1 then return generated_actions end
 
@@ -348,18 +409,22 @@ local function shrink_fsm_args(fsm_table, generated_actions, tries)
 end
 
 
--- Replays the FSM
--- Returns the last state and result while executing the FSM.
+--- Replays the FSM property.
+-- @param fsm_table table containing description of a FSM property
+-- @param action_vector List of actions to replay
+-- @return last state and result while executing the FSM.
 local function replay_fsm(fsm_table, action_vector)
   local _, _, last_state, last_result = lib.execute_fsm(fsm_table, action_vector)
   return last_state, last_result
 end
 
 
--- Shrinks the list of generated actions for a given FSM.
--- This is a recursive function which keeps trying for X amount of times.
--- Returns the shrunk list of actions or the original action list if shrinking
--- did not help.
+--- Shrinks the list of generated actions for a given FSM.
+--  This is a recursive function which keeps trying for X amount of times.
+-- @param fsm_table table containing description of a FSM property
+-- @param generated_actions List of actions to be shrunk down
+-- @param step Last successful step that was executed before FSM failed
+-- @return shrunk list of actions or original action list if shrinking did not help.
 local function shrink_fsm(fsm_table, generated_actions, step)
   local fsm_shrink_amount = fsm_table.numshrinks 
   local shrunk_actions = lib.shrink_fsm_actions(fsm_table, generated_actions, step, fsm_shrink_amount)
@@ -369,11 +434,13 @@ local function shrink_fsm(fsm_table, generated_actions, step)
 end
 
 
--- The main checking function for FSM specifications
--- Checks a number of times (according to FSM spec) if property is true.
--- If the specification failed, then the result will be shrunk down to a
--- simpler case.
--- Returns nil on success; otherwise a table containing info related to FSM error.
+--- The main checking function for FSM specifications.
+--  Checks a number of times (according to FSM spec) if property is true.
+--  If the specification failed, then the result will be shrunk down to a
+--  simpler case.
+-- @param description string description of the FSM property
+-- @param fsm_table table containing description of a FSM property
+-- @return nil on success; otherwise a table containing info related to FSM error.
 function lib.check(description, fsm_table)
   for _ = 1, fsm_table.numtests do
     local generated_actions = lib.generate_actions(fsm_table)
