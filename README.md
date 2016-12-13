@@ -1,14 +1,14 @@
 
 # Lua-QuickCheck
 
-[![Build Status](https://travis-ci.org/Primordus/lua-quickcheck.svg?branch=master)](https://travis-ci.org/Primordus/lua-quickcheck)
-[![Coverage Status](https://coveralls.io/repos/github/Primordus/lua-quickcheck/badge.svg?branch=master)](https://coveralls.io/github/Primordus/lua-quickcheck?branch=master)
-[![License (MIT)](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Primordus/lua-quickcheck/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/luc-tielen/lua-quickcheck.svg?branch=master)](https://travis-ci.org/luc-tielen/lua-quickcheck)
+[![Coverage Status](https://coveralls.io/repos/github/luc-tielen/lua-quickcheck/badge.svg?branch=master)](https://coveralls.io/github/luc-tielen/lua-quickcheck?branch=master)
+[![License (MIT)](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/luc-tielen/lua-quickcheck/blob/master/LICENSE)
 
-[![Lua 5.1 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=Lua5.1&env=LUA=%22lua=5.1%22)](https://travis-ci.org/Primordus/lua-quickcheck)
-[![Lua 5.2 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=Lua5.2&env=LUA=%22lua=5.2%22)](https://travis-ci.org/Primordus/lua-quickcheck)
-[![LuaJIT 2.0 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=LuaJIT2.0&env=LUA=%22luajit=2.0%22)](https://travis-ci.org/Primordus/lua-quickcheck)
-[![LuaJIT 2.1 status](https://badges.herokuapp.com/travis/Primordus/lua-quickcheck?label=LuaJIT2.1&env=LUA=%22luajit=2.1%22)](https://travis-ci.org/Primordus/lua-quickcheck)
+[![Lua 5.1 status](https://badges.herokuapp.com/travis/luc-tielen/lua-quickcheck?label=Lua5.1&env=LUA=%22lua=5.1%22)](https://travis-ci.org/luc-tielen/lua-quickcheck)
+[![Lua 5.2 status](https://badges.herokuapp.com/travis/luc-tielen/lua-quickcheck?label=Lua5.2&env=LUA=%22lua=5.2%22)](https://travis-ci.org/luc-tielen/lua-quickcheck)
+[![LuaJIT 2.0 status](https://badges.herokuapp.com/travis/luc-tielen/lua-quickcheck?label=LuaJIT2.0&env=LUA=%22luajit=2.0%22)](https://travis-ci.org/luc-tielen/lua-quickcheck)
+[![LuaJIT 2.1 status](https://badges.herokuapp.com/travis/luc-tielen/lua-quickcheck?label=LuaJIT2.1&env=LUA=%22luajit=2.1%22)](https://travis-ci.org/luc-tielen/lua-quickcheck)
 
 
 Lua-QuickCheck is a Quickcheck clone for Lua.
@@ -28,13 +28,13 @@ In short:
 
 ## Examples
 
-Some example properties can be found [here](https://github.com/Primordus/lua-quickcheck/tree/master/spec/fixtures/examples).
+Some example properties can be found [here](https://github.com/luc-tielen/lua-quickcheck/tree/master/spec/fixtures/examples).
 
 
 ## Contributing
 
 For more information on how to contribute to Lua-QuickCheck, take a look at 
-[CONTRIBUTING.md](https://github.com/Primordus/lua-quickcheck/blob/master/CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/luc-tielen/lua-quickcheck/blob/master/CONTRIBUTING.md).
 
 
 ## Installation
