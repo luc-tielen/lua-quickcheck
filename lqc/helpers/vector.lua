@@ -6,7 +6,7 @@
 local deep_equals = require 'lqc.helpers.deep_equals'
 
 local Vector = {}
-local Vector_mt = { 
+local Vector_mt = {
   __index = Vector
 }
 
@@ -36,7 +36,7 @@ end
 --- Replaces an element in the vector.
 -- @param idx Index of the element in the vector to be replaced
 -- @param obj Object that the previous object should be replaced with
--- @return self (for method chaining); raises an error if idx is an index 
+-- @return self (for method chaining); raises an error if idx is an index
 --         not present in the vector
 function Vector:replace(idx, obj)
   local vec_size = self:size()

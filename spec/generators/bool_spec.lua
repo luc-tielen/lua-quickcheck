@@ -17,8 +17,8 @@ end
 
 
 describe('boolean generator', function()
-  before_each(do_setup) 
-  
+  before_each(do_setup)
+
   describe('pick function', function()
     it('should pick a boolean', function()
       local spy_check = spy.new(function(x) return is_bool(x) end)

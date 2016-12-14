@@ -21,7 +21,7 @@ describe('CLI loader', function()
 
     local enhanced_script = loader.load_script 'spec/fixtures/script.lua'
     enhanced_script()
-    
+
     assert.equals(1, #lqc.properties)
     lqc.check()
     assert.spy(r.report_success).was.called(lqc.iteration_amount)

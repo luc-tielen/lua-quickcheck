@@ -54,19 +54,19 @@ local function describe_counter_fsm(iteration_amount)
     states = {
       state 'increment' {
         precondition = function()  -- parameters: s (state), args (in a table)
-          -- NOTE: this function is called during test case generation to generate 
-          -- random sequence of events and during shrinking to check if the shrunk 
+          -- NOTE: this function is called during test case generation to generate
+          -- random sequence of events and during shrinking to check if the shrunk
           -- sequence is still valid
           return true  -- always allowed
         end,
         next_state = function(s, _, args)   -- parameters: s (state), v (value = (symbolic or real) result, args (table)
           -- NOTE: this function is called both during test case generation
-          -- (to update symbolic state of the model) and during FSM execution 
+          -- (to update symbolic state of the model) and during FSM execution
           -- (to update real state of the model)
           return s + args[1]
         end,
         postcondition = function(s, _, args)  -- parameters: s (state), r (result), args (table)
-          -- NOTE: s = state *before* command was executed! 
+          -- NOTE: s = state *before* command was executed!
           -- r is actual value returned by command
           return ctr:value() == s + args[1]
         end
@@ -78,7 +78,7 @@ local function describe_counter_fsm(iteration_amount)
       }
     },
     cleanup = function(_)  -- takes a parameter s (end state after running X actions)
-      ctr = new_counter() 
+      ctr = new_counter()
     end,
     when_fail = function()  -- parameters: history, state, result
       -- ...

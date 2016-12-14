@@ -10,7 +10,7 @@
 -- @return new array containing only the values for which the predicate is true
 local function filter(array, predicate)
   local result = {}
-  
+
   for idx = 1, #array do
     local value = array[idx]
     if predicate(value) then

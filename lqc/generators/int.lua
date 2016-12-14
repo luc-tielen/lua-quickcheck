@@ -8,7 +8,7 @@ local random = require 'lqc.random'
 local abs = math.abs
 
 
---- Helper function for picking a random integer, bounded by min and max. 
+--- Helper function for picking a random integer, bounded by min and max.
 -- @param min minimum value
 -- @param max maximum value
 -- @return function that can generate an integer (min <= int <= max)
@@ -80,7 +80,7 @@ local function positive_integer(max)
 end
 
 
---- Creates a generator for generating an integer uniformly chosen 
+--- Creates a generator for generating an integer uniformly chosen
 --  between +- sample_size / 2.
 -- @return generator that can generate an integer
 local function integer()

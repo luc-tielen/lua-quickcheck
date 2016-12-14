@@ -129,7 +129,7 @@ describe('Tests for the FSM algorithm', function()
 
     it('should pick a valid next action', function()
       local spy_check = spy.new(function(state_number)
-        local action, new_state = find_next(fsm_table, state_number, 
+        local action, new_state = find_next(fsm_table, state_number,
                                             algorithm.make_counter())
         if action.variable.value ~= 1 then return false end
         local cmd_name = action.command.state_name
@@ -142,7 +142,7 @@ describe('Tests for the FSM algorithm', function()
         if state_number == 1 and cmd_name == '0' then
           -- stop is allowed here since no further actions possible after '1'
           return false
-        end 
+        end
 
         if cmd_name == '0' then
           return new_state == 1
@@ -173,7 +173,7 @@ describe('Tests for the FSM algorithm', function()
       end
 
       local spy_check = spy.new(function(state_number)
-        local action = find_next(fsm_table_copy, state_number, 
+        local action = find_next(fsm_table_copy, state_number,
                                  algorithm.make_counter())
         return action.command.state_name == 'stop'
       end)
@@ -218,7 +218,7 @@ describe('Tests for the FSM algorithm', function()
 
       local spy_check = spy.new(function()
         local actions = algorithm.generate_actions(fsm_table)
-        local state_names = map(actions:to_table(), function(action) 
+        local state_names = map(actions:to_table(), function(action)
           return action.command.state_name
         end)
         return deep_equals(state_names, { '0', '1', 'stop' })
@@ -263,9 +263,9 @@ describe('Tests for the FSM algorithm', function()
         return true
       end
 
-      local spy_check = spy.new(function(x) 
+      local spy_check = spy.new(function(x)
         local actions = make_vector(x)
-        actions:push_back('stop')   
+        actions:push_back('stop')
         local selected_actions = algorithm.select_actions(actions)
 
         return (selected_actions:size() < actions:size())
@@ -327,7 +327,7 @@ describe('Tests for the FSM algorithm', function()
               action_vector:push_back(0)
               args_vector:push_back(1)
             end, {} } },
-            { 5, Command { '1', function(x) 
+            { 5, Command { '1', function(x)
               model = model + x
               action_vector:push_back(1)
               args_vector:push_back(x)
@@ -381,7 +381,7 @@ describe('Tests for the FSM algorithm', function()
           args_vector = Vector.new()
           return true
         end
-        
+
         -- otherwise should succeed
         if not is_ok then return false end
         if last_step ~= actions:size() - 1 then return false end
@@ -459,12 +459,12 @@ describe('Tests for the FSM algorithm', function()
       assert.is_false(is_valid(fsm_table, Vector.new({
         make_action '1',
         make_action '2'
-      })))     
+      })))
     end)
   end)
 
   describe('check function', function()
-    it('should execute a correct FSM X amount of times as specified in the fsm_table', function() 
+    it('should execute a correct FSM X amount of times as specified in the fsm_table', function()
       r.report_success = spy.new(r.report_success)
       local counter = 0
       local fsm_table = {
@@ -507,7 +507,7 @@ describe('Tests for the FSM algorithm', function()
         generators = {}
       }
       lqc.check()
-      local expected_amount = 
+      local expected_amount =
         lqc.numtests * lqc.numtests  -- loop once from property, once from FSM
         + lqc.numtests  -- property also calls report_success itself
       assert.spy(r.report_success).was.called(expected_amount)
@@ -526,7 +526,7 @@ describe('Tests for the FSM algorithm', function()
           return frequency {
             { 1, Command { 'stop', function() return 'stop_result' end, {} } },
             { 10, oneof {
-              Command { 'good_add', function() 
+              Command { 'good_add', function()
                 counter = counter + 1
                 return 'good_add_result'
               end, {} },
@@ -616,18 +616,18 @@ describe('Tests for the FSM algorithm', function()
     local fsm_table = {
       commands = function()
         return frequency {
-          { 1, Command.stop }, 
+          { 1, Command.stop },
           { 10, oneof {
             Command { 'add', function()
                 if should_introduce_glitch then return end
-                counter = counter + 1 
-              end, 
+                counter = counter + 1
+              end,
               {} },
             Command { 'subtract', function()
                 if should_introduce_glitch then return end
-                counter = counter - 1 
+                counter = counter - 1
                 should_introduce_glitch = true
-              end, 
+              end,
               {} }
           } }
         }
@@ -689,7 +689,7 @@ describe('Tests for the FSM algorithm', function()
     local fsm_table = {
       commands = function()
         return frequency {
-          { 1, Command.stop }, 
+          { 1, Command.stop },
           { 10, Command { 'add', function(x)
               if should_introduce_glitch then
                 -- this glitch is only triggered once, afterwards works fine
@@ -699,7 +699,7 @@ describe('Tests for the FSM algorithm', function()
                 return
               end
               counter = counter + x
-            end, 
+            end,
             { int(1, 100) } }
           }
         }
@@ -760,7 +760,7 @@ describe('Tests for the FSM algorithm', function()
     local fsm_table = {
       commands = function()
         return frequency {
-          { 1, Command.stop }, 
+          { 1, Command.stop },
           { 10, oneof {
             Command { '1', function()
               counter = 1
@@ -771,13 +771,13 @@ describe('Tests for the FSM algorithm', function()
             Command { '3', function()
               counter = 4
             end, {} }
-          }        
+          }
         } }
       end,
       initial_state = function() return 0 end,
       states = {
         state '1' {
-          precondition = function(s) 
+          precondition = function(s)
             return s == 0 or should_introduce_glitch
           end,
           next_state = function() return 1 end,
@@ -789,10 +789,10 @@ describe('Tests for the FSM algorithm', function()
           postcondition = function(s) return counter == s + 1 end
         },
         state '3' {
-          precondition = function(s) 
+          precondition = function(s)
             local introduce_glitch = should_introduce_glitch
             should_introduce_glitch = true
-            return s == 2 or introduce_glitch 
+            return s == 2 or introduce_glitch
           end,
           next_state = function() return 3 end,
           postcondition = function(s) return counter == s + 1 or should_introduce_glitch end
@@ -808,7 +808,7 @@ describe('Tests for the FSM algorithm', function()
       numtests = 50,
       numshrinks = 50
     }
- 
+
     property 'shrinking down failed FSMs, pt4' {
       generators = {},
       check = function()

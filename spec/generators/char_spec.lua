@@ -10,7 +10,7 @@ local lowest_ascii_char = string.char(lowest_ascii_value)
 
 local function is_readable_char(value)
   local char_value = string.byte(value)
-  return type(value) == 'string' 
+  return type(value) == 'string'
      and string.len(value) == 1
      and char_value >= lowest_ascii_value
      and char_value <= highest_ascii_value

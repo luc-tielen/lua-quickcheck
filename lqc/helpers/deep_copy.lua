@@ -8,7 +8,7 @@ local pairs = pairs
 
 --- Deep copies an object recursively (including (nested) tables, metatables,
 --  circular references, ...)
--- Heavily based on http://stackoverflow.com/questions/640642/how-do-you-copy-a-lua-table-by-value 
+-- Heavily based on http://stackoverflow.com/questions/640642/how-do-you-copy-a-lua-table-by-value
 -- @param obj Object to be copied
 -- @param seen Table of previously seen objects (for handling circular references), default nil
 -- @return deep copy of obj

@@ -21,7 +21,7 @@ local function choose_pick(min, max)
 end
 
 --- Shrinks a value between min and max by dividing the sum of the closest
---  number to 0 and the generated value with 2. 
+--  number to 0 and the generated value with 2.
 -- This effectively reduces it to the value closest to 0 gradually in the
 -- chosen range.
 -- @param min Minimum value to pick from
@@ -32,7 +32,7 @@ local function choose_shrink(min, max)
 
   local function shrink(value)
     local shrunk_value = (shrink_to + value) / 2
-  
+
     if shrunk_value < 0 then
       return math.ceil(shrunk_value)
     else
@@ -80,7 +80,7 @@ function lib.frequency(generators)
   local function do_sum(generator, acc) return generator[1] + acc end
   local function frequency_pick(numtests)
     local sum = reduce(generators, 0, do_sum)
-    
+
     local val = random.between(1, sum)
     which = reduce(generators, { 0, 1 }, function(generator, acc)
       local current_sum = acc[1] + generator[1]
@@ -90,7 +90,7 @@ function lib.frequency(generators)
         return { current_sum, acc[2] + 1 }
       end
     end)[2]
-    
+
     return generators[which][2]:pick(numtests)
   end
   local function frequency_shrink(prev)

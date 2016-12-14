@@ -40,7 +40,7 @@ describe('deep_copy helper function', function()
     end
     assert.not_same(x, y)
     assert.same({ 1, 2, { a = 4 } }, x)
-    
+
     y = deep_copy(x)
     assert.same(x, y)
 

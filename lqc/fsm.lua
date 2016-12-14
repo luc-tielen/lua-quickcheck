@@ -8,7 +8,7 @@ local state = require 'lqc.fsm.state'
 local lqc = require 'lqc.quickcheck'
 
 
---- Adds a stop state to the list of states. 
+--- Adds a stop state to the list of states.
 -- This is a special predefined state that will stop the FSM from generating
 -- more state transitions.
 -- @param state_list List of states in the FSM (not including stop state)
@@ -81,7 +81,7 @@ local function fsm(descr, fsm_info_table)
     fsm_table.when_fail = fsm_table.when_fail or default_when_fail
     fsm_table.numtests = fsm_table.numtests or lqc.numtests
     fsm_table.numshrinks = fsm_table.numshrinks or lqc.numshrinks
-    
+
     check_valid_fsm_spec(fsm_table)
     local new_fsm = new(descr, fsm_table)
     table.insert(lqc.properties, new_fsm)
@@ -92,7 +92,7 @@ local function fsm(descr, fsm_info_table)
     fsm_func(fsm_info_table)
     return function() end
   end
-  
+
   -- Called with DSL syntax
   return fsm_func
 end

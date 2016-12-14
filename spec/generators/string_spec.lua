@@ -28,9 +28,9 @@ describe('string generator module', function()
   describe('pick function', function()
     it('should pick an arbitrary length string if size not specified', function()
       local results = {}
-      local spy_check = spy.new(function(x) 
+      local spy_check = spy.new(function(x)
         table.insert(results, #x)
-        return is_string(x) 
+        return is_string(x)
       end)
 
       property 'string() should pick an arbitrary sized string' {
@@ -39,7 +39,7 @@ describe('string generator module', function()
       }
       lqc.check()
       assert.spy(spy_check).was.called(lqc.numtests)
-      
+
       -- If all lengths were equal:
       -- sum of lengths = first element times numtests
       local sum_lengths = reduce(results, 0, function(x, acc) return x + acc end)
@@ -48,7 +48,7 @@ describe('string generator module', function()
 
     it('should pick a fixed size string if size is specified', function()
       local length = 3
-      local spy_check = spy.new(function(x) 
+      local spy_check = spy.new(function(x)
         return is_string(x) and #x == length
       end)
 

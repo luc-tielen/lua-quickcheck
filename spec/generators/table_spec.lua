@@ -20,7 +20,7 @@ describe('table generator module', function()
 
   describe('pick function', function()
     it('should pick an arbitrarily sized table with tbl()', function()
-      local spy_check1 = spy.new(function(x) 
+      local spy_check1 = spy.new(function(x)
         return is_table(x) and #x <= lqc.numtests
       end)
       property 'table() should pick a table' {
@@ -32,7 +32,7 @@ describe('table generator module', function()
       lqc.properties = {}
 
       local num_tests = 10
-      local spy_check2 = spy.new(function(x) 
+      local spy_check2 = spy.new(function(x)
         return is_table(x) and #x <= num_tests
       end)
       property 'table() should pick a table of size <= numtests' {
@@ -43,10 +43,10 @@ describe('table generator module', function()
       lqc.check()
       assert.spy(spy_check2).was.called(num_tests)
     end)
-    
+
     it('should pick a table of specific size with tbl(size)', function()
       local size = 3
-      local spy_check1 = spy.new(function(x) 
+      local spy_check1 = spy.new(function(x)
         return is_table(x) and #x == size
       end)
       property 'table(size) should pick a table with that specific size' {
@@ -58,7 +58,7 @@ describe('table generator module', function()
       lqc.properties = {}
 
       local num_tests = 10
-      local spy_check2 = spy.new(function(x) 
+      local spy_check2 = spy.new(function(x)
         return is_table(x) and #x == size
       end)
       property 'table(size) should pick a table with that specific size' {

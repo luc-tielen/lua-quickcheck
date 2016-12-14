@@ -5,9 +5,9 @@ local property = require 'lqc.property'
 local lqc = require 'lqc.quickcheck'
 
 local function is_byte(value)
-  return type(value) == 'number' 
-          and value % 1 == 0 
-          and value >= 0x00 
+  return type(value) == 'number'
+          and value % 1 == 0
+          and value >= 0x00
           and value <= 0xff
 end
 

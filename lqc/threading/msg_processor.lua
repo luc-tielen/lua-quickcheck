@@ -14,7 +14,7 @@ local function is_callable(x)
 end
 
 
-local MsgProcessor = { 
+local MsgProcessor = {
   TASK_TAG = 'task',
   RESULT_TAG = 'result',
   STOP_VALUE = 'stop',
@@ -30,7 +30,7 @@ function MsgProcessor.new(msg_box)
     -- TODO init random seed per thread?
     while true do
       local _, cmd = msg_box:receive(nil, MsgProcessor.TASK_TAG)
-      if cmd == MsgProcessor.STOP_VALUE then 
+      if cmd == MsgProcessor.STOP_VALUE then
         return
       elseif is_callable(cmd) then
         -- NOTE: threadpool hangs if it returns nil..

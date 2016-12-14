@@ -50,7 +50,7 @@ local function setfenv_compat(func, new_env)
     end
     idx = idx + 1
   until name == '_ENV' or name == nil
-  
+
   return func
 end
 
@@ -64,7 +64,7 @@ function lib.load_script(file_path)
   -- Check if Moonscript file and if Moonscript available
   if fs.is_moonscript_file(file_path) then
     if not has_moonscript then return function() end end  -- return empty 'script'
-    
+
     local script = moonscript.loadfile(file_path)
     return setfenv(script, new_global_env)
   end

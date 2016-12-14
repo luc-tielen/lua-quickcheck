@@ -48,7 +48,7 @@ describe('float generator module', function()
       end
       property 'float() should converge to 0.0' {
         generators = { float() },
-        check = function(x) 
+        check = function(x)
           return not is_float(x) -- always fails!
         end
       }

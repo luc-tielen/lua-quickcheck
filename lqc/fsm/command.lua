@@ -16,20 +16,20 @@ local function stringify(cmd)
     '{ call, ',
     cmd.state_name,
   }
-  
+
   local size_result = #result
   for i = 1, #cmd.args do
     -- TODO allow printing of table etc..
     result[i + size_result] = ', ' .. cmd.args[i]
   end
-  
+
   result[#result + 1] = ' }'
   return table.concat(result)
 end
 
 
 --- Creates a function that picks a random value for each of the generators
---  specified in the argument list. 
+--  specified in the argument list.
 -- @param state_name Name of the state this command is associated with
 -- @param command_func Function to be called when this command is selected
 -- @param args_generators List of generators that generate the arguments for command_func
@@ -40,7 +40,7 @@ local function pick(state_name, command_func, args_generators)
     for i = 1, #args_generators do
       args[i] = args_generators[i]:pick(num_tests)
     end
-    return { 
+    return {
       state_name = state_name,
       func = command_func,
       args = args,
@@ -75,8 +75,8 @@ local function shrink(state_name, command_func, args_generators)
   local function do_shrink(previous)
     if #previous.args == 0 then return previous end
     return {
-      state_name = state_name, 
-      func = command_func, 
+      state_name = state_name,
+      func = command_func,
       args = shrink_args(previous.args, args_generators),
       to_string = stringify
     }

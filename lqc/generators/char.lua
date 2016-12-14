@@ -31,7 +31,7 @@ local function char_shrink(prev)
 end
 
 
---- Creates a generator for ASCII-chars 
+--- Creates a generator for ASCII-chars
 -- @return generator that can randomly create ASCII values
 local function char()
   return Gen.new(char_pick, char_shrink)

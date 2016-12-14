@@ -52,7 +52,7 @@ local function add_when_fail(prop_table)
   local check_func = prop_table.check
   prop_table.check = function(...)
     local result = check_func(...)
-    
+
     if result == results.FAILURE then
       prop_table.when_fail(...)
     end
@@ -73,9 +73,9 @@ local function do_shrink(property, generated_values, tries)
   if not tries then tries = 1 end
   local shrunk_values = property.shrink(unpack(generated_values))
   local result = property(unpack(shrunk_values))
-  
+
   if tries == property.numshrinks then
-    -- Maximum amount of shrink attempts exceeded. 
+    -- Maximum amount of shrink attempts exceeded.
     return generated_values
   end
 
@@ -120,7 +120,7 @@ local function do_check(property)
           property = property,
           generated_values = generated_values,
           shrunk_values = generated_values
-        }  
+        }
       end
 
       local shrunk_values = do_shrink(property, generated_values)
@@ -176,10 +176,10 @@ local function new(descr, property_func, generators, numtests, numshrinks)
     return do_check(self)
   end
 
-  return setmetatable(prop, { 
+  return setmetatable(prop, {
     __call = function(_, ...)
       return property_func(...)
-    end 
+    end
   })
 end
 
@@ -216,7 +216,7 @@ local function property(descr, prop_info_table)
     local shrink_amount = prop_table.numshrinks
     local numtests = is_integer(it_amount) and it_amount or lqc.numtests
     local numshrinks = is_integer(shrink_amount) and shrink_amount or lqc.numshrinks
-    local new_prop = new(descr, prop_table.check, prop_table.generators, 
+    local new_prop = new(descr, prop_table.check, prop_table.generators,
                          numtests, numshrinks)
     table.insert(lqc.properties, new_prop)
   end

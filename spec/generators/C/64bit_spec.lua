@@ -27,7 +27,7 @@ describe('generating 64 bit integers for C code', function()
       return a + b == clib.u64_add(a, b)
     end)
     property 'uint64_t should be generated/converted correctly' {
-      generators = { int(100), int(100) },   
+      generators = { int(100), int(100) },
       check = spy_check
     }
     lqc.check()
@@ -38,7 +38,7 @@ describe('generating 64 bit integers for C code', function()
     local shrunk_value
     r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
-    end    
+    end
     property 'uint64_t can be shrunk to smaller values' {
       generators = { int(10) },
       check = function(x)

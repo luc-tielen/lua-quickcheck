@@ -22,7 +22,7 @@ describe('vector datastructure', function()
       table.insert(expected, value)
       assert.same(expected, v:to_table())
     end
-    assert.equal(false, pcall(function() v:push_back(nil) end))  
+    assert.equal(false, pcall(function() v:push_back(nil) end))
   end)
 
   it('should be possible to replace elements in the vector', function()
@@ -82,7 +82,7 @@ describe('vector datastructure', function()
     local value1, value2, value3 = 1, 'a', { { 2 }, false }
     local values = { value1, value2, value3 }
     local v = Vector.new(values)
-   
+
     v:remove(value2)
     assert.same(v:to_table(), { value1, value3 })
     v:remove(value1)
@@ -103,7 +103,7 @@ describe('vector datastructure', function()
     local value1, value2, value3 = 1, 'a', { { 2 }, false }
     local values = { value1, value2, value3 }
     local v = Vector.new(values)
-   
+
     v:remove_index(2)
     assert.same(v:to_table(), { value1, value3 })
     v:remove_index(1)

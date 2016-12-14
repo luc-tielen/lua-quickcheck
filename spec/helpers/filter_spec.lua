@@ -5,7 +5,7 @@ describe('filter function', function()
   local function f1(value)
     return value % 2 == 0
   end
-  
+
   local t2 = { 'abc', 'defg' }
   local function f2(value)
     return #value == 3

@@ -23,7 +23,7 @@ local check_file = '.lqc'
 local function read_from_check_file()
   return fs.read_file(check_file)
 end
- 
+
 
 --- Writes the seed to the check file (.lqc.lua).
 -- @param seed Seed to write to the file
@@ -38,7 +38,7 @@ end
 local function initialize_random_seed(config)
   local seed = config.seed
   if config.check then  -- redo last generated test run (if --check specified)
-    seed = read_from_check_file()  
+    seed = read_from_check_file()
   end
   local actual_used_seed = random.seed(seed)
   write_to_check_file(actual_used_seed)
@@ -100,7 +100,7 @@ end
 
 
 --- Shows the test output (statistics)
-local function show_output() 
+local function show_output()
   report.report_errors()
   report.report_summary()
 end
@@ -129,10 +129,10 @@ function app.main(cli_args)
   initialize_random_seed(config)
   lqc.init(config.numtests, config.numshrinks)
   report.configure(config.colors)
-  execute_scripts(script_files)  
+  execute_scripts(script_files)
   verify_properties(config.threads)
   show_output()
- 
+
   app.exit()
 end
 

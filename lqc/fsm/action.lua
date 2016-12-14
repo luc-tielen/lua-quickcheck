@@ -20,8 +20,8 @@ function Action.new(var, cmd, command_generator)  -- TODO rename to args_generat
     error 'Need to provide command to action object!'
   end
 
-  local action = { 
-    variable = var, 
+  local action = {
+    variable = var,
     command = cmd,
     cmd_gen = command_generator
   }
@@ -32,7 +32,7 @@ end
 --- Returns a string representation of the action
 -- @return string representation of the action
 function Action:to_string()
-  return '{ set, ' .. self.variable:to_string() .. 
+  return '{ set, ' .. self.variable:to_string() ..
               ', ' .. self.command:to_string() .. ' }'
 end
 

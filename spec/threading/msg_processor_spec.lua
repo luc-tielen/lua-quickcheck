@@ -38,7 +38,7 @@ describe('MsgProcessor object', function()
     MsgProcessor.new(msg_box2)()
     assert.spy(dummy_func).was.called(1)
     assert.same({ MsgProcessor.VOID_RESULT }, msg_box2.values)
-    
+
     MsgProcessor.new(msg_box3)()
     assert.spy(dummy_func).was.called(3)
     assert.same({ MsgProcessor.VOID_RESULT, MsgProcessor.VOID_RESULT }, msg_box3.values)

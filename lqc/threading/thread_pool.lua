@@ -20,8 +20,8 @@ end
 --- Checks if the thread pool args are valid.
 -- @return nil; raises an error if invalid args are passed in.
 local function check_threadpool_args(num_threads)
-  if not is_positive_integer(num_threads) then 
-    error 'num_threads should be an integer > 0' 
+  if not is_positive_integer(num_threads) then
+    error 'num_threads should be an integer > 0'
   end
 end
 
@@ -44,8 +44,8 @@ local ThreadPool_mt = { __index = ThreadPool }
 function ThreadPool.new(num_threads)
   check_threadpool_args(num_threads)
   local linda = lanes.linda()
-  local thread_pool = { 
-    threads = {}, 
+  local thread_pool = {
+    threads = {},
     linda = linda,
     numjobs = 0
   }

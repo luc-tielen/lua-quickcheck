@@ -23,7 +23,7 @@ local lib = {}
 -- @return formatted table (as a string)
 local function format_table(t)
   local result = '{ '
-  for _, v in ipairs(t) do 
+  for _, v in ipairs(t) do
     local type_v = type(v)
     if type_v == 'table' then
       result = result .. format_table(v) .. ' '
@@ -122,8 +122,8 @@ end
 --- Prints a summary about certain statistics (test passed / failed, ...)
 function lib.report_summary()
   local total_tests = passed_amount + failed_amount + skipped_amount
-  lib.report('' .. total_tests .. ' tests, ' 
-                .. failed_amount .. ' failures, ' 
+  lib.report('' .. total_tests .. ' tests, '
+                .. failed_amount .. ' failures, '
                 .. skipped_amount .. ' skipped.\n')
 end
 

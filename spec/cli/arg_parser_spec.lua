@@ -65,7 +65,7 @@ describe('arg parser', function()
     assert.same(args6.check, false)
     assert.same(args6.threads, 1)
 
-    local args7 = p.parse({ 'a', 'b', '--seed', '123', 
+    local args7 = p.parse({ 'a', 'b', '--seed', '123',
                             '--numtests', '5', '--numshrinks', '3' })
     assert.same(args7.files_or_dirs, { 'a', 'b' })
     assert.same(args7.numtests, 5)
@@ -75,7 +75,7 @@ describe('arg parser', function()
     assert.same(args7.check, false)
     assert.same(args7.threads, 1)
 
-    local args8 = p.parse({ 'a', 'b', '--seed', '123', 
+    local args8 = p.parse({ 'a', 'b', '--seed', '123',
                             '--numtests', '5', '--numshrinks', '3',
                             '-c' })
     assert.same(args8.files_or_dirs, { 'a', 'b' })
@@ -86,7 +86,7 @@ describe('arg parser', function()
     assert.same(args8.check, false)
     assert.same(args8.threads, 1)
 
-    local args9 = p.parse({ 'a', 'b', '--seed', '123', 
+    local args9 = p.parse({ 'a', 'b', '--seed', '123',
                             '--numtests', '5', '--numshrinks', '3',
                             '--colors' })
     assert.same(args9.files_or_dirs, { 'a', 'b' })
@@ -105,7 +105,7 @@ describe('arg parser', function()
     assert.same(args10.colors, true)
     assert.same(args10.check, true)
     assert.same(args10.threads, 1)
- 
+
     local args11 = p.parse({ 'a', 'b', '--numtests', '5', '--numshrinks', '3',
                              '--colors', '--check', '--threads', '3'})
     assert.same(args11.files_or_dirs, { 'a', 'b' })
@@ -124,9 +124,9 @@ describe('arg parser', function()
     assert.same(args12.check, true)
     assert.same(args12.threads, 3)
 
-    assert.is_false(pcall(function() 
+    assert.is_false(pcall(function()
       -- --check and --seed or mutual exclusive!
-      p.parse({ 'a', 'b', '--seed', '123', 
+      p.parse({ 'a', 'b', '--seed', '123',
                 '--numtests', '5', '--numshrinks', '3',
                 '--colors', '--check', '--threads', '5' })
     end))

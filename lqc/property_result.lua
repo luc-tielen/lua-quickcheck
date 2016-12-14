@@ -9,8 +9,8 @@
 -- @field FAILURE property failed
 -- @field SKIPPED property skipped (implies predicate not met)
 return {
-  SUCCESS = 1, 
-  FAILURE = 2, 
+  SUCCESS = 1,
+  FAILURE = 2,
   SKIPPED = 3
 }
 

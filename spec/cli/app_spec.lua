@@ -22,7 +22,7 @@ describe('CLI application', function()
     it('is the starting point of the application', function()
       app.exit = spy.new(app.exit)
       r.report_success = spy.new(r.report_success)
-      
+
       app.main({ 'spec/fixtures/script.lua' })
       assert.spy(app.exit).was.called()
       assert.spy(r.report_success).was.called(lqc.numtests)
@@ -47,7 +47,7 @@ describe('CLI application', function()
       -- if no file exists yet, use current timestamp:
       app.main({ '--check', 'spec/fixtures/examples/' })
       assert.is_true(fs.file_exists(check_file))
-      
+
       local last_seed = fs.read_file(check_file)
       assert.spy(random.seed).was.called_with(nil)
       app.main({ '--check', 'spec/fixtures/examples/' })

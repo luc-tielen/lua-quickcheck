@@ -11,7 +11,7 @@ local Var_mt = { __index = Var }
 -- @param value Value of the variable
 -- @return a new variable object
 function Var.new(value)
-  if value == nil then 
+  if value == nil then
     error 'Need to provide a value to Var!'
   end
   local var = { value = value}

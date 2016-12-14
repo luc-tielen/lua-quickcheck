@@ -90,13 +90,13 @@ end
 --- Finds all files in a directory.
 -- @param directory_path String of a directory path
 -- @return a table containing all files in this directory and it's
---         subdirectories. Raises an error if dir is not a valid 
+--         subdirectories. Raises an error if dir is not a valid
 --         string to a directory path.
 function lib.find_files(directory_path)
   local result = Vector.new()
 
   for file_name in lfs.dir(directory_path) do
-    if file_name ~= '.' and file_name ~= '..' then 
+    if file_name ~= '.' and file_name ~= '..' then
       local file = strcat(directory_path, '/', file_name)
       if lib.is_dir(file) then
         result:append(Vector.new(lib.find_files(file)))

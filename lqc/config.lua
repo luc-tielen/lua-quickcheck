@@ -39,7 +39,7 @@ end
 --
 -- @return the updated config
 function config.resolve(values)
-  for _, arg_name in ipairs { 'files_or_dirs', 'seed', 
+  for _, arg_name in ipairs { 'files_or_dirs', 'seed',
                               'numtests', 'numshrinks',
                               'colors', 'threads', 'check' } do
     if is_empty_arg(values[arg_name]) then

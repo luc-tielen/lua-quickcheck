@@ -14,7 +14,7 @@ local function deep_equals(a, b)
   local type_a = type(a)
   if type_a ~= type(b) then return false end
   if type_a ~= 'table' then return a == b end
-  
+
   if #a ~= #b then return false end
   for k, v1 in pairs(a) do
     local v2 = b[k]

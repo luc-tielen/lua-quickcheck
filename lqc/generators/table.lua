@@ -81,7 +81,7 @@ local function new_table(table_size)
     -- Check if we should retry shrinking:
     if iterations_count ~= 0 then
       local check_equality = (type(new_value) == 'table')
-                           and deep_equals 
+                           and deep_equals
                            or normal_equals
       if check_equality(new_value, old_value) then
         -- Shrink introduced no simpler result, retry at other index.
@@ -115,7 +115,7 @@ local function new_table(table_size)
       -- TODO: Figure out a better way to decrease table size rapidly, maybe use
       -- math.log (e.g. ln(size + 1) ?
       local subtable_size = math.floor(size * 0.01)
-      local generator = frequency { 
+      local generator = frequency {
         { 10, new_table(subtable_size) },
         { 90, oneof { bool(), int(size), float(), string(size) } }
       }
@@ -151,7 +151,7 @@ local function new_table(table_size)
   end
 
   -- Arbitrary size
-  
+
   --- Generate a (nested / empty) table of an arbitrary size.
   -- @param numtests Amount of times the property calls this generator; used to
   --                 guide the optimatization process.
@@ -167,7 +167,7 @@ local function new_table(table_size)
   local function arbitrary_size_shrink(prev)
     local size = #prev
     if size == 0 then return prev end  -- handle empty tables
-    
+
     if should_shrink_smaller(size) then
       return shrink_smaller(prev, size)
     end

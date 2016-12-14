@@ -18,7 +18,7 @@ describe('choose', function()
 
   it('chooses a number between min and max', function()
     local min1, max1 = 569, 1387
-    local spy_check_pos = spy.new(function(x) 
+    local spy_check_pos = spy.new(function(x)
       return x >= min1 and x <= max1
     end)
     property 'chooses a number between min and max (positive integers)' {
@@ -27,7 +27,7 @@ describe('choose', function()
     }
 
     local min2, max2 = -1337, -50
-    local spy_check_neg = spy.new(function(x) 
+    local spy_check_neg = spy.new(function(x)
       return x >= min2 and x <= max2
     end)
     property 'chooses a number between min and max (negative integers)' {
@@ -87,11 +87,11 @@ describe('oneof', function()
       return x <= max1  -- only succeeds for 1st generator
     end)
     property 'oneof chooses a generator from a list of generators' {
-      generators = { 
-        lqc_gen.oneof { 
-          lqc_gen.choose(min1, max1), 
-          lqc_gen.choose(min2, max2) 
-        } 
+      generators = {
+        lqc_gen.oneof {
+          lqc_gen.choose(min1, max1),
+          lqc_gen.choose(min2, max2)
+        }
       },
       check = spy_check
     }
@@ -101,16 +101,16 @@ describe('oneof', function()
     assert.spy(spy_check).was.not_called(lqc.numtests)
   end)
 
-  it('chooses the same generator each time if only 1 is supplied.', function() 
+  it('chooses the same generator each time if only 1 is supplied.', function()
     local min, max = 1, 10
     local spy_check = spy.new(function(x)
       return x <= max
     end)
     property 'oneof chooses a generator from a list of generators' {
-      generators = { 
-        lqc_gen.oneof { 
-          lqc_gen.choose(min, max), 
-        } 
+      generators = {
+        lqc_gen.oneof {
+          lqc_gen.choose(min, max),
+        }
       },
       check = spy_check
     }
@@ -139,7 +139,7 @@ describe('oneof', function()
     r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
-    
+
     property 'oneof shrinks generated value with correct generator' {
       generators = {
         lqc_gen.oneof {
@@ -171,7 +171,7 @@ describe('frequency', function()
     local x, y, weight1, weight2 = 0, 0, 2, 8
     local gen1, gen2 = lqc_gen.choose(1, 10), lqc_gen.choose(11, 20)
     local gen1_pick, gen2_pick = gen1.pick_func, gen2.pick_func
-    gen1.pick_func = function() 
+    gen1.pick_func = function()
       x = x + 1
       return gen1_pick()
     end
@@ -180,11 +180,11 @@ describe('frequency', function()
       return gen2_pick()
     end
     property 'frequency chooses a generator from a list of weighted generators' {
-      generators = { 
-        lqc_gen.frequency { 
-          { weight1, gen1 }, 
-          { weight2, gen2 } 
-        } 
+      generators = {
+        lqc_gen.frequency {
+          { weight1, gen1 },
+          { weight2, gen2 }
+        }
       },
       check = function(_)
         return true
@@ -205,7 +205,7 @@ describe('frequency', function()
     assert.is_true(almost_equal(y, expected_calls(weight2), 10))
   end)
 
-  it('chooses the same generator each time if only 1 is supplied.', function() 
+  it('chooses the same generator each time if only 1 is supplied.', function()
     local gen1 = lqc_gen.choose(1, 100)
     local spy_pick = spy.new(gen1.pick_func)
     gen1.pick_func = spy_pick
@@ -244,7 +244,7 @@ describe('frequency', function()
     r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
     end
-    
+
     property 'frequency shrinks generated value with correct generator' {
       generators = {
         lqc_gen.frequency {
@@ -282,7 +282,7 @@ describe('elements', function()
       generators = { lqc_gen.elements(input) },
       check = spy_check
     }
-    
+
     lqc.check()
     for i = 1, #input do
       assert.spy(spy_check).was.called_with(input[i])
@@ -325,7 +325,7 @@ describe('combinations of the above', function()
     local spy_shrink1 = spy.new(function() return 1 end)
     local spy_shrink2 = spy.new(function() return 2 end)
     local spy_shrink3 = spy.new(function() return 3 end)
-    
+
     local which_gen, shrunk_value
     r.report_failed_property = function(_, _, shrunk_vals)
       shrunk_value = shrunk_vals[1]
@@ -358,7 +358,7 @@ describe('combinations of the above', function()
       },
       check = function(_) return false end
     }
-    
+
     for _ = 1, 30 do
       lqc.check()
       assert.not_equal(nil, which_gen)

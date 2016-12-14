@@ -3,7 +3,7 @@ local map = require 'lqc.helpers.map'
 
 
 describe('file system helper module', function()
-  
+
   describe('find_files', function()
     it('should return a table containing all files in a dir and its subdirs', function()
       local dir1 = 'spec/moonscript'

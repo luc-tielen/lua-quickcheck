@@ -22,7 +22,7 @@ local function shrink_how_many(length)
   if random.between(1, 5) == 1 then
     return random.between(1, length)
   end
-  
+
   return 1
 end
 
@@ -76,7 +76,7 @@ local function shrink_generic(str, length, how_many)
 end
 
 
---- Determines if the string should be shrunk down to a shorter string 
+--- Determines if the string should be shrunk down to a shorter string
 -- @param str_len size of the string
 -- @return true: string should be made shorter; false: string should remain
 --               size during shrinking
@@ -92,7 +92,7 @@ end
 -- @return new string with 1 random character removed
 local function shrink_smaller(str, str_len)
   local idx = random.between(1, str_len)
-  
+
   -- Handle edge cases (first or last char)
   if idx == 1 then
     return string.sub(str, 2)
