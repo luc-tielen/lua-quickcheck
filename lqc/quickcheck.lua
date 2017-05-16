@@ -6,7 +6,8 @@ local shuffle = pairs
 local lib = {
   properties = {},  -- list of all properties
   numtests = nil,   -- Default amount of times a property should be tested
-  numshrinks = nil  -- Default amount of times a failing property should be shrunk down
+  numshrinks = nil,  -- Default amount of times a failing property should be shrunk down
+  failed = false
 }
 
 
@@ -20,6 +21,7 @@ end
 -- Handles the result of a property.
 local function handle_result(result)
   if not result then return end   -- successful
+  lib.failed = true
   if type(result.property) == 'table' then  -- property failed
     report.report_failed_property(result.property, 
                                   result.generated_values, 

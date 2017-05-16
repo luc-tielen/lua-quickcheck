@@ -97,7 +97,7 @@ local app = {}
 
 
 -- Exits the application
-function app.exit() os.exit(0) end
+function app.exit() os.exit(lqc.failed and 1 or 0) end
 
 
 -- Main function of the CLI application
