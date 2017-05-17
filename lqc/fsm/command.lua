@@ -22,7 +22,7 @@ end
 
 
 -- Creates a function that picks a random value for each of the generators
--- specified in the argument list. 
+-- specified in the argument list.
 -- Returns a table with keys { state_name, func, args }
 local function pick(state_name, command_func, args_generators)
   local function do_pick(num_tests)
@@ -30,7 +30,7 @@ local function pick(state_name, command_func, args_generators)
     for i = 1, #args_generators do
       args[i] = args_generators[i]:pick(num_tests)
     end
-    return { 
+    return {
       state_name = state_name,
       func = command_func,
       args = args,
@@ -58,8 +58,8 @@ local function shrink(state_name, command_func, args_generators)
   local function do_shrink(previous)
     if #previous.args == 0 then return previous end
     return {
-      state_name = state_name, 
-      func = command_func, 
+      state_name = state_name,
+      func = command_func,
       args = shrink_args(previous.args, args_generators),
       to_string = stringify
     }

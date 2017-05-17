@@ -10,8 +10,8 @@ local function new(optional_samplesize)
   return lqc_gen.oneof {
     tbl(optional_samplesize),
     str(optional_samplesize),
-    int(optional_samplesize), 
-    float(), 
+    int(optional_samplesize),
+    float(),
     bool()
  }
 end

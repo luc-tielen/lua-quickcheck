@@ -21,7 +21,7 @@ describe('generator module', function()
       local input = 1337
       local output = g:shrink(input)
       assert.spy(spy_shrink).was.called()
-      assert.same(input + 1, output) 
+      assert.same(input + 1, output)
     end)
   end)
 end)

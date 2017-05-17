@@ -3,7 +3,7 @@
 -- returns true if obj is callable; otherwise false.
 local function is_callable(obj)
   local type_obj = type(obj)
-  return type_obj == 'function' or type_obj == 'table' 
+  return type_obj == 'function' or type_obj == 'table'
 end
 
 
@@ -46,7 +46,7 @@ local function make_state(state_name, state_information)
   end
 
   -- called with Lua DSL syntax, return closue which returns result
-  return make_state_helper 
+  return make_state_helper
 end
 
 

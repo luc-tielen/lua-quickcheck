@@ -28,9 +28,9 @@ describe('string generator module', function()
   describe('pick function', function()
     it('should pick an arbitrary length string if size not specified', function()
       local results = {}
-      local spy_check = spy.new(function(x) 
+      local spy_check = spy.new(function(x)
         table.insert(results, #x)
-        return is_string(x) 
+        return is_string(x)
       end)
 
       property 'string() should pick an arbitrary sized string' {
@@ -48,7 +48,7 @@ describe('string generator module', function()
 
     it('should pick a fixed size string if size is specified', function()
       local length = 3
-      local spy_check = spy.new(function(x) 
+      local spy_check = spy.new(function(x)
         return is_string(x) and #x == length
       end)
 

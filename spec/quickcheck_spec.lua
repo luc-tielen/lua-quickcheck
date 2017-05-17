@@ -10,10 +10,10 @@ end
 
 local function failing_gen()
   local gen = {}
-  function gen.pick(_) 
+  function gen.pick(_)
     return -2
   end
-  function gen.shrink(_, prev) 
+  function gen.shrink(_, prev)
     if prev == 0 then return 0 end
     return prev + 1
   end

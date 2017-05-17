@@ -17,26 +17,26 @@ describe('config handling', function()
     local result2 = config.resolve { numshrinks = 100000 }
     local result3 = config.resolve { seed = 123 }
     local result4 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30 }
-    local result5 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30, 
+    local result5 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30,
                                      files_or_dirs = { 'file1', 'file2' } }
-    local result6 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30, 
+    local result6 = config.resolve { seed = 12345, numtests = 20, numshrinks = 30,
                                      files_or_dirs = { 'file1', 'file2' }, colors = true }
-    local result7 = config.resolve { check = true, numtests = 20, numshrinks = 30, 
+    local result7 = config.resolve { check = true, numtests = 20, numshrinks = 30,
                                      files_or_dirs = { 'file1', 'file2' }, colors = true }
-    local result8 = config.resolve { check = true, numtests = 20, numshrinks = 30, 
+    local result8 = config.resolve { check = true, numtests = 20, numshrinks = 30,
                                      files_or_dirs = { 'file1', 'file2' }, colors = true,
                                      threads = 3 }
 
-    local expected0 = { files_or_dirs = { '.' }, seed = os.time(), 
+    local expected0 = { files_or_dirs = { '.' }, seed = os.time(),
                         numtests = 100, numshrinks = 100 }
-    local expected1 = { files_or_dirs = { '.' }, seed = os.time(), 
+    local expected1 = { files_or_dirs = { '.' }, seed = os.time(),
                         numtests = 100000, numshrinks = 100 }
     local expected2 = { files_or_dirs = { '.' }, seed = os.time(),
                         numtests = 100, numshrinks = 100000 }
-    local expected3 = { files_or_dirs = { '.' }, seed = 123, 
+    local expected3 = { files_or_dirs = { '.' }, seed = 123,
                         numtests = 100, numshrinks = 100, colors = false, check = false,
                         threads = 1  }
-    local expected4 = { files_or_dirs = { '.' }, seed = 12345, 
+    local expected4 = { files_or_dirs = { '.' }, seed = 12345,
                         numtests = 20, numshrinks = 30, colors = false, check = false,
                         threads = 1  }
     local expected5 = { seed = 12345, numtests = 20, numshrinks = 30,

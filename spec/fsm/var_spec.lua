@@ -3,9 +3,9 @@ local Var = require 'lqc.fsm.var'
 
 describe('Variable helper object', function()
   it('is necessary to provide a value to the Var helper', function()
-    local function make_var(value) 
+    local function make_var(value)
       local function func()
-        return Var.new(value) 
+        return Var.new(value)
       end
       return func
     end

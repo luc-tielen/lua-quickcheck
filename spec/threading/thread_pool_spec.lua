@@ -68,7 +68,7 @@ describe('thread pool', function()
     pool2:schedule(function() return 123456789 end)
     pool2:schedule(function() return 'test' end)
     local results2 = pool2:join()
-    assert.is_true(contains(results2, 123456789) 
+    assert.is_true(contains(results2, 123456789)
                and contains(results2, 'test'))
   end)
 end)
@@ -170,7 +170,7 @@ end)
 
 
 -- NOTE: this test should be put in app_spec but then a bug in busted/lualanes
--- is triggered. 
+-- is triggered.
 describe('multi-threaded checking of tests', function()
   it('should save last seed to .lqc.lua', function()
     -- Can't use spy across threads (r.report_success)

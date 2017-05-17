@@ -4,12 +4,12 @@ local Action = require 'lqc.fsm.action'
 
 local function mock_obj(value)
   local obj = {}
-  local obj_mt = { 
-    __index = function() 
-      return function() 
-        return value 
-      end 
-    end 
+  local obj_mt = {
+    __index = function()
+      return function()
+        return value
+      end
+    end
   }
   return setmetatable(obj, obj_mt)
 end

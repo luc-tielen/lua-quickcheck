@@ -20,7 +20,8 @@ fixtures:
 tests: fixtures
 	luacheck --std=max+busted lqc spec \
 		--exclude-files=$(HELPER_SCRIPT) $(EXAMPLE_SCRIPTS) \
-		--globals ffi
+		--globals ffi \
+		--ignore 611
 	LD_LIBRARY_PATH=spec/fixtures/ busted $(BUSTED_FLAGS)
 
 coverage:

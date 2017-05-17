@@ -77,7 +77,7 @@ describe('property', function()
     assert.equal(false, result)
   end)
 
-  describe('check', function() 
+  describe('check', function()
     it('should return SUCCESS when property is truthy', function()
       property 'a good property' {
         generators = {},
@@ -109,7 +109,7 @@ describe('property', function()
         implies = function()
           return false
         end
-      } 
+      }
       assert.equal(results.SKIPPED, lqc.properties[1]())
     end)
 
@@ -122,7 +122,7 @@ describe('property', function()
         implies = function()
           return true
         end
-      } 
+      }
       assert.equal(results.SUCCESS, lqc.properties[1]())
 
       property 'a bad property' {
@@ -133,7 +133,7 @@ describe('property', function()
         implies = function()
           return true
         end
-      } 
+      }
       assert.equal(results.FAILURE, lqc.properties[2]())
     end)
   end)
@@ -147,7 +147,7 @@ describe('property', function()
           return false
         end,
         when_fail = on_fail
-      } 
+      }
       assert.equal(results.FAILURE, lqc.properties[1]())
       assert.spy(on_fail).was.called(1)
     end)
@@ -160,7 +160,7 @@ describe('property', function()
           return true
         end,
         when_fail = on_fail
-      } 
+      }
       assert.equal(results.SUCCESS, lqc.properties[1]())
       assert.spy(on_fail).was.not_called()
     end)

@@ -23,15 +23,15 @@ local function handle_result(result)
   if not result then return end   -- successful
   lib.failed = true
   if type(result.property) == 'table' then  -- property failed
-    report.report_failed_property(result.property, 
-                                  result.generated_values, 
+    report.report_failed_property(result.property,
+                                  result.generated_values,
                                   result.shrunk_values)
     return
   end
 
   -- FSM failed
-  report.report_failed_fsm(result.description, 
-                           result.generated_values, 
+  report.report_failed_fsm(result.description,
+                           result.generated_values,
                            result.shrunk_values)
 end
 
@@ -52,7 +52,7 @@ function lib.check()
   end
 
   for _, prop in shuffle(lib.properties) do
-    local result = prop:check() 
+    local result = prop:check()
     handle_result(result)
   end
 end

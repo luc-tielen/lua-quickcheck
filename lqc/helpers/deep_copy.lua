@@ -3,7 +3,7 @@ local pairs = pairs
 
 -- Deep copies an object recursively (including (nested) tables, metatables,
 -- circular references, ...)
--- Heavily based on http://stackoverflow.com/questions/640642/how-do-you-copy-a-lua-table-by-value 
+-- Heavily based on http://stackoverflow.com/questions/640642/how-do-you-copy-a-lua-table-by-value
 local function deep_copy(obj, seen)
   -- handle number, string, boolean, ...
   if type(obj) ~= 'table' then return obj end

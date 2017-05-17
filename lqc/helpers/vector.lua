@@ -1,7 +1,7 @@
 local deep_equals = require 'lqc.helpers.deep_equals'
 
 local Vector = {}
-local Vector_mt = { 
+local Vector_mt = {
   __index = Vector
 }
 

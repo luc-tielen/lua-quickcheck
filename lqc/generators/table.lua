@@ -60,7 +60,7 @@ local function new_table(table_size)
     -- Check if we should retry shrinking:
     if iterations_count ~= 0 then
       local check_equality = (type(new_value) == 'table')
-                           and deep_equals 
+                           and deep_equals
                            or normal_equals
       if check_equality(new_value, old_value) then
         -- Shrink introduced no simpler result, retry at other index.
@@ -88,7 +88,7 @@ local function new_table(table_size)
       -- TODO: Figure out a better way to decrease table size rapidly, maybe use
       -- math.log (e.g. ln(size + 1) ?
       local subtable_size = math.floor(size * 0.01)
-      local generator = frequency { 
+      local generator = frequency {
         { 10, new_table(subtable_size) },
         { 90, oneof { bool(), int(size), float(), string(size) } }
       }

@@ -78,7 +78,7 @@ function lib.find_files(directory_path)
   local result = Vector.new()
 
   for file_name in lfs.dir(directory_path) do
-    if file_name ~= '.' and file_name ~= '..' then 
+    if file_name ~= '.' and file_name ~= '..' then
       local file = strcat(directory_path, '/', file_name)
       if lib.is_dir(file) then
         result:append(Vector.new(lib.find_files(file)))

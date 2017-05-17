@@ -13,7 +13,7 @@ local function choose_pick(min, max)
 end
 
 -- Shrinks a value between min and max by dividing the sum of the closest
--- number to 0 and the generated value with 2. 
+-- number to 0 and the generated value with 2.
 -- This effectively reduces it to the value closest to 0 gradually in the
 -- chosen range.
 local function choose_shrink(min, max)

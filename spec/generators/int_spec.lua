@@ -20,8 +20,8 @@ describe('int generator module', function()
 
   describe('pick function', function()
     it('should pick an integer', function()
-      local spy_check1 = spy.new(function(x) 
-        return is_integer(x) 
+      local spy_check1 = spy.new(function(x)
+        return is_integer(x)
            and x >= - lqc.numtests / 2
            and x <=   lqc.numtests / 2
       end)
@@ -34,8 +34,8 @@ describe('int generator module', function()
       lqc.properties = {}
 
       local num_tests = 10
-      local spy_check2 = spy.new(function(x) 
-        return is_integer(x) 
+      local spy_check2 = spy.new(function(x)
+        return is_integer(x)
            and x >= - num_tests / 2
            and x <=   num_tests / 2
       end)

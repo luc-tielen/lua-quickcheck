@@ -22,7 +22,7 @@ describe('vector datastructure', function()
       table.insert(expected, value)
       assert.same(expected, v:to_table())
     end
-    assert.equal(false, pcall(function() v:push_back(nil) end))  
+    assert.equal(false, pcall(function() v:push_back(nil) end))
   end)
 
   it('should be possible to replace elements in the vector', function()

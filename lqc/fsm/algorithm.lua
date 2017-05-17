@@ -74,7 +74,7 @@ function lib.find_next_action(fsm, current_state, var_counter)
   end
 
   -- Could not find a next action -> stop generating further actions
-  return Action.new(Var.new(var_counter:value()), Command.stop, nil), current_state 
+  return Action.new(Var.new(var_counter:value()), Command.stop, nil), current_state
 end
 
 
@@ -106,7 +106,7 @@ function lib.slice_last_actions(action_vector, index)
 end
 
 
--- Selects at most 'how_many' amount of actions from the vector of actions 
+-- Selects at most 'how_many' amount of actions from the vector of actions
 -- to be marked for deletion.
 -- returns a vector of actions which should be deleted.
 function lib.select_actions(action_vector)
@@ -116,7 +116,7 @@ function lib.select_actions(action_vector)
   local size = action_vector:size() - 2  -- don't remove stop action, keep atleast 1 other action
   local how_many = shrink_how_many(size)
   
-  for i = 1, size do  
+  for i = 1, size do
     if amount >= how_many then break end
     if should_select_action() then  -- TODO make this a variable function and use a while loop?
       idx_vector:push_back(i)
@@ -281,13 +281,13 @@ function lib.shrink_fsm_actions(fsm_table, generated_actions, step, tries)
     return lib.shrink_fsm_actions(fsm_table, shrunk_actions, new_step1, tries - 1)
   end
 
-  -- now FSM works -> faulty action is in the just deleted actions   
+  -- now FSM works -> faulty action is in the just deleted actions
   local shrunk_down_actions = shrink_deleted_actions(fsm_table, sliced_actions,
                                                      deleted_actions, fsm_table.numshrinks)
   -- retry fsm:
   -- if a solution could not be found by shrinking down the deleted actions
   --    -> sliced actions is smallest solution found
-  -- else if FSM still fails after shrinking deleted_actions 
+  -- else if FSM still fails after shrinking deleted_actions
   --    -> try further shrinking
   local is_successful2, new_step2 = lib.execute_fsm(fsm_table, shrunk_down_actions)
   local minimal_actions = is_successful2 and sliced_actions or shrunk_down_actions
@@ -332,8 +332,8 @@ end
 local function shrink_fsm_args(fsm_table, generated_actions, tries)
   if tries == 1 then return generated_actions end
 
-  local shrunk_actions = shrink_args(fsm_table, 
-                                     deep_copy(generated_actions), 
+  local shrunk_actions = shrink_args(fsm_table,
+                                     deep_copy(generated_actions),
                                      fsm_table.numshrinks)
   
   -- retry FSM
@@ -361,7 +361,7 @@ end
 -- Returns the shrunk list of actions or the original action list if shrinking
 -- did not help.
 local function shrink_fsm(fsm_table, generated_actions, step)
-  local fsm_shrink_amount = fsm_table.numshrinks 
+  local fsm_shrink_amount = fsm_table.numshrinks
   local shrunk_actions = lib.shrink_fsm_actions(fsm_table, generated_actions, step, fsm_shrink_amount)
   local shrunk_actions_and_args = shrink_fsm_args(fsm_table, shrunk_actions, fsm_shrink_amount)
   local lst_state, lst_result = replay_fsm(fsm_table, shrunk_actions_and_args)
@@ -382,7 +382,7 @@ function lib.check(description, fsm_table)
     if not is_successful then
       report.report_failed()
       local shrunk_actions, last_state, last_result = shrink_fsm(fsm_table,
-                                                                 generated_actions, 
+                                                                 generated_actions,
                                                                  last_step)
       fsm_table.when_fail(shrunk_actions:to_table(), last_state, last_result)
       return {

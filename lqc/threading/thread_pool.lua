@@ -28,8 +28,8 @@ end
 -- Checks if the thread pool args are valid.
 -- Raises an error if invalid args are passed in.
 local function check_threadpool_args(num_threads)
-  if not is_positive_integer(num_threads) then 
-    error 'num_threads should be an integer > 0' 
+  if not is_positive_integer(num_threads) then
+    error 'num_threads should be an integer > 0'
   end
 end
 
@@ -51,8 +51,8 @@ function ThreadPool.new(num_threads)
   check_threadpool_args(num_threads)
 
   local linda = lanes.linda()
-  local thread_pool = { 
-    threads = {}, 
+  local thread_pool = {
+    threads = {},
     linda = linda,
     numjobs = 0
   }
@@ -61,8 +61,8 @@ function ThreadPool.new(num_threads)
     -- TODO init random seed per thread?
     while true do
       local _, cmd = linda:receive(nil, TASK_TAG)
-      if cmd == STOP_VALUE then 
-        return 
+      if cmd == STOP_VALUE then
+        return
       elseif is_callable(cmd) then
         local result = cmd() or VOID_RESULT  -- hangs if it returns nil.. -> TODO fix dirty workaround
         linda:send(nil, RESULT_TAG, result)
