@@ -49,6 +49,7 @@ function ThreadPool.new(num_threads)
     linda = linda,
     numjobs = 0
   }
+
   for _ = 1, num_threads do
     table.insert(thread_pool.threads, make_thread(MsgProcessor.new(linda)))
   end
