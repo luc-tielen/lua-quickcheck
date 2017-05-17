@@ -1,8 +1,8 @@
 package = 'lua-quickcheck'
-version = '0.2-2'
+version = '0.2-3'
 source = {
   url = 'git://github.com/Primordus/lua-quickcheck',
-  tag = 'v0.2-2'
+  tag = 'v0.2-3'
 }
 description = {
   summary = 'Property based testing library for Lua',
