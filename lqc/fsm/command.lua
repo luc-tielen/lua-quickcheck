@@ -13,8 +13,7 @@ local deep_copy = require 'lqc.helpers.deep_copy'
 -- @return string representation of the command
 local function stringify(cmd)
   local result = {
-    '{ call, ',
-    cmd.state_name,
+    '{ call, ', cmd.state_name,
   }
 
   local size_result = #result
