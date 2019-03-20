@@ -7,12 +7,12 @@ source = {
 description = {
   summary = 'Property based testing library for Lua',
   detailed = [[
-    QuickCheck is a way to do property based testing using randomly generated input. 
-    Lua-QuickCheck comes with the ability to randomly generate and shrink integers, 
-    doubles, booleans, strings, tables, custom datatypes, ... 
-    All QuickCheck needs is a property function -- it will then randomly generate 
-    inputs to that function and call the property for each set of inputs. If the 
-    property fails (whether by an error or not satisfying your property), 
+    QuickCheck is a way to do property based testing using randomly generated input.
+    Lua-QuickCheck comes with the ability to randomly generate and shrink integers,
+    doubles, booleans, strings, tables, custom datatypes, ...
+    All QuickCheck needs is a property function -- it will then randomly generate
+    inputs to that function and call the property for each set of inputs. If the
+    property fails (whether by an error or not satisfying your property),
     the inputs are "shrunk" to find a smaller counter-example.
   ]],
   homepage = 'https://github.com/Primordus/lua-quickcheck',
@@ -34,8 +34,8 @@ build = {
     ['lqc.generators.float'] = 'lqc/generators/float.lua',
     ['lqc.generators.any'] = 'lqc/generators/any.lua',
     ['lqc.generators.int'] = 'lqc/generators/int.lua',
-    ['lqc.generators.str'] = 'lqc/generators/string.lua',
-    ['lqc.generators.tbl'] = 'lqc/generators/table.lua',
+    ['lqc.generators.string'] = 'lqc/generators/string.lua',
+    ['lqc.generators.table'] = 'lqc/generators/table.lua',
     ['lqc.generator'] = 'lqc/generator.lua',
     ['lqc.random'] = 'lqc/random.lua',
     ['lqc.helpers.deep_equals'] = 'lqc/helpers/deep_equals.lua',
