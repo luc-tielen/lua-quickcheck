@@ -29,7 +29,7 @@ install:
   - if [[ $(echo $LUA | grep -o "jit") = "" ]]; then luarocks install luaffi --server=http://luarocks.org/dev; fi
 
 script:
-  - travis_wait 30 LUA=$LUA make -e tests
+  - LUA=$LUA make -e tests
 
 after_success:
   - luacov-coveralls -v -e $TRAVIS_BUILD_DIR/lua_install
