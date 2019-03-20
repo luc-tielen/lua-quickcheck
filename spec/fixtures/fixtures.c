@@ -1,4 +1,5 @@
 
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -71,7 +72,7 @@ struct point
 bool point_add(struct point* a, struct point* b, struct point* c_out)
 {
     if (!a || !b || !c_out) { return false; }
-    c_out->x = a->x + b->x; 
+    c_out->x = a->x + b->x;
     c_out->y = a->y + b->y;
     return true;
 }
@@ -84,11 +85,11 @@ bool point_add(struct point* a, struct point* b, struct point* c_out)
 const char* str_add(const char* const a, const char* const b)
 {
   if (!a || !b) { return NULL; }
-  
+
   size_t len_a = strlen(a);
   size_t len_b = strlen(b);
   char* result = (char*) malloc(sizeof(char) * (len_a + len_b + 1));
-  
+
   if (!result) { return NULL; }
 
   memcpy(result, a, len_a);
