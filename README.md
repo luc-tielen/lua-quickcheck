@@ -80,27 +80,27 @@ and knows how to execute. The function expects 2 arguments:
 
 1. A human readable string description for test output / debugging,
 2. a table containing various options:
-  1. `generators` should contain an array of generators, used as input for
-     the check function. The working of generators is specified below.
-     This argument is required.
-  2. `check` can be a function with N arguments (which should match the number
-     of generators specified), this is the function that will be called many
-     times by the test runner with different generated inputs each iteration.
-     The check function should always return a boolean value
-     (true = success; false = failure). This argument is required.
-  3. `implies`: optional argument for filtering out generated values that should
-     not be checked by the property. This should be a function that accepts all
-     generators used in the property as input arguments and should return a
-     boolean value based on if it should skip the generated input values.
-     true = don't skip this testcase; false = skip testcase.
-  4. `when_fail`: optional argument, callback that is called when the property
-     fails. Receives all generated arguments for which the property failed.
-  5. `numtests`: optional argument for overriding how many times this specific
-     property should be executed. Defaults to the global amount passed in via
-     the commandline (or 100 if not if specified).
-  6. `numshrinks`: optional argument for overriding how many times this
-     property should try to shrink failing testcases. Defaults to the global
-     amount passed in via the commandline (or 100 if not specified).
+  - `generators` should contain an array of generators, used as input for
+    the check function. The working of generators is specified below.
+    This argument is required.
+  - `check` can be a function with N arguments (which should match the number
+    of generators specified), this is the function that will be called many
+    times by the test runner with different generated inputs each iteration.
+    The check function should always return a boolean value
+    (true = success; false = failure). This argument is required.
+  - `implies`: optional argument for filtering out generated values that should
+    not be checked by the property. This should be a function that accepts all
+    generators used in the property as input arguments and should return a
+    boolean value based on if it should skip the generated input values.
+    true = don't skip this testcase; false = skip testcase.
+  - `when_fail`: optional argument, callback that is called when the property
+    fails. Receives all generated arguments for which the property failed.
+  - `numtests`: optional argument for overriding how many times this specific
+    property should be executed. Defaults to the global amount passed in via
+    the commandline (or 100 if not if specified).
+  - `numshrinks`: optional argument for overriding how many times this
+    property should try to shrink failing testcases. Defaults to the global
+    amount passed in via the commandline (or 100 if not specified).
 
 Assuming the snippet above is stored in a file `simple_property.lua`, we can
 check the property by running the following command:
