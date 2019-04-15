@@ -224,6 +224,7 @@ end
 -- look very much alike since it is a simple system. This is done mainly to
 -- keep the complexity down and make it more clear what parts a FSM consists of:
 
+-- 'fsm' is just like 'property' a function available in global namespace
 fsm 'counter' {
   commands = function(s)  -- parameters: s (symbolic state during generation)
     -- NOTE: conditional commands can be added with an if, ... (based on state)
@@ -385,6 +386,29 @@ and also [here](https://github.com/luc-tielen/lua-quickcheck/blob/master/lqc/lqc
 
 New generators can also be written in a similar way to the predefined generators
 by making use of the [lqc.generator module](https://github.com/luc-tielen/lua-quickcheck/blob/master/lqc/generator.lua).
+
+By default, the following helpers/generators are made available in
+the global namespace to avoid having to import too many files
+(though this can still be done):
+
+- Generator
+- any
+- bool
+- byte
+- char
+- float
+- int
+- str
+- tbl
+- random
+- property
+- fsm
+- state
+- command
+- choose
+- frequency
+- elements
+- oneof
 
 
 ## Contributing
