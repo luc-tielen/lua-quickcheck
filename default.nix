@@ -1,20 +1,22 @@
-{ luaVersion ? "luajit_2_1", pkgs ? import ./packages.nix {} }:
+{ luaVersion ? "luajit_2_1", pkgs ? import ./nix/packages.nix {} }:
 
 with pkgs;
 with luaPackages;
 
 let
   buildArgs = { inherit buildLuarocksPackage fetchurl lua; };
-  moonscript = import ./nix/moonscript.nix buildArgs;
-  luacov = import ./nix/luacov.nix buildArgs;
-  luacov-coveralls = import ./nix/luacov-coveralls.nix buildArgs;
-  lanes = import ./nix/lanes.nix buildArgs;
+  deps = builtins.mapAttrs (dep: path: import path buildArgs) {
+    moonscript = ./nix/moonscript.nix;
+    luacov = ./nix/luacov.nix;
+    luacov-coveralls = ./nix/luacov-coveralls.nix;
+    lanes = ./nix/lanes.nix;
+  };
   ffi = if isLuaJIT then [] else [ luaffi ];
 in
   stdenv.mkDerivation rec {
     name = "lua-quickcheck";
     env = buildEnv { name = name; paths = buildInputs; };
-    buildInputs = [
+    buildInputs = with deps; [
       lua
       argparse
       luafilesystem
