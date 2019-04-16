@@ -1,3 +1,12 @@
 { luaVersion ? "luajit_2_1", pkgs ? import ./nix/packages.nix {} }:
 
-(import ./. { inherit luaVersion pkgs; }).shell
+with pkgs;
+with luaPackages;
+
+let
+  pkgInfo = import ./nix/lua-quickcheck.nix { inherit lua pkgs; };
+in
+  with pkgInfo; mkShell {
+    buildInputs = buildDeps;
+    inputsFrom = testDeps;
+  }
