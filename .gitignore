@@ -4,3 +4,4 @@ spec/fixtures/*.so
 .lqc
 *.rock
 doc/
+.envrc
