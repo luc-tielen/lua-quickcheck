@@ -4,15 +4,33 @@ with pkgs;
 with luaPackages;
 
 let
-  pkgInfo = import ./nix/lua-quickcheck.nix { inherit lua pkgs; };
+  buildArgs = { inherit buildLuarocksPackage fetchurl lua; };
+  deps = builtins.mapAttrs (dep: path: import path buildArgs) {
+    moonscript = ./nix/moonscript.nix;
+    luacov = ./nix/luacov.nix;
+    luacov-coveralls = ./nix/luacov-coveralls.nix;
+    lanes = ./nix/lanes.nix;
+  };
+  ffi = if isLuaJIT then [] else [ luaffi ];
+  runTimeDeps = [ lua argparse luafilesystem ];
+  testDeps = with deps; ffi ++ [
+    lanes
+    moonscript
+    busted
+    luacheck
+    luacov
+    luacov-coveralls
+  ];
 in
-  with pkgInfo;
-  stdenv.mkDerivation {
-    inherit name;
-    buildInputs = buildDeps;
-    src = ./.;
-    env = buildEnv {
-      inherit name;
-      paths = buildDeps;
+  {
+    lua-quickcheck = stdenv.mkDerivation rec {
+      name = "lua-quickcheck";
+      env = buildEnv { name = name; paths = buildInputs; };
+      buildInputs = runTimeDeps;
+      src = ./.;
+    };
+    shell = mkShell {
+      inputsFrom = testDeps;
+      buildInputs = runTimeDeps;
     };
   }
