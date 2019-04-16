@@ -12,19 +12,25 @@ let
     lanes = ./nix/lanes.nix;
   };
   ffi = if isLuaJIT then [] else [ luaffi ];
+  runTimeDeps = [ lua argparse luafilesystem ];
+  testDeps = with deps; ffi ++ [
+    lanes
+    moonscript
+    busted
+    luacheck
+    luacov
+    luacov-coveralls
+  ];
 in
-  stdenv.mkDerivation rec {
-    name = "lua-quickcheck";
-    env = buildEnv { name = name; paths = buildInputs; };
-    buildInputs = with deps; [
-      lua
-      argparse
-      luafilesystem
-      lanes
-      moonscript
-      busted
-      luacheck
-      luacov
-      luacov-coveralls
-    ] ++ ffi;
+  {
+    lua-quickcheck = stdenv.mkDerivation rec {
+      name = "lua-quickcheck";
+      env = buildEnv { name = name; paths = buildInputs; };
+      buildInputs = runTimeDeps;
+      src = ./.;
+    };
+    shell = mkShell {
+      inputsFrom = testDeps;
+      buildInputs = runTimeDeps;
+    };
   }
