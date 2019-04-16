@@ -1,7 +1,7 @@
-{ luaVersion ? "luajit_2_1", pkgs ? import ./nix/packages.nix {} }:
+{ luaVersion ? "luajit", pkgs ? import ./nix/packages.nix {} }:
 
 with pkgs;
-with luaPackages;
+with pkgs."${luaVersion}Packages";
 
 let
   buildArgs = { inherit buildLuarocksPackage fetchurl lua; };
