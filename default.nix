@@ -10,6 +10,7 @@ let
     luacov = ./nix/luacov.nix;
     luacov-coveralls = ./nix/luacov-coveralls.nix;
     lanes = ./nix/lanes.nix;
+    ldoc = ./nix/ldoc.nix;
   };
   ffi = if isLuaJIT then [] else [ luaffi ];
   runTimeDeps = [ lua argparse luafilesystem ];
@@ -20,6 +21,7 @@ let
     luacheck
     luacov
     luacov-coveralls
+    ldoc
   ];
 in
   {
@@ -31,6 +33,6 @@ in
     };
     shell = mkShell {
       inputsFrom = testDeps;
-      buildInputs = runTimeDeps;
+      buildInputs = runTimeDeps ++ testDeps;
     };
   }
