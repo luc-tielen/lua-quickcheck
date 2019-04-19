@@ -5,16 +5,15 @@ with pkgs."${luaVersion}Packages";
 
 let
   buildArgs = { inherit buildLuarocksPackage fetchurl lua; };
-  deps = builtins.mapAttrs (dep: path: import path buildArgs) {
-    moonscript = ./nix/moonscript.nix;
-    luacov = ./nix/luacov.nix;
-    luacov-coveralls = ./nix/luacov-coveralls.nix;
-    lanes = ./nix/lanes.nix;
-    ldoc = ./nix/ldoc.nix;
-  };
+  moonscript = import ./nix/moonscript.nix buildArgs;
+  luacov = import ./nix/luacov.nix buildArgs;
+  luacov-coveralls = import ./nix/luacov-coveralls.nix (buildArgs // { inherit lua-path; });
+  lanes = import ./nix/lanes.nix buildArgs;
+  ldoc = import ./nix/ldoc.nix buildArgs;
+  lua-path = import ./nix/lua-path.nix buildArgs;
   ffi = if isLuaJIT then [] else [ luaffi ];
   runTimeDeps = [ lua argparse luafilesystem ];
-  testDeps = with deps; ffi ++ [
+  testDeps = ffi ++ [
     lanes
     moonscript
     busted
@@ -22,6 +21,7 @@ let
     luacov
     luacov-coveralls
     ldoc
+    lua-path
   ];
 in
   {

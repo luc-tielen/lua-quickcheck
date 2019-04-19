@@ -1,4 +1,4 @@
-{ buildLuarocksPackage, fetchurl, lua }:
+{ buildLuarocksPackage, fetchurl, lua, lua-path }:
 
 buildLuarocksPackage rec {
   pname = "luacov-coveralls";
@@ -9,6 +9,7 @@ buildLuarocksPackage rec {
     sha256 = "1kqv1s3ih1wgcanp6zh9yxzzdmrz5zx3xsr9x73j5w5fpq3jczqp";
   };
   propagatedBuildInputs = [ lua ];
+  buildInputs = [ lua-path ];
 
   meta = {
     homepage = "http://github.com/moteus/luacov-coveralls";
