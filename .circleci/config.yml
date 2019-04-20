@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   lua51:
     docker:
@@ -44,3 +44,11 @@ jobs:
       - run:
           name: Coverage
           command: nix-shell --run "make coverage"
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - lua51
+      - lua52
+      - lua53
+      - luajit21
