@@ -1,10 +1,14 @@
-version: 2.1
+version: 2.0
 jobs:
-  lua51:
+  setup:
     docker:
       - image: nixorg/nix:circleci
     steps:
       - checkout
+  lua51:
+    docker:
+      - image: nixorg/nix:circleci
+    steps:
       - run:
           name: Unit tests
           command: nix-shell --run "LUA='lua=5.1' make -e tests"
@@ -15,7 +19,6 @@ jobs:
     docker:
       - image: nixorg/nix:circleci
     steps:
-      - checkout
       - run:
           name: Unit tests
           command: nix-shell --run "LUA='lua=5.2' make -e tests"
@@ -26,7 +29,6 @@ jobs:
     docker:
       - image: nixorg/nix:circleci
     steps:
-      - checkout
       - run:
           name: Unit tests
           command: nix-shell --run "LUA='lua=5.3' make -e tests"
@@ -37,7 +39,6 @@ jobs:
     docker:
       - image: nixorg/nix:circleci
     steps:
-      - checkout
       - run:
           name: Unit tests
           command: nix-shell --run "LUA='luajit=2.1' make -e tests"
@@ -48,7 +49,16 @@ workflows:
   version: 2
   ci:
     jobs:
-      - lua51
-      - lua52
-      - lua53
-      - luajit21
+      - setup
+      - lua51:
+          requires:
+            - setup
+      - lua52:
+          requires:
+            - setup
+      - lua53:
+          requires:
+            - setup
+      - luajit21:
+          requires:
+            - setup
