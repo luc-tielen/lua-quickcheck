@@ -24,8 +24,11 @@ tests: fixtures
 		--ignore 611
 	LD_LIBRARY_PATH=spec/fixtures/ busted $(BUSTED_FLAGS)
 
-coverage:
+coverage_dryrun:
 	luacov-coveralls --dryrun
+
+coverage:
+	luacov-coveralls -v -e .
 
 clean:
 	$(MAKE) -C spec/fixtures clean
@@ -33,5 +36,5 @@ clean:
 docs:
 	ldoc lqc \$$* --all
 
-.PHONY: clean
+.PHONY: install fixtures tests coverage_dryrun coverage clean docs
 
