@@ -5,46 +5,47 @@ jobs:
       - image: nixorg/nix:circleci
     steps:
       - checkout
+      - run: nix-shell --option sandbox false --run "echo 'Setup complete!'"
   lua51:
     docker:
       - image: nixorg/nix:circleci
     steps:
       - run:
           name: Unit tests
-          command: nix-shell --run "LUA='lua=5.1' make -e tests"
+          command: nix-shell --option sandbox false --run "LUA='lua=5.1' make -e tests"
       - run:
           name: Coverage
-          command: nix-shell --run "make coverage"
+          command: nix-shell --option sandbox false --run "make coverage"
   lua52:
     docker:
       - image: nixorg/nix:circleci
     steps:
       - run:
           name: Unit tests
-          command: nix-shell --run "LUA='lua=5.2' make -e tests"
+          command: nix-shell --option sandbox false --run "LUA='lua=5.2' make -e tests"
       - run:
           name: Coverage
-          command: nix-shell --run "make coverage"
+          command: nix-shell --option sandbox false --run "make coverage"
   lua53:
     docker:
       - image: nixorg/nix:circleci
     steps:
       - run:
           name: Unit tests
-          command: nix-shell --run "LUA='lua=5.3' make -e tests"
+          command: nix-shell --option sandbox false --run "LUA='lua=5.3' make -e tests"
       - run:
           name: Coverage
-          command: nix-shell --run "make coverage"
+          command: nix-shell --option sandbox false --run "make coverage"
   luajit21:
     docker:
       - image: nixorg/nix:circleci
     steps:
       - run:
           name: Unit tests
-          command: nix-shell --run "LUA='luajit=2.1' make -e tests"
+          command: nix-shell --option sandbox false --run "LUA='luajit=2.1' make -e tests"
       - run:
           name: Coverage
-          command: nix-shell --run "make coverage"
+          command: nix-shell --option sandbox false --run "make coverage"
 workflows:
   version: 2
   ci:
