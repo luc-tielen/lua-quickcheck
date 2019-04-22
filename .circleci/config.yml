@@ -10,42 +10,27 @@ jobs:
     docker:
       - image: nixorg/nix:circleci
     steps:
-      - run:
-          name: Unit tests
-          command: nix-shell --option sandbox false --run "LUA='lua=5.1' make -e tests"
-      - run:
-          name: Coverage
-          command: nix-shell --option sandbox false --run "make coverage"
+      - run: nix-shell --option sandbox false --run "LUA='lua=5.1' make -e tests"
   lua52:
     docker:
       - image: nixorg/nix:circleci
     steps:
-      - run:
-          name: Unit tests
-          command: nix-shell --option sandbox false --run "LUA='lua=5.2' make -e tests"
-      - run:
-          name: Coverage
-          command: nix-shell --option sandbox false --run "make coverage"
+      - run: nix-shell --option sandbox false --run "LUA='lua=5.2' make -e tests"
   lua53:
     docker:
       - image: nixorg/nix:circleci
     steps:
-      - run:
-          name: Unit tests
-          command: nix-shell --option sandbox false --run "LUA='lua=5.3' make -e tests"
-      - run:
-          name: Coverage
-          command: nix-shell --option sandbox false --run "make coverage"
+      - run: nix-shell --option sandbox false --run "LUA='lua=5.3' make -e tests"
   luajit21:
     docker:
       - image: nixorg/nix:circleci
     steps:
-      - run:
-          name: Unit tests
-          command: nix-shell --option sandbox false --run "LUA='luajit=2.1' make -e tests"
-      - run:
-          name: Coverage
-          command: nix-shell --option sandbox false --run "make coverage"
+      - run: nix-shell --option sandbox false --run "LUA='luajit=2.1' make -e tests"
+  coverage:
+    docker:
+      - image: nixorg/nix:circleci
+    steps:
+      - run: nix-shell --option sandbox false --run "make coverage"
 workflows:
   version: 2
   ci:
@@ -63,3 +48,9 @@ workflows:
       - luajit21:
           requires:
             - setup
+      - coverage:
+          requires:
+            - lua51
+            - lua52
+            - lua53
+            - luajit21
