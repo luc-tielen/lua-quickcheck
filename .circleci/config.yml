@@ -1,36 +1,63 @@
-version: 2.0
+version: 2.1
+references:
+  workspace_root: &workspace_root
+    /
+  working_directory: &working_directory
+    /tmp/working_directory
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+  persist_workspace: &persist_workspace
+    persist_to_workspace:
+      root: *workspace_root
+      paths:
+        - tmp/working_directory
+        - nix/store
+
+executors:
+  ci-runner:
+    docker:
+      - image: nixorg/nix:circleci
+    working_directory: *working_directory
+
 jobs:
   setup:
-    docker:
-      - image: nixorg/nix:circleci
+    executor: ci-runner
     steps:
+      - *attach_workspace
       - checkout
       - run: nix-shell --option sandbox false --run "echo 'Setup complete!'"
+      - *persist_workspace
   lua51:
-    docker:
-      - image: nixorg/nix:circleci
+    executor: ci-runner
     steps:
+      - *attach_workspace
       - run: nix-shell --option sandbox false --run "LUA='lua=5.1' make -e tests"
+      - *persist_workspace
   lua52:
-    docker:
-      - image: nixorg/nix:circleci
+    executor: ci-runner
     steps:
+      - *attach_workspace
       - run: nix-shell --option sandbox false --run "LUA='lua=5.2' make -e tests"
+      - *persist_workspace
   lua53:
-    docker:
-      - image: nixorg/nix:circleci
+    executor: ci-runner
     steps:
+      - *attach_workspace
       - run: nix-shell --option sandbox false --run "LUA='lua=5.3' make -e tests"
+      - *persist_workspace
   luajit21:
-    docker:
-      - image: nixorg/nix:circleci
+    executor: ci-runner
     steps:
+      - *attach_workspace
       - run: nix-shell --option sandbox false --run "LUA='luajit=2.1' make -e tests"
+      - *persist_workspace
   coverage:
-    docker:
-      - image: nixorg/nix:circleci
+    executor: ci-runner
     steps:
+      - *attach_workspace
       - run: nix-shell --option sandbox false --run "make coverage"
+
 workflows:
   version: 2
   ci:
