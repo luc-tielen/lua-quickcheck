@@ -1,7 +1,7 @@
 
 # Lua-QuickCheck
 
-[![Build Status](https://travis-ci.org/luc-tielen/lua-quickcheck.svg?branch=master)](https://travis-ci.org/luc-tielen/lua-quickcheck)
+[![Build Status](https://github.com/luc-tielen/lua-quickcheck/actions/workflows/test.yml/badge.svg)](https://github.com/luc-tielen/lua-quickcheck/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/luc-tielen/lua-quickcheck/badge.svg?branch=master)](https://coveralls.io/github/luc-tielen/lua-quickcheck?branch=master)
 [![License (MIT)](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/luc-tielen/lua-quickcheck/blob/master/LICENSE)
 
