@@ -490,16 +490,27 @@ the global namespace to avoid having to import too many files
 
 - Generator
 - any
+    generates values of any of the following types:
+    `table`, `str`, `int`, `float`, `bool` (see below)
 - bool
+    generates a value with Lua `boolean` type
 - byte
+    generates a byte sequence, where byte is an integer with value between
+    0 - 255 (inclusive)
 - char
+    generates a random (ASCII) char (no 'special' characters such as NUL, NAK, ...)
 - float
+    generates float values
 - int
+    generates an integer value bounded by minimal and maximal values
 - str
+    generates a value with Lua type `string`
 - tbl
+    generates tables of varying sizes and types
 - random
 - property
 - fsm
+    generates states described by Finite State Machine, useful for testing programs behavior
 - state
 - command
 - choose
