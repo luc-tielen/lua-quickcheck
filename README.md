@@ -33,8 +33,13 @@ Some example properties can be found [here](https://github.com/luc-tielen/lua-qu
 
 ## Usage
 
-Lua Quickcheck exposes a test-runner as a command-line interface for running
-all property based tests in your codebase. Assuming `lqc` is installed and
+There are two ways to use Lua QuickCheck library: using its own test-runner
+`lqc` or using external test-runner.
+
+### Using the LQC test runner
+
+Lua QuickCheck exposes a test-runner as a command-line interface for running
+all property-based tests in your codebase. Assuming `lqc` is installed and
 located in your path, you can run the following command to get a help prompt
 for more information about possible command line arguments:
 
@@ -46,6 +51,98 @@ By default, `lqc` will look for all `*.lua` and `*.moon` files in the current
 directory for .lua and .moon files and execute all of them; but it is also
 possible to specify a specific set of files or directories to execute.
 
+### Using an external test runner
+
+In mature projects tests already exist and run using test-runner
+provided by test framework. For example `busted`, `luatest` have their own
+test-runners.  In such cases it is still possible to use Lua QuickCheck.
+All you need to do is import required modules and run `lqc.check()` in
+each testcase.
+
+Below is an example of test `test/sum_test.lua` for use with the `luatest` library:
+and its test-runner:
+
+```lua
+local lqc = require 'lqc.quickcheck'
+local property = require 'lqc.property'
+local random = require 'lqc.random'
+local int = require 'lqc.generators.int'
+local t = require('luatest')
+
+local g = t.group()
+
+-- {{{ Setup / teardown
+
+g.before_all(function()
+  -- Setup.
+  -- lqc initialization
+  random.seed()
+  lqc.init(100, 100)
+  lqc.properties = {}
+end)
+
+g.after_all(function()
+  -- Tear down.
+end)
+
+-- {{{ sum of numbers
+
+g.test_sum_up_to = function()
+  property 'sum of numbers is equal to (n + 1) * n / 2' {
+    generators = { int(100) },
+    check = function(n)
+      return sum_up_to(n) == (n + 1) * n / 2
+  end
+  }
+  lqc.check()
+end
+
+-- }}} sum of numbers
+```
+
+To run test execute `luatest ./test/test_sum.lua`:
+```
+$ luatest ./test/sum_test.lua
+.
+Ran 1 tests in 0.017 seconds, 1 success, 0 failures
+```
+
+And here's an example with test library `busted`:
+
+```lua
+local random = require 'lqc.random'
+local lqc = require 'lqc.quickcheck'
+local property = require 'lqc.property'
+local int = require 'lqc.generators.int'
+
+local function do_setup()
+  random.seed()
+  lqc.init(100, 100)
+  lqc.properties = {}
+end
+
+describe('arithmetic functions', function()
+  before_each(do_setup)
+
+  it('sum of numbers', function()
+    property 'sum of numbers is equal to (n + 1) * n / 2' {
+      generators = { int(100) },
+      check = function(n)
+        return sum_up_to(n) == (n + 1) * n / 2
+      end
+    }
+    lqc.check()
+  end)
+end)
+```
+
+To run the tests, execute the following command: `busted spec/sum_spec.lua`
+
+```
+$ busted spec/sum_spec.lua
+●
+1 success / 0 failures / 0 errors / 0 pending : 0.001857 seconds
+```
 
 ### Defining simple properties
 
@@ -453,5 +550,3 @@ make tests
 
 I wanted a quickcheck library that could also easily interface with C or C++
 side-by-side with my Lua code.
-
-
