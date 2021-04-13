@@ -1,0 +1,47 @@
+name: test-run
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    if: ( github.event_name == 'push' ||
+        github.event.pull_request.head.repo.full_name != github.repository ) &&
+        ( github.repository == 'luc-tielen/lua-quickcheck' )
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        lua-version: ['lua=5.1', 'lua=5.1', 'luajit=2.0', 'luajit=2.1']
+
+    env:
+      LUA: ${{ matrix.lua-version }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: setup hererocks $LUA
+      run: |
+        - pip install hererocks
+        - hererocks lua_install -r^ --$LUA
+        - echo "$PWD/lua_install/bin" >> $GITHUB_PATH
+
+    - name: setup dependencies
+      run: |
+        - luarocks install argparse
+        - luarocks install luafilesystem
+        - luarocks install luacheck
+        - luarocks install luacov
+        - luarocks install luacov-coveralls
+        - luarocks install busted
+        - luarocks install lanes
+        - luarocks install moonscript
+        - if [[ $(echo $LUA | grep -o "jit") = "" ]]; then luarocks install luaffi --server=http://luarocks.org/dev; fi
+
+    - name: run regression tests
+      run: LUA=$LUA make -e tests
+
+    - name: upload code coverage
+      if: ${{ success() }}
+      run: luacov-coveralls -v -e $GITHUB_WORKSPACE/lua_install
